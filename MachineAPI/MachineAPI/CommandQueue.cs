@@ -5,6 +5,9 @@ using System.Collections;
 
 namespace MachineController
 {
+	/// <summary>
+	/// The task queue
+	/// </summary>
 	internal class CommandQueue
 	{
 		private List<Command> queue;

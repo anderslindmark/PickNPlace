@@ -1,24 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MachineController
 {
 	/// <summary>
-	/// Move to an absolute position
+	/// Initiates the machine
 	/// </summary>
-	public class MoveAbsolute : Command
+	public class Initiate : Command
 	{
-		/// <summary>
-		/// Move to an absolute position
-		/// </summary>
-		/// <param name="axis">Axis to move in</param>
-		/// <param name="position">Position as distance in um from origo</param>
-		public MoveAbsolute(Axis axis, int position)
-		{
-			throw new System.NotImplementedException();
-		}
-
 		#region Command Members
 
 		string Command.getCommand()

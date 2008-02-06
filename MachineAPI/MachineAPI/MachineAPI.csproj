@@ -44,9 +44,13 @@
     <Compile Include="Axis.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandQueue.cs" />
+    <Compile Include="CurrentState.cs" />
+    <Compile Include="MachineEvent.cs" />
+    <Compile Include="Initiate.cs" />
     <Compile Include="MoveAbsolute.cs" />
     <Compile Include="MoveRelative.cs" />
     <Compile Include="MachineController.cs" />
+    <Compile Include="Park.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

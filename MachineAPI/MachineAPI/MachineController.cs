@@ -1,44 +1,90 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace MachineController
 {
 	/// <summary>
-	/// Usage: MachineController mc = new MachineController()
-	/// mc.add(new MoveAbsolute(Axis.X, 100));
-	/// mc.start()
+	/// API for controlling the machine.
 	/// </summary>
-	public class MachineController
+	/// <example>
+	/// MachineController mc = new MachineController();
+	/// mc.run();
+	/// mc.addCommand(new MoveAbsolute(Axis.X, 100));
+	/// mc.startQueue();
+	/// </example>
+	public class MachineController : Thread
 	{
 		CommandQueue commandqueue;
 		private int port;
+
 		/// <summary>
-		/// The main entry point for the application.
+		/// Starts the thread
 		/// </summary>
-		[STAThread]
-		static void Main()
-		{
-		}
-
-		public void Method()
+		public void run()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public void start()
+		/// <summary>
+		/// Starts working on the queue
+		/// </summary>
+		public void startQueue()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public void pause()
+		/// <summary>
+		/// Pauses the queue (the current task in the queue is allowed to complete)
+		/// </summary>
+		public void pauseQueue()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public void add(Command cmd)
+		/// <summary>
+		/// Forcefully terminates the running task, and pauseQueue the queue.
+		/// IS THIS EVEN POSSIBLE?
+		/// </summary>
+		public void killCommand()
 		{
 			throw new System.NotImplementedException();
 		}
+		/// <summary>
+		/// Adds a task to the queue.
+		/// </summary>
+		/// <param name="cmd"></param>
+		public bool addCommand(Command cmd)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		/// <summary>
+		/// Initiate serial communication
+		/// </summary>
+		private void init()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		/// <summary>
+		/// Check whether a command is legal, or if it would put the machine out of bounds.
+		/// </summary>
+		/// <returns></returns>
+		private MachineState testCommand(MachineState beforeState, Command cmd)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		/// <summary>
+		/// Add a listener to enable communication between the API and whatever is using it.
+		/// </summary>
+		public void addListener()
+		{
+			throw new System.NotImplementedException();
+		}
+
+
 	}
 }

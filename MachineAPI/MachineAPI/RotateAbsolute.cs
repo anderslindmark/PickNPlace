@@ -4,9 +4,16 @@ using System.Text;
 
 namespace MachineController
 {
+	/// <summary>
+	/// Rotate to an absolute angle
+	/// </summary>
 	public class RotateAbsolute : Command
 	{
-		public RotateAbsolute(int angle)
+		/// <summary>
+		/// Rotate 
+		/// </summary>
+		/// <param name="angle">The angle in degrees</param>
+		public RotateAbsolute(float angle)
 		{
 			throw new System.NotImplementedException();
 		}

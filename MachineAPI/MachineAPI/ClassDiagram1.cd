@@ -3,12 +3,12 @@
   <Class Name="MachineController.MachineController">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAgAAAgAAAAAAAAAAgAAAAABAACIAA=</HashCode>
+      <HashCode>AAAAAgAIEAICAEAAABAAAAAAAAAAAAoBAAAAAAAAAAA=</HashCode>
       <FileName>MachineController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MachineController.MoveAbsolute">
-    <Position X="5" Y="2.5" Width="1.5" />
+    <Position X="9" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MoveAbsolute.cs</FileName>
@@ -16,7 +16,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MachineController.MoveRelative">
-    <Position X="5" Y="0.5" Width="1.5" />
+    <Position X="9" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MoveRelative.cs</FileName>
@@ -24,7 +24,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MachineController.RotateAbsolute">
-    <Position X="5" Y="4.25" Width="1.5" />
+    <Position X="10.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>RotateAbsolute.cs</FileName>
@@ -32,7 +32,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MachineController.RotateRelative">
-    <Position X="3.25" Y="4.25" Width="1.5" />
+    <Position X="9" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>RotateRelative.cs</FileName>
@@ -40,21 +40,51 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MachineController.CommandQueue">
-    <Position X="0.5" Y="3" Width="1.75" />
+    <Position X="3.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAABAAAAEQAAAAAAAAAAAAAAAQAA=</HashCode>
       <FileName>CommandQueue.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="MachineController.Command">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+  <Class Name="MachineController.Initiate">
+    <Position X="10.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAACAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Initiate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MachineController.Park">
+    <Position X="10.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Park.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MachineController.MachineState">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>CurrentState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="MachineController.Command">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAACAAAAAA=</HashCode>
       <FileName>Command.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="MachineController.MachineEvent">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MachineEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="MachineController.Axis">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+    <Position X="0.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
       <FileName>Axis.cs</FileName>

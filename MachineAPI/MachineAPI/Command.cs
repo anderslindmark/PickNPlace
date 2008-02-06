@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MachineController
 {
+	/// <summary>
+	/// Interface for a machine command
+	/// </summary>
 	public interface Command
 	{
 		/// <summary>
@@ -22,5 +25,7 @@ namespace MachineController
 		/// </summary>
 		/// <returns></returns>
 		String ToString();
+
+		MachineState getAfterState(MachineState beforeState);
 	}
 }

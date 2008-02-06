@@ -4,9 +4,16 @@ using System.Text;
 
 namespace MachineController
 {
+	/// <summary>
+	/// Rotate relative to current rotation
+	/// </summary>
 	public class RotateRelative : Command
 	{
-		public RotateRelative(int angle)
+		/// <summary>
+		/// Rotate
+		/// </summary>
+		/// <param name="angle">The angle in degrees</param>
+		public RotateRelative(float angle)
 		{
 			throw new System.NotImplementedException();
 		}
