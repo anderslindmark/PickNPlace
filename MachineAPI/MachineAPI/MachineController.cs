@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO.Ports;
 
 namespace MachineController
 {
-	/// <summary>
+    delegate void MachineControllerEventHandler(MachineController source, MachineEvent e);
+    
+    /// <summary>
 	/// API for controlling the machine.
 	/// </summary>
 	/// <example>
@@ -16,17 +19,58 @@ namespace MachineController
 	/// </example>
 	public class MachineController : Thread
 	{
-		CommandQueue commandqueue;
-		private int port;
+		/// <summary>
+		///  The command queue.
+		/// </summary>
+        CommandQueue commandQueue;
+
+        /// <summary>
+        /// The serial port for comunication.
+        /// </summary>
+		SerialPort port;
+
+        /// <summary>
+        /// The name of the serial port, example com1.
+        /// </summary>
+        String comPort;
+
+        /// <summary>
+        /// The thread this object is running in.
+        /// </summary>
+        Thread myThread;
+
+        /// <summary>
+        /// Event listener holder.
+        /// </summary>
+        public event MachineControllerEventHandler EventListener;
+
+        /// <summary>
+        /// Constructor for the MachineController.
+        /// </summary>
+        /// <param name="comPort">Name of the serial port</param>
+        public MachineController(String comPort)
+        {
+            this.comPort = comPort;
+            commandQueue = new CommandQueue();
+            Init();
+        }
 
 		/// <summary>
 		/// Starts the thread
 		/// </summary>
 		public void Run()
 		{
-			throw new System.NotImplementedException();
+            myThread = new Thread(RunThread);
+            myThread.Start();
 		}
 
+        /// <summary>
+        /// The function that the thread starts
+        /// </summary>
+        private void RunThread()
+        {
+
+        }
 		/// <summary>
 		/// Starts working on the queue
 		/// </summary>
@@ -58,7 +102,7 @@ namespace MachineController
 		/// <param name="cmd"></param>
 		public void AddCommand(Command cmd)
 		{
-			throw new System.NotImplementedException();
+            commandQueue.Enqueue(cmd);
 		}
 
 		/// <summary>
@@ -66,7 +110,8 @@ namespace MachineController
 		/// </summary>
 		private void Init()
 		{
-			throw new System.NotImplementedException();
+            //CHECK PORT SETTINGS
+            port = new SerialPort(sPort, 9800, Parity.Odd, 8, StopBits.None);
 		}
 
 		/// <summary>
@@ -78,10 +123,16 @@ namespace MachineController
 			throw new System.NotImplementedException();
 		}
 
-		// Removed AddListener
-		// Use C# event-magic instead
-		// http://www.csharphelp.com/archives/archive253.html
-
-
-	}
+        /// <summary>
+        /// Send a event to all listeners.
+        /// </summary>
+        /// <param name="e">The event to be sent.</param>
+        private void SendEvent(MachineEvent e)
+        {
+            if (EventListener != null)
+            {
+                EventListener(this, e);
+            }
+        }
+   	}
 }
