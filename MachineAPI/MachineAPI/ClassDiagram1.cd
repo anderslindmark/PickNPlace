@@ -3,7 +3,7 @@
   <Class Name="MachineController.MachineController">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAIEAICAEAAABAAAAAAAAAAAAoBAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAACAgBAAAAQAAEAAAgAAAACAAAAAAI=</HashCode>
       <FileName>MachineController.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -42,7 +42,7 @@
   <Class Name="MachineController.CommandQueue">
     <Position X="3.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAAAABAAAAEQAAAAAAAAAAAAAAAQAA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAAABAAAAAQAAABAAAAAAAAABAAAA=</HashCode>
       <FileName>CommandQueue.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -65,14 +65,14 @@
   <Class Name="MachineController.MachineState">
     <Position X="3.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
-      <FileName>CurrentState.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>MachineState.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="MachineController.Command">
     <Position X="7.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAACAAAAAA=</HashCode>
+      <HashCode>IAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAFAAAA=</HashCode>
       <FileName>Command.cs</FileName>
     </TypeIdentifier>
   </Interface>

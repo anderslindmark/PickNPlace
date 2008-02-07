@@ -14,24 +14,24 @@ namespace MachineController
 		/// </summary>
 		/// <param name="axis">Axis to move in</param>
 		/// <param name="position">Position as distance in um from origo</param>
-		public MoveAbsolute(Axis axis, int position)
+		public MoveAbsolute(Axis axis, uint position)
 		{
 			throw new System.NotImplementedException();
 		}
 
 		#region Command Members
 
-		string Command.getCommand()
+		String Command.GetCommand()
 		{
 			throw new NotImplementedException();
 		}
 
-		string Command.getReadyRegister()
+		String Command.GetReadyRegister()
 		{
 			throw new NotImplementedException();
 		}
 
-		string Command.ToString()
+		String Command.ToString()
 		{
 			throw new NotImplementedException();
 		}

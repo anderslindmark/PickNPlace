@@ -20,17 +20,17 @@ namespace MachineController
 
 		#region Command Members
 
-		string Command.getCommand()
+		String Command.GetCommand()
 		{
 			throw new NotImplementedException();
 		}
 
-		string Command.getReadyRegister()
+		String Command.GetReadyRegister()
 		{
 			throw new NotImplementedException();
 		}
 
-		string Command.ToString()
+		String Command.ToString()
 		{
 			throw new NotImplementedException();
 		}

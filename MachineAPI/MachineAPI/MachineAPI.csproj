@@ -44,7 +44,7 @@
     <Compile Include="Axis.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandQueue.cs" />
-    <Compile Include="CurrentState.cs" />
+    <Compile Include="MachineState.cs" />
     <Compile Include="MachineEvent.cs" />
     <Compile Include="Initiate.cs" />
     <Compile Include="MoveAbsolute.cs" />

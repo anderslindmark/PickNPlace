@@ -17,17 +17,17 @@ namespace MachineController
 			get { return queue; }
 		}
 
-		public void enqueue(Command cmd)
+		public void Enqueue(Command cmd)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public Command dequeue()
+		public Command Dequeue()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public void clear()
+		public void Clear()
 		{
 			throw new System.NotImplementedException();
 		}

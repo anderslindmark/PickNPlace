@@ -10,9 +10,9 @@ namespace MachineController
 	/// </summary>
 	/// <example>
 	/// MachineController mc = new MachineController();
-	/// mc.run();
-	/// mc.addCommand(new MoveAbsolute(Axis.X, 100));
-	/// mc.startQueue();
+	/// mc.Run();
+	/// mc.AddCommand(new MoveAbsolute(Axis.X, 100));
+	/// mc.StartQueue();
 	/// </example>
 	public class MachineController : Thread
 	{
@@ -22,7 +22,7 @@ namespace MachineController
 		/// <summary>
 		/// Starts the thread
 		/// </summary>
-		public void run()
+		public void Run()
 		{
 			throw new System.NotImplementedException();
 		}
@@ -30,7 +30,7 @@ namespace MachineController
 		/// <summary>
 		/// Starts working on the queue
 		/// </summary>
-		public void startQueue()
+		public void StartQueue()
 		{
 			throw new System.NotImplementedException();
 		}
@@ -38,24 +38,25 @@ namespace MachineController
 		/// <summary>
 		/// Pauses the queue (the current task in the queue is allowed to complete)
 		/// </summary>
-		public void pauseQueue()
+		public void PauseQueue()
 		{
 			throw new System.NotImplementedException();
 		}
 
 		/// <summary>
-		/// Forcefully terminates the running task, and pauseQueue the queue.
+		/// Forcefully terminates the running task, and PauseQueue the queue.
 		/// IS THIS EVEN POSSIBLE?
 		/// </summary>
-		public void killCommand()
+		public void KillCommand()
 		{
 			throw new System.NotImplementedException();
 		}
 		/// <summary>
 		/// Adds a task to the queue.
+		/// Throws an exception if the command would lead to an illegal state
 		/// </summary>
 		/// <param name="cmd"></param>
-		public bool addCommand(Command cmd)
+		public void AddCommand(Command cmd)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -63,7 +64,7 @@ namespace MachineController
 		/// <summary>
 		/// Initiate serial communication
 		/// </summary>
-		private void init()
+		private void Init()
 		{
 			throw new System.NotImplementedException();
 		}
@@ -72,18 +73,14 @@ namespace MachineController
 		/// Check whether a command is legal, or if it would put the machine out of bounds.
 		/// </summary>
 		/// <returns></returns>
-		private MachineState testCommand(MachineState beforeState, Command cmd)
+		private MachineState TestCommand(MachineState beforeState, Command cmd)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		/// <summary>
-		/// Add a listener to enable communication between the API and whatever is using it.
-		/// </summary>
-		public void addListener()
-		{
-			throw new System.NotImplementedException();
-		}
+		// Removed AddListener
+		// Use C# event-magic instead
+		// http://www.csharphelp.com/archives/archive253.html
 
 
 	}

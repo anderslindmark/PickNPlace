@@ -12,13 +12,13 @@ namespace MachineController
 		/// <summary>
 		/// Returns a string representing the machine command
 		/// </summary>
-		String getCommand();
+		String GetCommand();
 
 		/// <summary>
 		/// Returns the relevant register that shows if this
 		/// command is done.
 		/// </summary>
-		string getReadyRegister();
+		String GetReadyRegister();
 
 		/// <summary>
 		/// Returns a string representing the command (for use in GUI etc)
@@ -26,6 +26,6 @@ namespace MachineController
 		/// <returns></returns>
 		String ToString();
 
-		MachineState getAfterState(MachineState beforeState);
+		MachineState GetAfterState(MachineState beforeState);
 	}
 }
