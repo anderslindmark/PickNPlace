@@ -27,5 +27,15 @@ namespace MachineController
 		}
 
 		#endregion
+
+		#region Command Members
+
+
+		public MachineState GetAfterState(MachineState beforeState)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }

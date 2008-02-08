@@ -26,6 +26,11 @@ namespace MachineController
 			throw new NotImplementedException();
 		}
 
+		public MachineState GetAfterState(MachineState beforeState)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

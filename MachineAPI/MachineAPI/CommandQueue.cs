@@ -12,11 +12,14 @@ namespace MachineController
 	internal class CommandQueue
 	{
 		private List<Command> queue;
+		private MachineController mc;
 
-        public CommandQueue()
+        public CommandQueue(MachineController mc)
         {
+			this.mc = mc;
             queue = new List<Command>();
         }
+
 		public List<Command> Queue
 		{
 			get { return queue; }
@@ -26,8 +29,8 @@ namespace MachineController
 		{
             lock (this)
             {
-                queue.add(cmd);
-                Monitor.pulse(this);
+                queue.Add(cmd);
+				Monitor.Pulse(this);
             }
 		}
 
@@ -37,13 +40,17 @@ namespace MachineController
             {
                 while (true)
                 {
-                    if (queue.Count == 0)
+					if (mc.Paused || mc.Stopped)
+					{
+						return null;
+					}
+					else if (queue.Count == 0)
                     {
                         Monitor.Wait(this);
                     }
                     else
                     {
-                        Command cmd = queue.Item(0);
+                        Command cmd = queue[0];
                         queue.RemoveAt(0);
                         return cmd;
                     }

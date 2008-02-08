@@ -9,6 +9,6 @@ namespace MachineController
 		/// <summary>
 		/// Returns string representation of the event.
 		/// </summary>
-		public String ToString();
+		//public String ToString();
 	}
 }
