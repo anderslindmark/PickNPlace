@@ -6,6 +6,11 @@ using System.IO.Ports;
 
 namespace MachineController
 {
+	/// <summary>
+	/// The delegate for event listeners.
+	/// </summary>
+	/// <param name="source">Who sent the event</param>
+	/// <param name="e">The event type</param>
     public delegate void MachineControllerEventHandler(MachineController source, MachineEvent e);
     
     /// <summary>
@@ -64,8 +69,8 @@ namespace MachineController
             this.comPort = comPort;
             commandQueue = new CommandQueue(this);
 			myThread = null;
-			workOnQueue = false;
 			//Init();
+			workOnQueue = false;
 			stop = false;
         }
 
@@ -134,6 +139,7 @@ namespace MachineController
 			}
 
 			//DO STOP CODE
+			SendEvent(new MachineControllerStoppedEvent());
 			Console.WriteLine("Stopped");
         }
 
@@ -198,9 +204,8 @@ namespace MachineController
 
 		private void doCommand(Command cmd)
 		{
-			System.Console.WriteLine(cmd.GetCommand());
-
-
+			System.Console.WriteLine("MC: {0}",cmd.GetCommand());
+			SendEvent(new CommandDoneEvent(cmd));
 		}
 		/// <summary>
 		/// Check whether the queue is paused.
