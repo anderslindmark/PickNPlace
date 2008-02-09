@@ -128,7 +128,7 @@ namespace MachineController
 					//Change this to exception instead??
 					if (cmd != null)
 					{
-						System.Console.WriteLine("Machine controller: {0}", cmd.GetCommand());
+						doCommand(cmd);
 					}
 				}
 			}
@@ -196,6 +196,12 @@ namespace MachineController
             commandQueue.Enqueue(cmd);
 		}
 
+		private void doCommand(Command cmd)
+		{
+			System.Console.WriteLine(cmd.GetCommand());
+
+
+		}
 		/// <summary>
 		/// Check whether the queue is paused.
 		/// </summary>
