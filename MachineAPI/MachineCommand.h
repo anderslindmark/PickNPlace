@@ -4,10 +4,10 @@ using namespace std;
 
 class MachineCommand {
 public:
-	MachineCommand();
-	~MachineCommand();
+	//MachineCommand();
+	//virtual ~MachineCommand();
 //	virtual void getAfterState(MachineState) = 0;
-	int getCommand();
+	virtual int getCommand() = 0;
 	//virtual string getReadyRegister() = 0;
 	//virtual string getReadyValue() = 0;
 	//virtual string toString() = 0;

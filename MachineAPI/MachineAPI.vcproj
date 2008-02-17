@@ -173,6 +173,10 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TestCommand.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -185,6 +189,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestCommand.h"
 				>
 			</File>
 		</Filter>
