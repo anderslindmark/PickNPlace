@@ -170,6 +170,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineState.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -184,11 +188,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Axis.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineCommand.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MachineController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineEventType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineState.h"
 				>
 			</File>
 			<File
