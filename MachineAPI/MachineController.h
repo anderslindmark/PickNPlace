@@ -2,6 +2,7 @@
 #include "MachineCommand.h"
 #include <string>
 #include <windows.h>
+
 using namespace std;
 
 class MachineController

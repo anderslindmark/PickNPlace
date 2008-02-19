@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SerialPort.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestCommand.cpp"
 				>
 			</File>
@@ -205,6 +209,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SerialPort.h"
 				>
 			</File>
 			<File

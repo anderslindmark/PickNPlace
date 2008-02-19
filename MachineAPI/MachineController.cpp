@@ -1,5 +1,6 @@
 #include "MachineController.h"
 #include <iostream>
+
 //struct ThreadArg {
 //	bool *working;
 //	MachineCommand *cmd;
@@ -42,33 +43,20 @@ bool MachineController::runCommand(MachineCommand &_cmd) {
 	{
 		// The thread got ownership of the mutex
 		case WAIT_OBJECT_0: 
-			//__try 
-			//{
-				if (!working) {
-					//cout << "true"<<endl;
-					working = true;
-					WaitForSingleObject(thread, INFINITE);
-					threadArg = new ThreadArg(this, &_cmd);
-					thread = CreateThread( 
-						NULL,				// default security attributes
-						0,					// use default stack size  
-						(LPTHREAD_START_ROUTINE) this->runThread,   // thread function 
-						threadArg,			// argument to thread function 
-						0,					// use default creation flags 
-						&threadId);			// returns the thread identifier 
-					returnVal = true;
-				}
-				
-			//} 
-
-			//__finally
-			//{ 
-				// Release ownership of the mutex object
-			//	if (! ReleaseMutex(runCmdMutex)) 
-			//	{ 
-					// Deal with error.
-			//	} 
-			//} 
+			if (!working) {
+				//cout << "true"<<endl;
+				working = true;
+				WaitForSingleObject(thread, INFINITE);
+				threadArg = new ThreadArg(this, &_cmd);
+				thread = CreateThread( 
+					NULL,				// default security attributes
+					0,					// use default stack size  
+					(LPTHREAD_START_ROUTINE) this->runThread,   // thread function 
+					threadArg,			// argument to thread function 
+					0,					// use default creation flags 
+					&threadId);			// returns the thread identifier 
+				returnVal = true;
+			}
 			break;
 
 		// The thread got ownership of an abandoned mutex

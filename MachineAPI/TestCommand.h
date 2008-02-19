@@ -5,7 +5,8 @@ class TestCommand :
 	public MachineCommand
 {
 public:
-	TestCommand(void);
+	TestCommand(string in);
 	~TestCommand(void);
-	int getCommand();
+	string getCommand();
+	string my;
 };

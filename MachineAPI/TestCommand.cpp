@@ -1,13 +1,14 @@
 #include "TestCommand.h"
 
-TestCommand::TestCommand(void)
+TestCommand::TestCommand(string in)
 {
+	my = in;
 }
 
 TestCommand::~TestCommand(void)
 {
 }
 
-int TestCommand::getCommand() {
-	return 120;
+string TestCommand::getCommand() {
+	return my;
 }
