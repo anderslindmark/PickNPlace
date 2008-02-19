@@ -2,6 +2,7 @@
 #include "MachineCommand.h"
 #include <string>
 #include <windows.h>
+#include "SerialPort.h"
 
 using namespace std;
 
@@ -42,7 +43,10 @@ public:
 	
 	void wait(void);
 
+	bool initialize();
+
 private:
+	SerialPort *sp;
 	string comPort;
 	bool working;
 	bool initiated;

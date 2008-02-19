@@ -17,6 +17,7 @@ struct ThreadArg {
 
 MachineController::MachineController(string _comPort)
 {
+	sp = NULL;
 	comPort = _comPort;
 	working = false;
 	initiated = false;
@@ -29,9 +30,28 @@ MachineController::MachineController(string _comPort)
 
 MachineController::~MachineController(void)
 {
+	delete sp;
+}
+
+bool MachineController::initialize() {
+	sp = new SerialPort(comPort);
+	if(sp->initialize())
+	{
+		initiated = true;
+		return true;
+	}
+	else
+	{
+		delete sp;
+		return false;
+	}
 }
 
 bool MachineController::runCommand(MachineCommand &_cmd) {
+	if (!initiated) {
+		return false;
+	}
+
 	bool returnVal = false;
 	DWORD dwWaitResult;
 	ThreadArg *threadArg;
