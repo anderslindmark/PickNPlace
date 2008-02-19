@@ -3,6 +3,7 @@
 #include <string>
 #include <windows.h>
 #include "SerialPort.h"
+#include "MachineEvent.h"
 
 using namespace std;
 
@@ -44,6 +45,12 @@ public:
 	void wait(void);
 
 	bool initialize();
+
+	/*
+	 * Adds an event handler, using a callback function which is run when an event happens
+	 *
+	 */
+	void addEventHandler(void (*handler)(MachineController&, MachineEvent&));
 
 private:
 	SerialPort *sp;

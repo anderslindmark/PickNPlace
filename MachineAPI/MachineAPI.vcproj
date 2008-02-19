@@ -170,6 +170,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineState.cpp"
 				>
 			</File>
@@ -201,6 +205,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineEvent.h"
 				>
 			</File>
 			<File

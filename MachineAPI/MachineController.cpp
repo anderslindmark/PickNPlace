@@ -106,3 +106,8 @@ DWORD WINAPI MachineController::runThread( LPVOID lpParam ) {
 	delete threadArg;
 	return 0;
 }
+
+void MachineController::addEventHandler(void (*handler)(MachineController&, MachineEvent&))
+{
+
+}
