@@ -1,5 +1,5 @@
 enum MachineEventType
 {
 	DONE,
-	ERROR
+	MACHINE_ERROR
 };
