@@ -95,7 +95,7 @@ void MachineController::wait(void) {
 }
 
 void MachineController::doCommand(MachineCommand *cmd) {
-	std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
+	//std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
 	working = false;
 }
 

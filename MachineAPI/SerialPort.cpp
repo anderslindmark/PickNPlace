@@ -106,6 +106,20 @@ bool SerialPort::writeByte(BYTE bybyte)
 	}
 }
 
+bool SerialPort::writeString(string s)
+{
+	const char *ch = s.c_str();
+	int i = 0;
+	while (ch[i] != '\0')
+	{
+		if (!writeByte(ch[i]))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 bool SerialPort::readByte(BYTE &resp)
 {
 	BYTE rx;

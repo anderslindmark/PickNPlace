@@ -1,9 +1,9 @@
 #pragma once
-#include "MachineCommand.h"
 #include <string>
 #include <windows.h>
 #include "SerialPort.h"
 #include "MachineEvent.h"
+#include "MachineCommand.h"
 
 using namespace std;
 

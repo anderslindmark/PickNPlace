@@ -1,14 +1,18 @@
 #pragma once
 #include <string>
+#include "MachineController.h"
+#include "MachineState.h"
+#include "SerialPort.h"
 using namespace std;
 
-class MachineCommand {
+class MachineCommand
+{
+	friend class MachineController;
 public:
-	//MachineCommand();
 	virtual ~MachineCommand() = 0 {};
-	//virtual void getAfterState(MachineState) = 0;
-	virtual string getCommand() = 0;
-	//virtual string getReadyRegister() = 0;
-	//virtual string getReadyValue() = 0;
-	//virtual string toString() = 0;
+	virtual MachineState getAfterState(MachineState) = 0;
+	virtual string toString() = 0;
+
+private:
+	virtual bool doCommand(SerialPort &sp) = 0;
 };
