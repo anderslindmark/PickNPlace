@@ -40,7 +40,7 @@ public:
 	 * currently working on a command and the command 
 	 * will be handled, else false.
 	 */
-	bool runCommand(MachineCommand&);
+	//bool runCommand(MachineCommand&);
 	
 	void wait(void);
 
@@ -64,5 +64,5 @@ private:
 	DWORD threadId;
 	HANDLE runCmdMutex; 
 	static DWORD WINAPI runThread( LPVOID ) ; 
-	void doCommand(MachineCommand*);
+//	void doCommand(MachineCommand*);
 };

@@ -47,6 +47,7 @@ bool MachineController::initialize() {
 	}
 }
 
+/*
 bool MachineController::runCommand(MachineCommand &_cmd) {
 	if (!initiated) {
 		return false;
@@ -89,19 +90,22 @@ bool MachineController::runCommand(MachineCommand &_cmd) {
 	} 
 	return returnVal;
 }
+*/
 
 void MachineController::wait(void) {
 	WaitForSingleObject(thread, INFINITE);
 }
 
+/*
 void MachineController::doCommand(MachineCommand *cmd) {
 	//std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
 	working = false;
 }
+*/
 
 DWORD WINAPI MachineController::runThread( LPVOID lpParam ) {
 	ThreadArg *threadArg = (ThreadArg*)lpParam;
-	(*(threadArg->mc)).doCommand(threadArg->cmd);
+//	(*(threadArg->mc)).doCommand(threadArg->cmd);
 	
 	delete threadArg;
 	return 0;

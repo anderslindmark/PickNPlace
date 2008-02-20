@@ -1,4 +1,7 @@
 #include "SerialPort.h"
+#include <iostream>
+
+using namespace std;
 
 SerialPort::SerialPort(string portName)
 {
@@ -109,14 +112,17 @@ bool SerialPort::writeByte(BYTE bybyte)
 bool SerialPort::writeString(string s)
 {
 	const char *ch = s.c_str();
-	int i = 0;
-	while (ch[i] != '\0')
+	int i;
+	for (i = 0; i < s.length(); i++)
 	{
 		if (!writeByte(ch[i]))
 		{
 			return false;
 		}
+		cout << "Sent byte " << ch[i] << "\n";
 	}
+	writeByte('\r');
+	cout << "Sent byte \\r\n";
 	return true;
 }
 
