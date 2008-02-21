@@ -1,0 +1,6 @@
+IMPORTS
+	MultiCamVfWGetPIDList=PICOLOVFW._MultiCamVfWGetPIDList@12
+	MultiCamVfWGetParamInt=PICOLOVFW._MultiCamVfWGetParamInt@12
+	MultiCamVfWInitialize=PICOLOVFW._MultiCamVfWInitialize@0
+	MultiCamVfWSetParamInt=PICOLOVFW._MultiCamVfWSetParamInt@12
+	MultiCamVfWTerminate=PICOLOVFW._MultiCamVfWTerminate@0
