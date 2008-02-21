@@ -25,7 +25,7 @@ bool MachineInitCommand::doCommand(SerialPort &sp)
 	bool stop;
 
 	stop = false;
-	sp.writeString("RD 1915\n");
+	//sp.writeLine("RD 1915\n");
 
 	return TRUE;
 	

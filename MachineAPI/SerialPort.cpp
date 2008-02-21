@@ -32,15 +32,27 @@ bool SerialPort::initialize() {
 	}
 }
 
-bool SerialPort::configurePort(DWORD BaudRate, BYTE ByteSize,
-							   DWORD fParity, BYTE Parity,
-							   BYTE StopBits)
+bool SerialPort::configurePort() //DWORD BaudRate, BYTE ByteSize,
+							   //BYTE Parity, BYTE StopBits) //DWORD fParity,
 {
 	if((m_bPortReady = GetCommState(port, &m_dcb))==0)
 	{
 		CloseHandle(port);
 		return false;
 	}
+
+	m_dcb.BaudRate = 9600;
+	m_dcb.ByteSize = 8;
+	m_dcb.StopBits = ONESTOPBIT;
+	m_dcb.ErrorChar = 63;
+	m_dcb.Parity = EVENPARITY;
+
+	m_dcb.fRtsControl = RTS_CONTROL_DISABLE;
+	m_dcb.fInX = false;
+	m_dcb.fOutX = false;
+
+
+	/*
 	m_dcb.BaudRate =BaudRate;
 	m_dcb.ByteSize = ByteSize;
 	m_dcb.Parity =Parity ;
@@ -59,7 +71,7 @@ bool SerialPort::configurePort(DWORD BaudRate, BYTE ByteSize,
 	m_dcb.fRtsControl=RTS_CONTROL_DISABLE;
 	m_dcb.fOutxCtsFlow=false;
 	m_dcb.fOutxCtsFlow=false;
-
+	*/
 	m_bPortReady = SetCommState(port, &m_dcb);
 	if(m_bPortReady ==0)
 	{
@@ -79,6 +91,7 @@ bool SerialPort::setCommunicationTimeouts(DWORD ReadIntervalTimeout,
 	{
 		return false;
 	}
+
 	m_CommTimeouts.ReadIntervalTimeout =ReadIntervalTimeout;
 	m_CommTimeouts.ReadTotalTimeoutConstant =ReadTotalTimeoutConstant;
 	m_CommTimeouts.ReadTotalTimeoutMultiplier
@@ -88,6 +101,7 @@ bool SerialPort::setCommunicationTimeouts(DWORD ReadIntervalTimeout,
 	m_CommTimeouts.WriteTotalTimeoutMultiplier
 		=WriteTotalTimeoutMultiplier;
 	m_bPortReady = SetCommTimeouts (port, &m_CommTimeouts);
+
 	if(m_bPortReady ==0)
 	{
 		CloseHandle(port);
@@ -109,7 +123,7 @@ bool SerialPort::writeByte(BYTE bybyte)
 	}
 }
 
-bool SerialPort::writeString(string s)
+bool SerialPort::writeLine(string &s)
 {
 	const char *ch = s.c_str();
 	int i;
@@ -119,10 +133,10 @@ bool SerialPort::writeString(string s)
 		{
 			return false;
 		}
-		cout << "Sent byte " << ch[i] << "\n";
+		//cout << "Sent byte " << ch[i] << "\n";
 	}
 	writeByte('\r');
-	cout << "Sent byte \\r\n";
+	//cout << "Sent byte \\r\n";
 	return true;
 }
 
@@ -142,6 +156,23 @@ bool SerialPort::readByte(BYTE &resp)
 		}
 	}
 	return false;
+}
+
+bool SerialPort::readLine(string &s) {
+	BYTE prev = 0;
+	BYTE cur = 0;
+	string read = "";
+
+	while (prev != 13 && cur != 10) {
+		prev = cur;
+		if (!readByte(cur)) {
+			return false;
+		}
+		read.append(1, (char)cur);
+	}
+	//cout << "READ: " << read << endl;
+	s = read.substr(0, read.length()-2);
+	return true;
 }
 
 void SerialPort::closePort()

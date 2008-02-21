@@ -9,17 +9,18 @@ public:
 	SerialPort(string portName);
 	~SerialPort(void);
 	bool initialize();
-	bool configurePort(DWORD BaudRate, BYTE ByteSize,
+	bool configurePort(); /*DWORD BaudRate, BYTE ByteSize,
 							   DWORD fParity, BYTE Parity,
-							   BYTE StopBits);
+							   BYTE StopBits); */
 	bool setCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD ReadTotalTimeoutMultiplier,
 										  DWORD ReadTotalTimeoutConstant,
 										  DWORD WriteTotalTimeoutMultiplier,
 										  DWORD WriteTotalTimeoutConstant);
 	bool writeByte(BYTE bybyte);
-	bool writeString(string s);
+	bool writeLine(string &s);
 	bool readByte(BYTE &resp);
+	bool readLine(string &s);
 	void closePort();
 
 private:
