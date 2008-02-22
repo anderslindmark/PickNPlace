@@ -3,8 +3,9 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="CameraAPI"
-	ProjectGUID="{E2E99E84-8343-4B33-9CAD-8F6168AF5DE7}"
+	ProjectGUID="{DF9C51BF-F66A-4CBC-AD51-3D9DD02EE421}"
 	RootNamespace="CameraAPI"
+	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -20,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,9 +41,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -57,8 +60,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalLibraryDirectories=""
+				AdditionalDependencies="euresys\Lib\multicam32.lib"
+				LinkIncremental="2"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -88,7 +93,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -110,8 +115,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -126,7 +133,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -185,7 +194,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CameraExceptions.h"
+				RelativePath=".\CameraException.h"
 				>
 			</File>
 			<File
@@ -202,10 +211,6 @@
 			</File>
 			<File
 				RelativePath=".\EuresysDriver.h"
-				>
-			</File>
-			<File
-				RelativePath=".\euresys\EuresysFix.h"
 				>
 			</File>
 			<File

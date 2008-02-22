@@ -1,4 +1,3 @@
-#include "EuresysFix.h"
 #include "EuresysDriver.h"
 #include "CameraException.h"
 #include "log.h"
