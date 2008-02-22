@@ -18,9 +18,9 @@ public:
 										  DWORD WriteTotalTimeoutMultiplier,
 										  DWORD WriteTotalTimeoutConstant);
 	bool writeByte(BYTE bybyte);
-	bool writeLine(string &s);
+	bool writeLine(const char *s);
 	bool readByte(BYTE &resp);
-	bool readLine(string &s);
+	bool readLine(char *sin);
 	void closePort();
 
 private:

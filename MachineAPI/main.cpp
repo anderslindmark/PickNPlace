@@ -1,7 +1,8 @@
 #include <iostream>
-//#include "MachineController.h"
+#include "MachineController.h"
 //#include "TestCommand.h"
 #include "SerialPort.h"
+
 using namespace std;
 
 void readReg(string reg);
@@ -12,6 +13,55 @@ void writeCmd(string cmd, string ret);
 SerialPort sp("com1");
 BYTE b;
 
+int main(void)
+{
+	MachineController mc("com1");
+	if (!mc.initialize())
+	{
+		cout << "Error initializing MachineController\n";
+		return FALSE;
+	}
+
+	mc.runCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, 50000)));
+	cout << "Waiting\n";
+	mc.wait();
+	cout << "Done\n";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 int main() 
 {
 	cout << "Start" << endl;
@@ -78,3 +128,5 @@ void writeCmd(string cmd, string ret)
 //		cout << "RET :" << ret.length() << endl;
 	} while (ret != get); 
 }
+
+*/

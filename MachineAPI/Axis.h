@@ -1,8 +1,6 @@
-using namespace std;
-
 enum Axis
 {
-	X,
-	Y,
-	Z
+	AXIS_X,
+	AXIS_Y,
+	AXIS_Z
 };

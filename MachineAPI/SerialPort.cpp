@@ -123,11 +123,13 @@ bool SerialPort::writeByte(BYTE bybyte)
 	}
 }
 
-bool SerialPort::writeLine(string &s)
+bool SerialPort::writeLine(const char *ch)
 {
-	const char *ch = s.c_str();
+	cout << "DEBUG: SerialPort::writeLine\t" << ch << endl;
+	//const char *ch = s.c_str();
 	int i;
-	for (i = 0; i < s.length(); i++)
+	//for (i = 0; i < c.length(); i++)
+	for (i = 0; i < strlen(ch); i++)
 	{
 		if (!writeByte(ch[i]))
 		{
@@ -158,20 +160,27 @@ bool SerialPort::readByte(BYTE &resp)
 	return false;
 }
 
-bool SerialPort::readLine(string &s) {
+bool SerialPort::readLine(char *sin)
+{
 	BYTE prev = 0;
 	BYTE cur = 0;
+	string s;
 	string read = "";
 
-	while (prev != 13 && cur != 10) {
+	while (prev != 13 && cur != 10) 
+	{
 		prev = cur;
-		if (!readByte(cur)) {
+		if (!readByte(cur)) 
+		{
 			return false;
 		}
 		read.append(1, (char)cur);
 	}
 	//cout << "READ: " << read << endl;
 	s = read.substr(0, read.length()-2);
+	strcpy(sin, s.c_str());
+
+	cout << "DEBUG: SerialPort::readLine\t" << sin << endl;
 	return true;
 }
 
