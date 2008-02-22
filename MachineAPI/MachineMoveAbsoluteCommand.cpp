@@ -2,23 +2,30 @@
 #include <iostream>
 #include <sstream>
 
+#define MOVE_ABSOLUTE_COMMAND_STRING "Machine move absolute command"
+
 MachineMoveAbsoluteCommand::MachineMoveAbsoluteCommand(Axis axis, int position)
 {
-	float fpos = position/STEP_PRECISION;
 	m_axis = axis;
-	m_pos = floor(fpos + 0.5);
-
+	m_pos = position;
 }
 
 MachineMoveAbsoluteCommand::~MachineMoveAbsoluteCommand(void)
 {
 }
 
+string MachineMoveAbsoluteCommand::toString(void)
+{
+	return string(MOVE_ABSOLUTE_COMMAND_STRING);
+}
+
 bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
 {
+	float fpos = m_pos/STEP_PRECISION;
+	int pos = floor(fpos + 0.5);
 	char movecmd[20];
 	stringstream converter;
-	converter << M_POS_ABS_MOVE_X << m_pos;
+	converter << M_POS_ABS_MOVE_X << pos;
 	strcpy(movecmd, converter.str().c_str());
 
 	// TODO: Macroifiera skiten så att man kan skicka med axis till macrona.
@@ -30,4 +37,10 @@ bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
 	execCommand(sp, M_READY_1515,		M_ANS_1);
 
 	return TRUE;
+}
+
+
+MachineMoveAbsoluteCommand* MachineMoveAbsoluteCommand::copy()
+{
+	return new MachineMoveAbsoluteCommand(m_axis, m_pos);
 }

@@ -1,13 +1,16 @@
 #pragma once
 #include <string>
 #include <windows.h>
+#include <vector>
+
 #include "SerialPort.h"
 #include "MachineEvent.h"
-
 #include "MachineCommand.h"
 #include "MachineMoveAbsoluteCommand.h"
 
 using namespace std;
+
+typedef void (*Handler)(MachineEvent*);
 
 class MachineController
 {
@@ -52,19 +55,21 @@ public:
 	 * Adds an event handler, using a callback function which is run when an event happens
 	 *
 	 */
-	void addEventHandler(void (*handler)(MachineController&, MachineEvent&));
+	void addEventHandler(Handler h);
 
 private:
 	SerialPort *sp;
 	string comPort;
 	bool working;
 	bool initiated;
-//	MachineCommand cmd;
+	vector<Handler> m_handlers;
+	MachineCommand *m_cmd;
+	void sendEvent(MachineEvent &e);
 
 	//Thread stuff
 	HANDLE thread;
 	DWORD threadId;
 	HANDLE runCmdMutex; 
 	static DWORD WINAPI runThread( LPVOID ) ; 
-	void doCommand(MachineCommand*);
+	void doCommand();
 };

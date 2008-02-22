@@ -8,7 +8,7 @@ class MachineEvent
 {
 public:
 	MachineEvent(MachineEventType eventType, string eventMsg);
-	
+	MachineEvent(MachineEvent &e);
 	MachineEventType	getEventType();
 	string				getEventMsg();
 

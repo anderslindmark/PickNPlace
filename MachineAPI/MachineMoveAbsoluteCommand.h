@@ -9,9 +9,11 @@ class MachineMoveAbsoluteCommand :
 public:
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);
+	string toString();
 
 private:
 	bool doCommand(SerialPort &sp);
+	MachineMoveAbsoluteCommand* copy();
 	Axis m_axis;
 	int m_pos;
 };

@@ -13,9 +13,11 @@ class MachineCommand
 public:
 	virtual ~MachineCommand() = 0 {};
 	//virtual MachineState getAfterState(MachineState) = 0;
-	//virtual string toString() = 0;
+	virtual string toString() = 0;
 
 protected:
 	virtual bool doCommand(SerialPort &sp) = 0;
+	virtual MachineCommand* copy() = 0;
 	bool execCommand(SerialPort &sp, const char *cmd, const char *ret);
+	
 };

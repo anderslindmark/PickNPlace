@@ -1,4 +1,5 @@
 #include "SerialPort.h"
+#include "MachineEvent.h"
 #include <iostream>
 
 using namespace std;
@@ -115,7 +116,8 @@ bool SerialPort::writeByte(BYTE bybyte)
 	iBytesWritten=0;
 	if(WriteFile(port,&bybyte,1,&iBytesWritten,NULL)==0)
 	{
-		return false;
+		throw MachineEvent(EVENT_EXCEPTION_SP_WRITE, "Serial port write error!");
+		//return false;
 	}
 	else 
 	{
@@ -157,7 +159,8 @@ bool SerialPort::readByte(BYTE &resp)
 			return true;
 		}
 	}
-	return false;
+	throw MachineEvent(EVENT_EXCEPTION_SP_READ, "Serial port read error!");
+	//return false;
 }
 
 bool SerialPort::readLine(char *sin)

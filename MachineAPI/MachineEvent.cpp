@@ -6,6 +6,12 @@ MachineEvent::MachineEvent(MachineEventType eventType, string eventMsg)
 	_eventMsg = eventMsg;
 }
 
+MachineEvent::MachineEvent(MachineEvent &e)
+{
+	_eventType = e.getEventType();
+	_eventMsg  = e.getEventMsg();
+}
+
 string MachineEvent::getEventMsg()
 {
 	return _eventMsg;
