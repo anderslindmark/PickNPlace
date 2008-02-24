@@ -1,0 +1,448 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>623</width>
+    <height>553</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="m_pCentralwidget" >
+   <layout class="QVBoxLayout" >
+    <item>
+     <layout class="QHBoxLayout" >
+      <item>
+       <layout class="QVBoxLayout" >
+        <item>
+         <widget class="QLabel" name="m_pCamera1Label" >
+          <property name="maximumSize" >
+           <size>
+            <width>133</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="scaledContents" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="m_pCamera2Label" >
+          <property name="maximumSize" >
+           <size>
+            <width>133</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="scaledContents" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="m_pCamera3Label" >
+          <property name="maximumSize" >
+           <size>
+            <width>133</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="scaledContents" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="m_pMainCameraLabel" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="scaledContents" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" >
+      <item>
+       <widget class="QGroupBox" name="m_pDetailsGroupBox" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Maximum" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>401</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="title" >
+         <string>Command details</string>
+        </property>
+        <property name="flat" >
+         <bool>false</bool>
+        </property>
+        <property name="checkable" >
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="verticalLayout" >
+         <property name="geometry" >
+          <rect>
+           <x>9</x>
+           <y>10</y>
+           <width>191</width>
+           <height>181</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QGroupBox" name="m_pDescriptionGroupBox" >
+            <property name="title" >
+             <string>Description</string>
+            </property>
+            <layout class="QVBoxLayout" >
+             <item>
+              <widget class="QLabel" name="m_pDescriptionLabel" >
+               <property name="text" >
+                <string>This is a short description of what a command does, to inform the user of the program what he's about to do.</string>
+               </property>
+               <property name="alignment" >
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+               <property name="wordWrap" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="m_pExecuteButton" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string>Execute command</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QLabel" name="m_pCommandLabel" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>10</y>
+           <width>163</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:12pt; font-weight:600;">Command&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QStackedWidget" name="m_pArgumentsStackedWidget" >
+         <property name="geometry" >
+          <rect>
+           <x>210</x>
+           <y>30</y>
+           <width>181</width>
+           <height>161</height>
+          </rect>
+         </property>
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="m_pAnglePage" >
+          <layout class="QVBoxLayout" >
+           <item>
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLabel" name="m_pAngleLabel" >
+               <property name="text" >
+                <string>Angle:</string>
+               </property>
+               <property name="buddy" >
+                <cstring>m_pAngleSpinBox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="m_pAngleSpinBox" >
+               <property name="maximum" >
+                <number>360</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType" >
+                <enum>QSizePolicy::Maximum</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>25</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QDial" name="m_pAngleDial" >
+             <property name="maximum" >
+              <number>360</number>
+             </property>
+             <property name="sliderPosition" >
+              <number>0</number>
+             </property>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="wrapping" >
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget" >
+              <double>6.000000000000000</double>
+             </property>
+             <property name="notchesVisible" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="m_pPositionPage" >
+          <layout class="QVBoxLayout" >
+           <item>
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLabel" name="m_pPositionLabel" >
+               <property name="text" >
+                <string>Position:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="m_pPositionDoubleSpinBox" />
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLabel" name="m_pAxisLabel" >
+               <property name="text" >
+                <string>Axis:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="m_pAxisComboBox" >
+               <item>
+                <property name="text" >
+                 <string>X</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Y</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Z</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="m_pNoArgsPage" >
+          <widget class="QLabel" name="m_pNoArgumentsLabel" >
+           <property name="geometry" >
+            <rect>
+             <x>50</x>
+             <y>60</y>
+             <width>67</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text" >
+            <string>No arguments</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTreeView" name="m_pCommandTreeView" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="m_pMenubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>623</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="m_pMenuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="m_pActionExit" />
+   </widget>
+   <widget class="QMenu" name="m_pMenuHelp" >
+    <property name="title" >
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="m_pMenuFile" />
+   <addaction name="m_pMenuHelp" />
+  </widget>
+  <widget class="QStatusBar" name="m_pStatusbar" />
+  <action name="m_pActionExit" >
+   <property name="text" >
+    <string>Exit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>m_pActionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>311</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pAngleDial</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>m_pAngleSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>321</x>
+     <y>484</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>323</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pAngleSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>m_pAngleDial</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>334</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>334</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <designerdata>
+  <property name="gridDeltaX" >
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY" >
+   <number>10</number>
+  </property>
+  <property name="gridSnapX" >
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY" >
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible" >
+   <bool>true</bool>
+  </property>
+ </designerdata>
+</ui>
