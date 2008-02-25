@@ -1,4 +1,16 @@
-#pragma once
+/**
+ 	\file MachineController.h
+ 
+ 	\brief
+ 	Header file for the MachineController class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+#ifndef __MACHINECONTROLLER_H__
+#define __MACHINECONTROLLER_H__
+
 #include <string>
 #include <windows.h>
 #include <vector>
@@ -10,68 +22,85 @@
 
 using namespace std;
 
+/// \typedef Handler
+/// \brief Function definition of a event Handler function used as
+/// argument to AddEventHandler
+///
 typedef void (*Handler)(MachineEvent*);
 
+
+/// \class MachineController
+/// \brief Used to communicate
+///        with a Pick n Place machine
+///
+/// After beeing initialized it can 
+/// be feed with commands (MachineCommand) through the RunCommand function.
+/// The class will only handle one command at a time, the
+/// RunCommand function will return false if the object hasn't
+/// been initialized correctly or if an other command is beeing
+/// handeled. The handeling of the command will be runned in a 
+/// own thread so that it doesent block the caller. Events are
+/// sent due to failure or succsses inside the Machine Controller 
+/// object to all event subscribers. To subscribe for events use
+/// AddEventHandler
+///
 class MachineController
 {
 public:
-	/*
-	 * Constructor for the MachineController.
-	 *
-	 * Takes the name of the com port that should be
-	 * used for communication with the machine.
-	 */
-	MachineController(string);
 
-	/*
-	 * Destructor.
-	 */
+	/// \brief Constructor for the Machine Controller.
+	///
+	/// \param serialPort	Name of Serial Port to be used
+	MachineController(string serialPort);
+
+	/// \brief Destructor for the Machine Controller.
 	~MachineController(void);
-	
-	/*
-	 * Start the MachineController (runs in a thread).
-	 */
-	void start(void);
-	
-	/*
-	 * Stops the MachineController (stops the thread).
-	 */
-	void stop(void);
 
-	/*
-	 * Handles a MachineCommand.
-	 *
-	 * Returns true if the MachineController is not
-	 * currently working on a command and the command 
-	 * will be handled, else false.
-	 */
-	bool runCommand(MachineCommand&);
 	
+	/// \breif Handles a command
+	///
+	/// \param cmd	The command to be handled
+	/// \return true if the MachineController is not
+	///			currently working on a command and the command 
+	///			will be handled, else false
+	bool runCommand(MachineCommand& cmd);
+	
+	/// \breif Wait for the Machine Controller to finnish working on a command
 	void wait(void);
 
+	/// \breif Initialize the Machine Controller
+	///
+	/// The serial port communication will be opened and the pick n place
+	/// machine will be configured to a initial state that depends configuration
+	/// given.
+	///
+	/// return true if initialization succeeded else false
 	bool initialize();
 
-	/*
-	 * Adds an event handler, using a callback function which is run when an event happens
-	 *
-	 */
-	void addEventHandler(Handler h);
+	/// \breif Add a event subscriber
+	///
+	/// \param handler the subscribers handler function that should be called
+	void addEventHandler(Handler handler);
 
 private:
-	SerialPort *sp;
-	string comPort;
-	bool working;
-	bool initiated;
-	vector<Handler> m_handlers;
-	MachineCommand *m_cmd;
-	MachineState currentState;
+	SerialPort *sp; ///< The serial communication object
+	string comPort; ///< What serial port should be used
+	bool working; ///< Indication wheter a command is beeing processed
+	bool initiated; ///< Indication wheter the Machine Controller has been initialized
+	vector<Handler> m_handlers; ///< Vector of event subscribers
+	MachineCommand *m_cmd;	///< Current command beeing processed
+	MachineState currentState; ///< Current state of the Pick n Place machine.
+
 	void sendEvent(MachineEvent &e);
 	bool validateCommand(MachineState &state, MachineEvent *&validateEvent);
 
 	//Thread stuff
-	HANDLE thread;
-	DWORD threadId;
-	HANDLE runCmdMutex; 
-	static DWORD WINAPI runThread( LPVOID ) ; 
+	HANDLE thread; ///< Handler for the command Thread
+	DWORD threadId;	///< Command threads ID
+	HANDLE runCmdMutex; ///< Mutex for the RunCommand function
+
+	static DWORD WINAPI runThread( LPVOID );
 	void doCommand();
 };
+
+#endif //__MACHINECONTROLLER_H__

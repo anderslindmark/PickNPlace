@@ -1,13 +1,7 @@
 #include "MachineController.h"
 #include <iostream>
 
-//struct ThreadArg {
-//	bool *working;
-//	MachineCommand *cmd;
-//	ThreadArg(MachineCommand *_cmd, bool *_working) :working(_working), cmd(_cmd) { };
-//};
 using namespace std;
-//typedef void (MachineController::*DoCommand)(void);
 
 struct ThreadArg {
 	MachineController *mc;
