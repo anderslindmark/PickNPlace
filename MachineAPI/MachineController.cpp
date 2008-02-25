@@ -8,10 +8,10 @@ struct ThreadArg {
 	ThreadArg(MachineController *_mc) : mc(_mc) { };
 };
 
-MachineController::MachineController(string _comPort) : currentState(0, 0, 0, 0.0)
+MachineController::MachineController(string serialPort) : currentState(0, 0, 0, 0.0)
 {
 	sp = NULL;
-	comPort = _comPort;
+	comPort = serialPort;
 	working = false;
 	initiated = false;
 	thread = NULL;

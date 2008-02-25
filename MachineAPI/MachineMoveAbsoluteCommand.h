@@ -1,8 +1,22 @@
-#pragma once
+/**
+ 	\file MachineMoveAbsoluteCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineMoveAbsoluteCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+#ifndef __MACHINEMOVEABSOLUTECOMMAND_H__
+#define __MACHINEMOVEABSOLUTECOMMAND_H__
+
 #include "MachineCommand.h"
 #include "Axis.h"
 #define STEP_PRECISION	10.0
 
+/// \class MachineMoveAbsoluteCommand
+/// \brief Move the Pick n Place machine to an absolue position
 class MachineMoveAbsoluteCommand :
 	public MachineCommand
 {
@@ -17,3 +31,5 @@ private:
 	Axis m_axis;
 	int m_pos;
 };
+
+#endif //__MACHINEMOVEABSOLUTECOMMAND_H__

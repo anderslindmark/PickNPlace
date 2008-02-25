@@ -31,7 +31,7 @@ typedef void (*Handler)(MachineEvent*);
 
 /// \class MachineController
 /// \brief Used to communicate
-///        with a Pick n Place machine
+///        with a Pick n Place machine.
 ///
 /// After beeing initialized it can 
 /// be feed with commands (MachineCommand) through the RunCommand function.
@@ -42,8 +42,7 @@ typedef void (*Handler)(MachineEvent*);
 /// own thread so that it doesent block the caller. Events are
 /// sent due to failure or succsses inside the Machine Controller 
 /// object to all event subscribers. To subscribe for events use
-/// AddEventHandler
-///
+/// AddEventHandler.
 class MachineController
 {
 public:
@@ -57,7 +56,7 @@ public:
 	~MachineController(void);
 
 	
-	/// \breif Handles a command
+	/// \brief Handles a command
 	///
 	/// \param cmd	The command to be handled
 	/// \return true if the MachineController is not
@@ -65,10 +64,10 @@ public:
 	///			will be handled, else false
 	bool runCommand(MachineCommand& cmd);
 	
-	/// \breif Wait for the Machine Controller to finnish working on a command
+	/// \brief Wait for the Machine Controller to finnish working on a command
 	void wait(void);
 
-	/// \breif Initialize the Machine Controller
+	/// \brief Initialize the Machine Controller
 	///
 	/// The serial port communication will be opened and the pick n place
 	/// machine will be configured to a initial state that depends configuration
@@ -77,7 +76,7 @@ public:
 	/// return true if initialization succeeded else false
 	bool initialize();
 
-	/// \breif Add a event subscriber
+	/// \brief Add a event subscriber
 	///
 	/// \param handler the subscribers handler function that should be called
 	void addEventHandler(Handler handler);
@@ -91,15 +90,33 @@ private:
 	MachineCommand *m_cmd;	///< Current command beeing processed
 	MachineState currentState; ///< Current state of the Pick n Place machine.
 
+	/// \brief Send a event to all subscribers
+	///
+	/// \param e event to be sent
 	void sendEvent(MachineEvent &e);
+
+	/// \brief Validate if current command that is being processed is legal
+	///
+	/// \param state current state
+	/// \param validateEvent a pointer to an event if command is not legal
+	/// \return true if command is legal else false
 	bool validateCommand(MachineState &state, MachineEvent *&validateEvent);
 
 	//Thread stuff
 	HANDLE thread; ///< Handler for the command Thread
 	DWORD threadId;	///< Command threads ID
 	HANDLE runCmdMutex; ///< Mutex for the RunCommand function
+	
+	/// \brief Method that is passed to the thread creator.
+	///
+	/// This method will be passed a private Machine Controller struct
+	/// containing required referenses
+	///
+	/// \param lpvoid
+	/// \return ...
+	static DWORD WINAPI runThread( LPVOID lpvoid);
 
-	static DWORD WINAPI runThread( LPVOID );
+	/// \brief Called by runThread to start processing the command
 	void doCommand();
 };
 
