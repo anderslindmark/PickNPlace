@@ -10,7 +10,7 @@ public:
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);
 	string toString();
-
+	MachineState getAfterState(MachineState &oldms);
 private:
 	bool doCommand(SerialPort &sp);
 	MachineMoveAbsoluteCommand* copy();

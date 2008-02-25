@@ -4,6 +4,7 @@ class MachineState
 {
 public:
 	MachineState(int x, int y, int z, float rot);
+	MachineState(const MachineState &ms);
 
 	int getX();
 	int getY();

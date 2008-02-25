@@ -19,6 +19,11 @@ string MachineMoveAbsoluteCommand::toString(void)
 	return string(MOVE_ABSOLUTE_COMMAND_STRING);
 }
 
+MachineState MachineMoveAbsoluteCommand::getAfterState(MachineState &oldms)
+{
+	return MachineState(m_pos, oldms.getY(), oldms.getZ(), oldms.getRot());
+}
+
 bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
 {
 	float fpos = m_pos/STEP_PRECISION;

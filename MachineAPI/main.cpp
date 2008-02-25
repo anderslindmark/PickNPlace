@@ -15,6 +15,16 @@ void own(MachineEvent *e);
 SerialPort sp("com1");
 BYTE b;
 
+#define XAXIS 1
+#define HEJX(a)	"WR ASD"#a"HH"
+
+int main(void) 
+{
+	int a = 3;
+	cout << HEJX(1) << endl;
+}
+
+/*
 int main(void)
 {
 	string tmp;
@@ -25,7 +35,7 @@ int main(void)
 		return FALSE;
 	}
 	mc.addEventHandler(&own);
-	mc.runCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, 50000)));
+	mc.runCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, 10000)));
 	cout << "Waiting\n";
 	mc.wait();
 	cout << "Done\n";
@@ -38,3 +48,4 @@ void own(MachineEvent *e)
 	cout << "EVENT MSG: " << e->getEventMsg() << endl;
 	delete e;
 }
+*/

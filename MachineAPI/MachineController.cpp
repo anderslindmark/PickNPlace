@@ -14,7 +14,7 @@ struct ThreadArg {
 	ThreadArg(MachineController *_mc) : mc(_mc) { };
 };
 
-MachineController::MachineController(string _comPort)
+MachineController::MachineController(string _comPort) : currentState(0, 0, 0, 0.0)
 {
 	sp = NULL;
 	comPort = _comPort;
@@ -94,18 +94,28 @@ bool MachineController::runCommand(MachineCommand &cmd) {
 }
 
 
-void MachineController::wait(void) {
+void MachineController::wait(void) 
+{
 	WaitForSingleObject(thread, INFINITE);
 }
 
 
-void MachineController::doCommand() {
+void MachineController::doCommand() 
+{
 	//std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
-	m_cmd->doCommand(*sp);
-	sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString() + "GRYMT"));
+	MachineEvent *validateEvent;
+	if(!validateCommand(m_cmd->getAfterState(currentState), validateEvent))
+	{
+		sendEvent(*validateEvent);
+		delete validateEvent;
+	}
+	else
+	{
+		m_cmd->doCommand(*sp);
+		sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString() + "GRYMT"));
+	}
 	working = false;
 }
-
 
 DWORD WINAPI MachineController::runThread( LPVOID lpParam ) {
 	ThreadArg *threadArg = (ThreadArg*)lpParam;
@@ -136,5 +146,22 @@ void MachineController::sendEvent(MachineEvent &e)
 					NULL);			// returns the thread identifier 
 		
 		//(*m_handlers[i])(*this, e);
+	}
+}
+
+bool MachineController::validateCommand(MachineState &state, MachineEvent *&validateEvent)
+{
+	// TODO: Move bounds to config
+	int xLimMin = 10000;
+	int xLimMax = 50000;
+
+	if (state.getX() >= xLimMin && state.getX() <= xLimMax)
+	{
+		return true;
+	}
+	else
+	{
+		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
+		return false;
 	}
 }

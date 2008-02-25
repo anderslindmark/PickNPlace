@@ -8,6 +8,14 @@ MachineState::MachineState(int x, int y, int z, float rot)
 	_rot = rot;
 }
 
+MachineState::MachineState(const MachineState& ms)
+{
+	_x = ms._x;
+	_y = ms._y;
+	_z = ms._z;
+	_rot = ms._rot;
+}
+
 int MachineState::getX()
 {
 	return _x;

@@ -64,7 +64,9 @@ private:
 	bool initiated;
 	vector<Handler> m_handlers;
 	MachineCommand *m_cmd;
+	MachineState currentState;
 	void sendEvent(MachineEvent &e);
+	bool validateCommand(MachineState &state, MachineEvent *&validateEvent);
 
 	//Thread stuff
 	HANDLE thread;
