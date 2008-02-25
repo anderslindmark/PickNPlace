@@ -334,13 +334,43 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QTreeView" name="m_pCommandTreeView" >
+       <widget class="QListWidget" name="m_pCommandsListWidget" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <item>
+         <property name="text" >
+          <string>Initialize</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Park</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Rotate absolute</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Rotate relative</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Position absolute</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Position relative</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -424,6 +454,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel" >
      <x>334</x>
      <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pCommandsListWidget</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>m_pCommandLabel</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>471</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>358</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>
