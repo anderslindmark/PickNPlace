@@ -6,6 +6,7 @@ namespace PicknPlaceGui
 {
 	MainWindow::MainWindow()
 	{
+		// Runs the generated code that setups the initial UI.
 		m_ui.setupUi(this);
 		
 		// Connect the currently selected list item to what arguments are shown.
@@ -20,6 +21,8 @@ namespace PicknPlaceGui
 
 	}
 
+	// Slot for when the selected item in the command listwidget changes.
+	// Changes the current argument controls to show based on the selected command.
 	void MainWindow::setArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem)
 	{
 		if ((newCommandItem->text() == "Initialize") || (newCommandItem->text() == "Park"))
@@ -36,3 +39,4 @@ namespace PicknPlaceGui
 		}
 	}
 }
+
