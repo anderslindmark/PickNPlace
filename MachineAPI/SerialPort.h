@@ -34,12 +34,12 @@ public:
 	~SerialPort(void);
 
 	/// \brief Initialize the serial port, must be runned first
-	bool initialize();
+	bool Initialize();
 
 	/// \brief Configure the port
 	///
 	/// \return true if configureation succeesed else false
-	bool configurePort(); /*DWORD BaudRate, BYTE ByteSize,
+	bool ConfigurePort(); /*DWORD BaudRate, BYTE ByteSize,
 							   DWORD fParity, BYTE Parity,
 							   BYTE StopBits); */
 
@@ -51,7 +51,7 @@ public:
 	/// \param WriteTotalTimeoutMultiplier
 	/// \param WriteTotalTimeoutConstant
 	/// \return true if configureation succeesed else false
-	bool setCommunicationTimeouts(DWORD ReadIntervalTimeout,
+	bool SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD ReadTotalTimeoutMultiplier,
 										  DWORD ReadTotalTimeoutConstant,
 										  DWORD WriteTotalTimeoutMultiplier,
@@ -61,28 +61,28 @@ public:
 	///
 	/// \param bybyte byte to be written
 	/// \return true if succeeded else false
-	bool writeByte(BYTE bybyte);
+	bool WriteByte(BYTE bybyte);
 
 	/// \brief Write a line to the serial port, will be terminated with a CR
 	///
 	/// \param s line to be written
 	/// \return true if succeeded else false
-	bool writeLine(const char *s);
+	bool WriteLine(const char *s);
 
 	/// \brief Read a byte from the serial port
 	///
 	/// \param resp where the byte should be read
 	/// \return true if succeeded else false
-	bool readByte(BYTE &resp);
+	bool ReadByte(BYTE &resp);
 
 	/// \brief Read a line from the serial port, lines will be divided with a CR NL
 	///
 	/// \param sin where the line should be read
 	/// \return true if succeeded else false
-	bool readLine(char *sin);
+	bool ReadLine(char *sin);
 
 	/// \brief Close the serial port
-	void closePort();
+	void ClosePort();
 
 private:
 	string _portName; ///<The name of the serial port

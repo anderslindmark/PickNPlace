@@ -21,13 +21,13 @@ class MachineRotateAbsoluteCommand :
 public:
 	MachineRotateAbsoluteCommand(float angle);
 	~MachineRotateAbsoluteCommand(void);
-	MachineState getAfterState(MachineState &current); 
-	string toString();
+	MachineState GetAfterState(MachineState &current); 
+	string ToString();
 
 private:
 	float m_angle; ///< The angle the head should be rotated to
-	MachineRotateAbsoluteCommand* copy();
-	bool doCommand(SerialPort &sp);
+	MachineRotateAbsoluteCommand* Copy();
+	bool DoCommand(SerialPort &sp);
 };
 
 #endif //__MACHINEROTATEABSOLUTECOMMAND_H__

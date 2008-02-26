@@ -14,20 +14,20 @@
 
 using namespace std;
 
-bool MachineCommand::execCommand(SerialPort &sp, const char *cmd, const char *ret)
+bool MachineCommand::ExecCommand(SerialPort &sp, const char *cmd, const char *ret)
 {
 	char ans[5];
 
 	do
 	{
-		// TODO: Check for errors in write/readLine in sp.
-		sp.writeLine(cmd);
-		sp.readLine(ans);
+		// TODO: Check for errors in write/ReadLine in sp.
+		sp.WriteLine(cmd);
+		sp.ReadLine(ans);
 
 		if (strcmp(ans, M_ANS_ERROR) == 0)
 		{
-			sp.writeLine(M_DO_CR);
-			sp.readLine(ans);
+			sp.WriteLine(M_DO_CR);
+			sp.ReadLine(ans);
 			if (strcmp(ans, M_ANS_CC) != 0)
 			{
 				// TODO: Set errormsg somewhere

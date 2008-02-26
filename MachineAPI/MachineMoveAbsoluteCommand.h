@@ -25,11 +25,11 @@ class MachineMoveAbsoluteCommand :
 public:
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);
-	string toString();
-	MachineState getAfterState(MachineState &oldms);
+	string ToString();
+	MachineState GetAfterState(MachineState &oldms);
 private:
-	bool doCommand(SerialPort &sp);
-	MachineMoveAbsoluteCommand* copy();
+	bool DoCommand(SerialPort &sp);
+	MachineMoveAbsoluteCommand* Copy();
 	Axis m_axis;
 	int m_pos;
 };

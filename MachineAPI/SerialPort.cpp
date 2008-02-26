@@ -25,7 +25,7 @@ SerialPort::~SerialPort(void)
 {
 }
 
-bool SerialPort::initialize() {
+bool SerialPort::Initialize() {
 	string portName = "//./" + _portName;
 
 	port = CreateFile(portName.c_str(),
@@ -45,7 +45,7 @@ bool SerialPort::initialize() {
 	}
 }
 
-bool SerialPort::configurePort() //DWORD BaudRate, BYTE ByteSize,
+bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 							   //BYTE Parity, BYTE StopBits) //DWORD fParity,
 {
 	if((m_bPortReady = GetCommState(port, &m_dcb))==0)
@@ -94,7 +94,7 @@ bool SerialPort::configurePort() //DWORD BaudRate, BYTE ByteSize,
 	return true;
 }
 
-bool SerialPort::setCommunicationTimeouts(DWORD ReadIntervalTimeout,
+bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD ReadTotalTimeoutMultiplier,
 										  DWORD ReadTotalTimeoutConstant,
 										  DWORD WriteTotalTimeoutMultiplier,
@@ -123,7 +123,7 @@ bool SerialPort::setCommunicationTimeouts(DWORD ReadIntervalTimeout,
 	return true;
 }
 
-bool SerialPort::writeByte(BYTE bybyte)
+bool SerialPort::WriteByte(BYTE bybyte)
 {
 	iBytesWritten=0;
 	if(WriteFile(port,&bybyte,1,&iBytesWritten,NULL)==0)
@@ -137,25 +137,25 @@ bool SerialPort::writeByte(BYTE bybyte)
 	}
 }
 
-bool SerialPort::writeLine(const char *ch)
+bool SerialPort::WriteLine(const char *ch)
 {
-	//cout << "DEBUG: SerialPort::writeLine\t" << ch << endl;
+	//cout << "DEBUG: SerialPort::WriteLine\t" << ch << endl;
 	//const char *ch = s.c_str();
 	//for (i = 0; i < c.length(); i++)
 	for (unsigned int i = 0; i < strlen(ch); i++)
 	{
-		if (!writeByte(ch[i]))
+		if (!WriteByte(ch[i]))
 		{
 			return false;
 		}
 		//cout << "Sent byte " << ch[i] << "\n";
 	}
-	writeByte('\r');
+	WriteByte('\r');
 	//cout << "Sent byte \\r\n";
 	return true;
 }
 
-bool SerialPort::readByte(BYTE &resp)
+bool SerialPort::ReadByte(BYTE &resp)
 {
 	BYTE rx;
 	resp=0;
@@ -174,7 +174,7 @@ bool SerialPort::readByte(BYTE &resp)
 	//return false;
 }
 
-bool SerialPort::readLine(char *sin)
+bool SerialPort::ReadLine(char *sin)
 {
 	BYTE prev = 0;
 	BYTE cur = 0;
@@ -184,7 +184,7 @@ bool SerialPort::readLine(char *sin)
 	while (prev != 13 && cur != 10) 
 	{
 		prev = cur;
-		if (!readByte(cur)) 
+		if (!ReadByte(cur)) 
 		{
 			return false;
 		}
@@ -194,11 +194,11 @@ bool SerialPort::readLine(char *sin)
 	s = read.substr(0, read.length()-2);
 	strcpy(sin, s.c_str());
 
-	//cout << "DEBUG: SerialPort::readLine\t" << sin << endl;
+	//cout << "DEBUG: SerialPort::ReadLine\t" << sin << endl;
 	return true;
 }
 
-void SerialPort::closePort()
+void SerialPort::ClosePort()
 {
 	CloseHandle(port);
 	return;

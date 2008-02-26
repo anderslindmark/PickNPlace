@@ -21,12 +21,12 @@ class MachineInitCommand :
 public:
 	MachineInitCommand(void);
 	~MachineInitCommand(void);
-	MachineState getAfterState(MachineState &current);
-	string toString();
+	MachineState GetAfterState(MachineState &current);
+	string ToString();
 
 private:
-	MachineCommand* copy();
-	bool doCommand(SerialPort &sp);
+	MachineCommand* Copy();
+	bool DoCommand(SerialPort &sp);
 };
 
 #endif //__MACHINEINITCOMMAND_H__

@@ -12,22 +12,22 @@
 
 MachineEvent::MachineEvent(MachineEventType eventType, string eventMsg)
 {
-	_eventType = eventType;
-	_eventMsg = eventMsg;
+	m_eventType = eventType;
+	m_eventMsg = eventMsg;
 }
 
 MachineEvent::MachineEvent(MachineEvent &e)
 {
-	_eventType = e.getEventType();
-	_eventMsg  = e.getEventMsg();
+	m_eventType = e.GetEventType();
+	m_eventMsg  = e.GetEventMsg();
 }
 
-string MachineEvent::getEventMsg()
+string MachineEvent::GetEventMsg()
 {
-	return _eventMsg;
+	return m_eventMsg;
 }
 
-MachineEventType MachineEvent::getEventType()
+MachineEventType MachineEvent::GetEventType()
 {
-	return _eventType;
+	return m_eventType;
 }

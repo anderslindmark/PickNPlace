@@ -34,17 +34,17 @@ public:
 	/// \brief Get the event type
 	///
 	/// \return type of the event
-	MachineEventType	getEventType();
+	MachineEventType	GetEventType();
 
 	/// \brief Get the message stored in the event
 	///
 	/// \return message stored in the event
-	string				getEventMsg();
+	string				GetEventMsg();
 
 
 private:
-	MachineEventType	_eventType; ///< The event type
-	string				_eventMsg; ///< The event message
+	MachineEventType	m_eventType; ///< The event type
+	string				m_eventMsg; ///< The event message
 };
 
 #endif //__MACHINEEVENT_H__

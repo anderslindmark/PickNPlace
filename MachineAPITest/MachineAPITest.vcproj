@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Documents and Settings\admin\Skrivbord\PickNPlace\trunk\MachineAPI&quot;"
+				AdditionalIncludeDirectories="D:\dev\PickNPlace\MachineAPI;&quot;C:\Documents and Settings\admin\Skrivbord\PickNPlace\trunk\MachineAPI&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

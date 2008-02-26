@@ -41,16 +41,16 @@ MachineController::~MachineController(void)
 {
 	if (sp != NULL)
 	{
-		sp->closePort();
+		sp->ClosePort();
 	}
 	delete sp;
 	delete m_cmd;
 }
 
-bool MachineController::initializeSerial()
+bool MachineController::InitializeSerial()
 {
 	sp = new SerialPort(comPort);
-	if(sp->initialize())
+	if(sp->Initialize())
 	{
 		serialInitialized = true;		
 		return true;
@@ -63,21 +63,21 @@ bool MachineController::initializeSerial()
 	}
 }
 
-bool MachineController::initializeMachine()
+bool MachineController::InitializeMachine()
 {
 	if (!serialInitialized)
 	{
-		if (!initializeSerial())
+		if (!InitializeSerial())
 		{
 			return false;
 		}
 	}
 	initiating = true;
-	runCommand(*(new MachineInitCommand()));
+	RunCommand(*(new MachineInitCommand()));
 	return true;
 }
 
-bool MachineController::runCommand(MachineCommand &cmd)
+bool MachineController::RunCommand(MachineCommand &cmd)
 {
 	if (!initialized && !initiating)
 	{
@@ -100,7 +100,7 @@ bool MachineController::runCommand(MachineCommand &cmd)
 			if (!working) {
 				working = true;
 				delete m_cmd;
-				m_cmd = cmd.copy();
+				m_cmd = cmd.Copy();
 				WaitForSingleObject(thread, INFINITE);
 				threadArg = new ThreadArg(this); //Thread argument
 
@@ -108,7 +108,7 @@ bool MachineController::runCommand(MachineCommand &cmd)
 				thread = CreateThread( 
 					NULL,				// default security attributes
 					0,					// use default stack size  
-					(LPTHREAD_START_ROUTINE) this->runThread,   // thread function 
+					(LPTHREAD_START_ROUTINE) this->RunThread,   // thread function 
 					threadArg,			// argument to thread function 
 					0,					// use default creation flags 
 					&threadId);			// returns the thread identifier 
@@ -130,20 +130,20 @@ bool MachineController::runCommand(MachineCommand &cmd)
 }
 
 
-void MachineController::wait(void) 
+void MachineController::Wait(void) 
 {
 	WaitForSingleObject(thread, INFINITE);
 }
 
 
-void MachineController::doCommand() 
+void MachineController::DoCommand() 
 {
 	MachineEvent *validateEvent;
 
 	//Validate command
-	if(!validateCommand(*m_cmd, validateEvent))
+	if(!ValidateCommand(*m_cmd, validateEvent))
 	{
-		sendEvent(*validateEvent);
+		SendEvent(*validateEvent);
 		delete validateEvent;
 	}
 	else
@@ -151,7 +151,7 @@ void MachineController::doCommand()
 		
 		try
 		{
-			m_cmd->doCommand(*sp);
+			m_cmd->DoCommand(*sp);
 		}
 		catch (MachineEvent e)
 		{
@@ -162,28 +162,28 @@ void MachineController::doCommand()
 		{
 			initialized = true;
 			initiating = false;
-			sendEvent(MachineEvent(EVENT_INITIALIZED, m_cmd->toString()));
+			SendEvent(MachineEvent(EVENT_INITIALIZED, m_cmd->ToString()));
 		}
-		sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString()));
+		SendEvent(MachineEvent(EVENT_DONE, m_cmd->ToString()));
 	}
 	working = false;
 }
 
-DWORD WINAPI MachineController::runThread( LPVOID lpParam )
+DWORD WINAPI MachineController::RunThread( LPVOID lpParam )
 {
 	ThreadArg *threadArg = (ThreadArg*)lpParam;
-	(*(threadArg->mc)).doCommand();
+	(*(threadArg->mc)).DoCommand();
 	
 	delete threadArg;
 	return 0;
 }
 
-void MachineController::addEventHandler(Handler h)
+void MachineController::AddEventHandler(Handler h)
 {
 	m_handlers.push_back( h );
 }
 
-void MachineController::sendEvent(MachineEvent &e)
+void MachineController::SendEvent(MachineEvent &e)
 {
 	MachineEvent *eCopy;
 
@@ -201,12 +201,12 @@ void MachineController::sendEvent(MachineEvent &e)
 }
 
 
-MachineState MachineController::getCurrentState()
+MachineState MachineController::GetCurrentState()
 {
 	return currentState;
 }
 
-bool MachineController::validateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
+bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
 	// TODO: Move bounds to config:
 	int xMin = 0;
@@ -218,29 +218,29 @@ bool MachineController::validateCommand(MachineCommand &cmd, MachineEvent *&vali
 	float rMin = 0;
 	float rMax = 2*M_PI;
 
-	MachineState state = cmd.getAfterState(currentState);
-	cout << "AfterState: x:" << state.getX() << " y:" << state.getY() << " z:" << state.getZ() << endl;
-	if (state.getX() > 350000)
+	MachineState state = cmd.GetAfterState(currentState);
+	cout << "AfterState: x:" << state.GetX() << " y:" << state.GetY() << " z:" << state.GetZ() << endl;
+	if (state.GetX() > 350000)
 	{
 		zMax = 0;	// TODO: Find max Z
 	}
 
-	if (!(state.getX() >= xMin && state.getX() <= xMax))
+	if (!(state.GetX() >= xMin && state.GetX() <= xMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
 		return false;
 	}
-	else if (!(state.getY() >= yMin && state.getY() <= yMax))
+	else if (!(state.GetY() >= yMin && state.GetY() <= yMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
 		return false;
 	}
-	else if (!(state.getZ() >= zMin && state.getZ() <= zMax))
+	else if (!(state.GetZ() >= zMin && state.GetZ() <= zMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
 		return false;
 	}
-	else if (!(state.getRot() >= rMin && state.getRot() <= rMax))
+	else if (!(state.GetRot() >= rMin && state.GetRot() <= rMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in rotation");
 		return false;

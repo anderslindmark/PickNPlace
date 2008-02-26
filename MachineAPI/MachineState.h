@@ -33,31 +33,31 @@ public:
 	/// \brief Get the x position of the state
 	/// 
 	/// \return x position
-	int getX();
+	int GetX();
 
 	
 	/// \brief Get the y position of the state
 	/// 
 	/// \return y position
-	int getY();
+	int GetY();
 
 	
 	/// \brief Get the z position of the state
 	/// 
 	/// \return z position
-	int getZ();
+	int GetZ();
 
 	
 	/// \brief Get the angle of the head of the state
 	/// 
 	/// \return head angle
-	float getRot();
+	float GetRot();
 
 private:
-	int _x; ///< x position
-	int _y; ///< y position
-	int _z; ///< z position
-	float _rot; ///< head angle
+	int m_x; ///< x position
+	int m_y; ///< y position
+	int m_z; ///< z position
+	float m_rot; ///< head angle
 };
 
 #endif //__MACHINESTATE_H__

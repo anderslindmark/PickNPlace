@@ -34,32 +34,32 @@ public:
 	///
 	/// \param current the current state that the Pick n Place machine is in
 	/// \return the state after that this command would have been executed
-	virtual MachineState getAfterState(MachineState &current) = 0;
+	virtual MachineState GetAfterState(MachineState &current) = 0;
 
 	/// \brief String representation of the command
 	///
 	/// \return string representation of the command
-	virtual string toString() = 0;
+	virtual string ToString() = 0;
 
 protected:
 	/// \brief Do the command
 	///
 	/// \param sp the serial port that the Pick n Place machine is connected to
 	/// \return true if the execution succseeded else false
-	virtual bool doCommand(SerialPort &sp) = 0;
+	virtual bool DoCommand(SerialPort &sp) = 0;
 
-	/// \brief Get a copy of this object
+	/// \brief Get a Copy of this object
 	///
-	/// \return a pointer to a copy of this object
-	virtual MachineCommand* copy() = 0;
+	/// \return a pointer to a Copy of this object
+	virtual MachineCommand* Copy() = 0;
 
 	/// \brief A helper function to send a command to the Pick n Place 
-	/// machine and wait for a correct answer
+	/// machine and Wait for a correct answer
 	///
 	/// \param sp the serial port to be used
 	/// \param cmd the cmd to be sent to the Pick n Place machine
 	/// \param ret the return value that is expected from the Pick n Place machine
-	bool execCommand(SerialPort &sp, const char *cmd, const char *ret);
+	bool ExecCommand(SerialPort &sp, const char *cmd, const char *ret);
 	
 };
 

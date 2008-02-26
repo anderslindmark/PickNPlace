@@ -62,10 +62,10 @@ public:
 	/// \return true if the MachineController is not
 	///			currently working on a command and the command 
 	///			will be handled, else false
-	bool runCommand(MachineCommand& cmd);
+	bool RunCommand(MachineCommand& cmd);
 	
 	/// \brief Wait for the Machine Controller to finnish working on a command
-	void wait(void);
+	void Wait(void);
 
 	/// \brief Initialize the Serial Port
 	///
@@ -74,7 +74,7 @@ public:
 	/// given.
 	///
 	/// return true if initialization succeeded else false
-	bool initializeSerial();
+	bool InitializeSerial();
 
 	/// \brief Initialize the Pick N Place Machine
 	///
@@ -83,15 +83,15 @@ public:
 	///
 	/// return true if serial port is initialized and the init command started executing
 	/// true does not mean that the machine is initialized.
-	bool initializeMachine();
+	bool InitializeMachine();
 
 	/// \brief Add a event subscriber
 	///
 	/// \param handler the subscribers handler function that should be called
-	void addEventHandler(Handler handler);
+	void AddEventHandler(Handler handler);
 
 	/// \brief Get the current position of the machine
-	MachineState getCurrentState();
+	MachineState GetCurrentState();
 
 private:
 	SerialPort *sp; ///< The serial communication object
@@ -107,14 +107,14 @@ private:
 	/// \brief Send a event to all subscribers
 	///
 	/// \param e event to be sent
-	void sendEvent(MachineEvent &e);
+	void SendEvent(MachineEvent &e);
 
 	/// \brief Validate if current command that is being processed is legal
 	///
 	/// \param state current state
 	/// \param validateEvent a pointer to an event if command is not legal
 	/// \return true if command is legal else false
-	bool validateCommand(MachineCommand &cmd, MachineEvent *&validateEvent);
+	bool ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent);
 
 	//Thread stuff
 	HANDLE thread; ///< Handler for the command Thread
@@ -128,10 +128,10 @@ private:
 	///
 	/// \param lpvoid
 	/// \return ...
-	static DWORD WINAPI runThread( LPVOID lpvoid);
+	static DWORD WINAPI RunThread( LPVOID lpvoid);
 
-	/// \brief Called by runThread to start processing the command
-	void doCommand();
+	/// \brief Called by RunThread to start processing the command
+	void DoCommand();
 };
 
 #endif //__MACHINECONTROLLER_H__

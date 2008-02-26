@@ -12,36 +12,36 @@
 
 MachineState::MachineState(int x, int y, int z, float rot)
 {
-	_x = x;
-	_y = y;
-	_z = z;
-	_rot = rot;
+	m_x = x;
+	m_y = y;
+	m_z = z;
+	m_rot = rot;
 }
 
 MachineState::MachineState(const MachineState& ms)
 {
-	_x = ms._x;
-	_y = ms._y;
-	_z = ms._z;
-	_rot = ms._rot;
+	m_x = ms.m_x;
+	m_y = ms.m_y;
+	m_z = ms.m_z;
+	m_rot = ms.m_rot;
 }
 
-int MachineState::getX()
+int MachineState::GetX()
 {
-	return _x;
+	return m_x;
 }
 
-int MachineState::getY()
+int MachineState::GetY()
 {
-	return _y;
+	return m_y;
 }
 
-int MachineState::getZ()
+int MachineState::GetZ()
 {
-	return _z;
+	return m_z;
 }
 
-float MachineState::getRot()
+float MachineState::GetRot()
 {
-	return _rot;
+	return m_rot;
 }

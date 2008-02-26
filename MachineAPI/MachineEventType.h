@@ -8,8 +8,8 @@
  	\author	Henrik Mäkitaavola & Anders Lindmark
 **/
 
-#ifndef __MachineEventType_H__
-#define __MachineEventType_H__
+#ifndef __MACHINEEVENTTYPE_H__
+#define __MACHINEEVENTTYPE_H__
 
 /// \enum MachineEventType
 /// \brief Type of an MachineEvent
@@ -24,4 +24,4 @@ enum MachineEventType
 	EVENT_EXCEPTION_SP_WRITE ///< Error while writing the SerialPort
 };
 
-#endif // __MachineEventType_H__
+#endif // __MACHINEEVENTTYPE_H__

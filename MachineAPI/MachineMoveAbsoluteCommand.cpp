@@ -24,28 +24,28 @@ MachineMoveAbsoluteCommand::~MachineMoveAbsoluteCommand(void)
 {
 }
 
-string MachineMoveAbsoluteCommand::toString(void)
+string MachineMoveAbsoluteCommand::ToString(void)
 {
 	return string(MOVE_ABSOLUTE_COMMAND_STRING);
 }
 
-MachineState MachineMoveAbsoluteCommand::getAfterState(MachineState &oldms)
+MachineState MachineMoveAbsoluteCommand::GetAfterState(MachineState &oldms)
 {
 	switch (m_axis)
 	{
 	case AXIS_X:
-		return MachineState(m_pos, oldms.getY(), oldms.getZ(), oldms.getRot());
+		return MachineState(m_pos, oldms.GetY(), oldms.GetZ(), oldms.GetRot());
 		break;
 	case AXIS_Y:
-		return MachineState(oldms.getX(), m_pos, oldms.getZ(), oldms.getRot());
+		return MachineState(oldms.GetX(), m_pos, oldms.GetZ(), oldms.GetRot());
 		break;
 	case AXIS_Z:
-		return MachineState(oldms.getX(), oldms.getY(), m_pos, oldms.getRot());
+		return MachineState(oldms.GetX(), oldms.GetY(), m_pos, oldms.GetRot());
 		break;
 	}
 }
 
-bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
+bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 {
 	double fpos;
 	int pos;
@@ -55,31 +55,31 @@ bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
 	switch (m_axis)
 	{
 	case AXIS_X:
-		MachineMoveAbsoluteCommand(AXIS_Z, 0).doCommand(sp);	
+		MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);	
 		fpos = m_pos/STEP_PRECISION_X;
 		pos = (int)floor(fpos + 0.5);
 		converter << M_POS_ABS_MOVE_X;
 		strcpy_s(movecmd, converter.str().c_str());
-		execCommand(sp, M_READY_1515,		M_ANS_1);
-		execCommand(sp, M_DO_ABS_MOVE_X,	M_ANS_OK);
-		execCommand(sp, movecmd,			M_ANS_OK);
-		execCommand(sp, M_STORE_ABS_MOVE_X,	M_ANS_OK);
-		execCommand(sp, M_EXEC_MOVE_X,		M_ANS_OK);
-		execCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_DO_ABS_MOVE_X,	M_ANS_OK);
+		ExecCommand(sp, movecmd,			M_ANS_OK);
+		ExecCommand(sp, M_STORE_ABS_MOVE_X,	M_ANS_OK);
+		ExecCommand(sp, M_EXEC_MOVE_X,		M_ANS_OK);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
 		break;
 
 	case AXIS_Y:
-		MachineMoveAbsoluteCommand(AXIS_Z, 0).doCommand(sp);
+		MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 		fpos = m_pos/STEP_PRECISION_Y;
 		pos = (int)floor(fpos + 0.5);
 		converter << M_POS_ABS_MOVE_Y;
 		strcpy_s(movecmd, converter.str().c_str());
-		execCommand(sp, M_READY_1515,		M_ANS_1);
-		execCommand(sp, M_DO_ABS_MOVE_Y,	M_ANS_OK);
-		execCommand(sp, movecmd,			M_ANS_OK);
-		execCommand(sp, M_STORE_ABS_MOVE_Y,	M_ANS_OK);
-		execCommand(sp, M_EXEC_MOVE_Y,		M_ANS_OK);
-		execCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_DO_ABS_MOVE_Y,	M_ANS_OK);
+		ExecCommand(sp, movecmd,			M_ANS_OK);
+		ExecCommand(sp, M_STORE_ABS_MOVE_Y,	M_ANS_OK);
+		ExecCommand(sp, M_EXEC_MOVE_Y,		M_ANS_OK);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
 		break;
 
 	case AXIS_Z:
@@ -87,28 +87,28 @@ bool MachineMoveAbsoluteCommand::doCommand(SerialPort &sp)
 		pos = (int)floor(fpos + 0.5);
 		converter << M_POS_ABS_MOVE_Z;
 		strcpy_s(movecmd, converter.str().c_str());
-		execCommand(sp, M_READY_1515,		M_ANS_1);
-		execCommand(sp, M_DO_ABS_MOVE_Z,	M_ANS_OK);
-		execCommand(sp, movecmd,			M_ANS_OK);
-		execCommand(sp, M_STORE_ABS_MOVE_Z,	M_ANS_OK);
-		execCommand(sp, M_EXEC_MOVE_Z,		M_ANS_OK);
-		execCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
+		ExecCommand(sp, M_DO_ABS_MOVE_Z,	M_ANS_OK);
+		ExecCommand(sp, movecmd,			M_ANS_OK);
+		ExecCommand(sp, M_STORE_ABS_MOVE_Z,	M_ANS_OK);
+		ExecCommand(sp, M_EXEC_MOVE_Z,		M_ANS_OK);
+		ExecCommand(sp, M_READY_1515,		M_ANS_1);
 		break;
 	}
 
 	// TODO: Macroifiera skiten så att man kan skicka med axis till macrona.
-	/*execCommand(sp, M_READY_1515,		M_ANS_1);
-	execCommand(sp, M_DO_ABS_MOVE_X,	M_ANS_OK);
-	execCommand(sp, movecmd,			M_ANS_OK);
-	execCommand(sp, M_STORE_ABS_MOVE_X,	M_ANS_OK);
-	execCommand(sp, M_EXEC_MOVE_X,		M_ANS_OK);
-	execCommand(sp, M_READY_1515,		M_ANS_1);*/
+	/*ExecCommand(sp, M_READY_1515,		M_ANS_1);
+	ExecCommand(sp, M_DO_ABS_MOVE_X,	M_ANS_OK);
+	ExecCommand(sp, movecmd,			M_ANS_OK);
+	ExecCommand(sp, M_STORE_ABS_MOVE_X,	M_ANS_OK);
+	ExecCommand(sp, M_EXEC_MOVE_X,		M_ANS_OK);
+	ExecCommand(sp, M_READY_1515,		M_ANS_1);*/
 
 	return TRUE;
 }
 
 
-MachineMoveAbsoluteCommand* MachineMoveAbsoluteCommand::copy()
+MachineMoveAbsoluteCommand* MachineMoveAbsoluteCommand::Copy()
 {
 	return new MachineMoveAbsoluteCommand(m_axis, m_pos);
 }
