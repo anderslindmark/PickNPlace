@@ -7,9 +7,10 @@ class MachineInitCommand :
 public:
 	MachineInitCommand(void);
 	~MachineInitCommand(void);
-	MachineState getAfterState(MachineState ms);
+	MachineState getAfterState(MachineState &current);
 	string toString();
 
 private:
+	MachineCommand* copy();
 	bool doCommand(SerialPort &sp);
 };

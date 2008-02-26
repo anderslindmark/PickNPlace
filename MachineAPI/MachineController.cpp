@@ -13,7 +13,9 @@ MachineController::MachineController(string serialPort) : currentState(0, 0, 0, 
 	sp = NULL;
 	comPort = serialPort;
 	working = false;
-	initiated = false;
+	serialInitialized = false;
+	initialized = false;
+	initiating = false;
 	thread = NULL;
 	m_cmd = NULL;
 	runCmdMutex = CreateMutex( 
@@ -28,23 +30,40 @@ MachineController::~MachineController(void)
 	delete m_cmd;
 }
 
-bool MachineController::initialize() {
+bool MachineController::initializeSerial()
+{
 	sp = new SerialPort(comPort);
 	if(sp->initialize())
 	{
-		initiated = true;
+		serialInitialized = true;		
 		return true;
 	}
 	else
 	{
 		delete sp;
+		sp = NULL;
 		return false;
 	}
 }
 
+bool MachineController::initializeMachine()
+{
+	if (!serialInitialized)
+	{
+		if (!initializeSerial())
+		{
+			return false;
+		}
+	}
+	initiating = true;
+	runCommand(*(new MachineInitCommand()));
+	return true;
+}
 
-bool MachineController::runCommand(MachineCommand &cmd) {
-	if (!initiated) {
+bool MachineController::runCommand(MachineCommand &cmd)
+{
+	if (!initialized && !initiating)
+	{
 		return false;
 	}
 	bool returnVal = false;
@@ -98,7 +117,7 @@ void MachineController::doCommand()
 {
 	//std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
 	MachineEvent *validateEvent;
-	if(!validateCommand(m_cmd->getAfterState(currentState), validateEvent))
+	if(!validateCommand(*m_cmd, validateEvent))
 	{
 		sendEvent(*validateEvent);
 		delete validateEvent;
@@ -106,8 +125,15 @@ void MachineController::doCommand()
 	else
 	{
 		m_cmd->doCommand(*sp);
-		sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString() + "GRYMT"));
+		if (initiating)
+		{
+			initialized = true;
+			initiating = false;
+			sendEvent(MachineEvent(EVENT_INITIALIZED, m_cmd->toString()));
+		}
+		sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString()));
 	}
+	
 	working = false;
 }
 
@@ -124,11 +150,16 @@ void MachineController::addEventHandler(Handler h)
 	m_handlers.push_back( h );
 }
 
+MachineState MachineController::getCurrentState()
+{
+	return currentState;
+}
+
 void MachineController::sendEvent(MachineEvent &e)
 {
 	MachineEvent *eCopy;
 	//int id;
-	for( int i = 0; i < m_handlers.size(); i++ )
+	for( unsigned int i = 0; i < m_handlers.size(); i++ )
 	{
 		eCopy = new MachineEvent(e);
 		CreateThread( 
@@ -143,19 +174,45 @@ void MachineController::sendEvent(MachineEvent &e)
 	}
 }
 
-bool MachineController::validateCommand(MachineState &state, MachineEvent *&validateEvent)
+bool MachineController::validateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
-	// TODO: Move bounds to config
-	int xLimMin = 10000;
-	int xLimMax = 50000;
+	// TODO: Move bounds to config:
+	int xMin = 0;
+	int xMax = 470000;	// Working area ends aroun 350000, Z need to be limited beyond that to avoid crash.
+	int yMin = 0;
+	int yMax = 193000;
+	int zMin = 0;
+	int zMax = 10000;
+	float rMin = 0;
+	float rMax = 2*M_PI;
 
-	if (state.getX() >= xLimMin && state.getX() <= xLimMax)
+	MachineState state = cmd.getAfterState(currentState);
+	cout << "AfterState: x:" << state.getX() << " y:" << state.getY() << " z:" << state.getZ() << endl;
+	if (state.getX() > 350000)
 	{
-		return true;
+		zMax = 0;	// TODO: Find max Z
 	}
-	else
+
+	if (!(state.getX() >= xMin && state.getX() <= xMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
 		return false;
 	}
+	else if (!(state.getY() >= yMin && state.getY() <= yMax))
+	{
+		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
+		return false;
+	}
+	else if (!(state.getZ() >= zMin && state.getZ() <= zMax))
+	{
+		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
+		return false;
+	}
+	else if (!(state.getRot() >= rMin && state.getRot() <= rMax))
+	{
+		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in rotation");
+		return false;
+	}
+	currentState = state;
+	return true;
 }

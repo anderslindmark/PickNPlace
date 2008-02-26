@@ -4,7 +4,6 @@
  	\brief
  	Contains the Axis enum
  
-
  	\author	Henrik Mäkitaavola & Anders Lindmark
 **/
 

@@ -1,6 +1,8 @@
 #include "SerialPort.h"
 #include "MachineEvent.h"
+#include <string>
 #include <iostream>
+
 
 using namespace std;
 
@@ -127,11 +129,10 @@ bool SerialPort::writeByte(BYTE bybyte)
 
 bool SerialPort::writeLine(const char *ch)
 {
-	cout << "DEBUG: SerialPort::writeLine\t" << ch << endl;
+	//cout << "DEBUG: SerialPort::writeLine\t" << ch << endl;
 	//const char *ch = s.c_str();
-	int i;
 	//for (i = 0; i < c.length(); i++)
-	for (i = 0; i < strlen(ch); i++)
+	for (unsigned int i = 0; i < strlen(ch); i++)
 	{
 		if (!writeByte(ch[i]))
 		{
@@ -183,7 +184,7 @@ bool SerialPort::readLine(char *sin)
 	s = read.substr(0, read.length()-2);
 	strcpy(sin, s.c_str());
 
-	cout << "DEBUG: SerialPort::readLine\t" << sin << endl;
+	//cout << "DEBUG: SerialPort::readLine\t" << sin << endl;
 	return true;
 }
 

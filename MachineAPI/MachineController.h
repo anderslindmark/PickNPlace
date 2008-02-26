@@ -14,11 +14,11 @@
 #include <string>
 #include <windows.h>
 #include <vector>
+#include <cmath>
 
 #include "SerialPort.h"
 #include "MachineEvent.h"
-#include "MachineCommand.h"
-#include "MachineMoveAbsoluteCommand.h"
+#include "MachineCommands.h"
 
 using namespace std;
 
@@ -67,25 +67,39 @@ public:
 	/// \brief Wait for the Machine Controller to finnish working on a command
 	void wait(void);
 
-	/// \brief Initialize the Machine Controller
+	/// \brief Initialize the Serial Port
 	///
 	/// The serial port communication will be opened and the pick n place
 	/// machine will be configured to a initial state that depends configuration
 	/// given.
 	///
 	/// return true if initialization succeeded else false
-	bool initialize();
+	bool initializeSerial();
+
+	/// \brief Initialize the Pick N Place Machine
+	///
+	/// When the machine initialization is done an EVENT_INITIALIZED event will be sent
+	/// and the initiated flag will be set.
+	///
+	/// return true if serial port is initialized and the init command started executing
+	/// true does not mean that the machine is initialized.
+	bool initializeMachine();
 
 	/// \brief Add a event subscriber
 	///
 	/// \param handler the subscribers handler function that should be called
 	void addEventHandler(Handler handler);
 
+	/// \brief Get the current position of the machine
+	MachineState getCurrentState();
+
 private:
 	SerialPort *sp; ///< The serial communication object
 	string comPort; ///< What serial port should be used
 	bool working; ///< Indication wheter a command is beeing processed
-	bool initiated; ///< Indication wheter the Machine Controller has been initialized
+	bool serialInitialized; ///< Indication wheter the serial port has been initialized
+	bool initialized; ///< Indication wheter the machine has been initialized
+	bool initiating; ///< Indication wheter the Machine Controller is being initialized
 	vector<Handler> m_handlers; ///< Vector of event subscribers
 	MachineCommand *m_cmd;	///< Current command beeing processed
 	MachineState currentState; ///< Current state of the Pick n Place machine.
@@ -100,7 +114,7 @@ private:
 	/// \param state current state
 	/// \param validateEvent a pointer to an event if command is not legal
 	/// \return true if command is legal else false
-	bool validateCommand(MachineState &state, MachineEvent *&validateEvent);
+	bool validateCommand(MachineCommand &cmd, MachineEvent *&validateEvent);
 
 	//Thread stuff
 	HANDLE thread; ///< Handler for the command Thread

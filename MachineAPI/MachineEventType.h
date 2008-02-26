@@ -16,6 +16,7 @@
 enum MachineEventType
 {
 	EVENT_DONE, ///< Command runned successfully
+	EVENT_INITIALIZED, ///< Machine is initiated
 	EVENT_MACHINE_ERROR, ///< Internal error in the MachineController
 	EVENT_ILLEGAL_COMMAND, 
 	EVENT_CMD_OUT_OF_BOUNDS, ///< The command tried to execute was out of bounds

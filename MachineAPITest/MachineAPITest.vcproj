@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="MachineAPI"
-	ProjectGUID="{289B07FC-C0F6-4C3B-9560-C8BC80800887}"
-	RootNamespace="MachineAPI"
+	Name="MachineAPITest"
+	ProjectGUID="{783B42BC-07F2-464C-99EB-21FEE721A2AA}"
+	RootNamespace="MachineAPITest"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;C:\Documents and Settings\admin\Skrivbord\PickNPlace\trunk\MachineAPI&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -56,10 +57,16 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalLibraryDirectories=""
+				GenerateDebugInformation="true"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -71,6 +78,9 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -78,7 +88,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -116,10 +126,17 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				GenerateDebugInformation="true"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -131,11 +148,18 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{289B07FC-C0F6-4C3B-9560-C8BC80800887}"
+			RelativePathToProject=".\MachineAPI.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -144,39 +168,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\MachineCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineController.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineEvent.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineInitCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAbsoluteCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineRotateAbsoluteCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineState.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SerialPort.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestCommand.cpp"
+				RelativePath=".\main.cpp"
 				>
 			</File>
 		</Filter>
@@ -185,58 +177,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Axis.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineCommandMacros.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineCommands.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineController.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineEvent.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineEventType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineInitCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAbsoluteCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineRotateAbsoluteCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineState.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SerialPort.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestCommand.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

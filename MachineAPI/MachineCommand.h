@@ -11,6 +11,8 @@
 #ifndef __MACHINECOMMAND_H__
 #define __MACHINECOMMAND_H__
 
+#define M_PI	3.141592653589793238462643383279502884197169399375
+
 #include <string>
 #include "MachineState.h"
 #include "SerialPort.h"

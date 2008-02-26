@@ -11,14 +11,30 @@
 #define M_READY_1915			"RD 1915"
 
 // Moves:
-#define M_DO_ABS_MOVE_GENERIC(arg) "WR DM3"#arg"0 16384"
-#define M_DO_ABS_MOVE_X			M_DO_ABS_MOVE_GENERIC(0)
-#define M_POS_ABS_MOVE_X		"WR DM301 "
-#define M_STORE_ABS_MOVE_X		"WR DM51 2"
-#define M_EXEC_MOVE_X			"WR DM50 300"
+#define M_DO_ABS_MOVE(axis)		"WR DM3"#axis"0 16384"
+#define M_DO_ABS_MOVE_X			M_DO_ABS_MOVE(0)
+#define M_DO_ABS_MOVE_Y			M_DO_ABS_MOVE(1)
+#define M_DO_ABS_MOVE_Z			M_DO_ABS_MOVE(2)
 
+#define M_POS_ABS_MOVE(axis)	"WR DM3"#axis"1 "
+#define M_POS_ABS_MOVE_X		M_POS_ABS_MOVE(0) << pos
+#define M_POS_ABS_MOVE_Y		M_POS_ABS_MOVE(1) << pos
+#define M_POS_ABS_MOVE_Z		M_POS_ABS_MOVE(2) << pos
 
+#define M_STORE_ABS_MOVE(axis)	"WR DM"#axis"1 2"
+#define M_STORE_ABS_MOVE_X		M_STORE_ABS_MOVE(5)
+#define M_STORE_ABS_MOVE_Y		M_STORE_ABS_MOVE(6)
+#define M_STORE_ABS_MOVE_Z		M_STORE_ABS_MOVE(7)
 
+#define M_EXEC_MOVE(axis1, axis2)	"WR DM"#axis1"0 3"#axis2"0"
+#define M_EXEC_MOVE_X			M_EXEC_MOVE(5, 0)
+#define M_EXEC_MOVE_Y			M_EXEC_MOVE(6, 1)
+#define M_EXEC_MOVE_Z			M_EXEC_MOVE(7, 2)
+
+#define M_DO_ABS_ROTATE			M_DO_ABS_MOVE(3)
+#define M_POS_ABS_ROTATE		M_POS_ABS_MOVE(3) << pos
+#define M_STORE_ABS_ROTATE		M_STORE_ABS_MOVE(8)
+#define M_EXEC_ROTATE			M_EXEC_MOVE(8, 3)
 
 #define M_DO_CR					"CR"
 
