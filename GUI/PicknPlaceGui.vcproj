@@ -4,6 +4,7 @@
 	Version="9,00"
 	Name="PicknPlaceGui"
 	ProjectGUID="{D5C1F315-0D7F-47E6-B328-DCE6407B5859}"
+	RootNamespace="PicknPlaceGui"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -46,13 +47,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore /I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore /I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui /I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui /I..\..\..\..\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /I..\..\..\..\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
+				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="release,."
-				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
+				AdditionalIncludeDirectories="..\MachineAPI"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\release/PicknPlaceGui.pch"
@@ -76,10 +77,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/LIBPATH:c:\qt-win-opensource-src-4.3.3\lib"
-				AdditionalDependencies="c:\qt-win-opensource-src-4.3.3\lib\qtmain.lib c:\qt-win-opensource-src-4.3.3\lib\QtGui4.lib c:\qt-win-opensource-src-4.3.3\lib\QtCore4.lib"
+				AdditionalDependencies="qtmain.lib QtGui4.lib QtCore4.lib MachineAPI.lib"
 				OutputFile="release\PicknPlaceGui.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\MachineAPI\Release"
+				IgnoreDefaultLibraryNames="msvcrt"
+				DelayLoadDLLs=""
 				ProgramDatabaseFile=".\release/PicknPlaceGui.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -142,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
-				AdditionalIncludeDirectories="debug,."
+				AdditionalIncludeDirectories="..\MachineAPI"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
@@ -167,11 +171,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				IgnoreImportLibrary="false"
+				LinkLibraryDependencies="true"
 				AdditionalOptions="/LIBPATH:c:\qt-win-opensource-src-4.3.3\lib"
-				AdditionalDependencies="c:\qt-win-opensource-src-4.3.3\lib\qtmaind.lib c:\qt-win-opensource-src-4.3.3\lib\QtGuid4.lib c:\qt-win-opensource-src-4.3.3\lib\QtCored4.lib"
+				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib MachineAPI.lib MSVCRTD.lib"
 				OutputFile="debug\PicknPlaceGui.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib;libcmtd.lib"
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\debug/PicknPlaceGui.pdb"
 				SubSystem="2"
