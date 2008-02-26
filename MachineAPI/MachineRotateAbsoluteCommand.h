@@ -1,7 +1,20 @@
-#pragma once
-#include "machinecommand.h"
-#include <cmath>
+/**
+ 	\file MachineRotateAbsoluteCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineInitCommand class
+ 
 
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+#ifndef __MACHINEROTATEABSOLUTECOMMAND_H__
+#define __MACHINEROTATEABSOLUTECOMMAND_H__
+
+#include "machinecommand.h"
+
+/// \class MachineRotateAbsoluteCommand
+/// \brief Rotate the head on the Pick N Place machine to a specific angle
 class MachineRotateAbsoluteCommand :
 	public MachineCommand
 {
@@ -12,8 +25,9 @@ public:
 	string toString();
 
 private:
+	float m_angle; ///< The angle the head should be rotated to
 	MachineRotateAbsoluteCommand* copy();
 	bool doCommand(SerialPort &sp);
-	float m_angle;
-	
 };
+
+#endif //__MACHINEROTATEABSOLUTECOMMAND_H__

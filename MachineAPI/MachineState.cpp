@@ -1,3 +1,13 @@
+/**
+ 	\file MachineState.cpp
+ 
+ 	\brief
+ 	Source file for the MachineState class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineState.h"
 
 MachineState::MachineState(int x, int y, int z, float rot)

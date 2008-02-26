@@ -1,3 +1,13 @@
+/**
+ 	\file SerialPort.cpp
+ 
+ 	\brief
+ 	Source file for the SerialPort class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "SerialPort.h"
 #include "MachineEvent.h"
 #include <string>

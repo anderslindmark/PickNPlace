@@ -1,3 +1,13 @@
+/**
+ 	\file MachineEvent.cpp
+ 
+ 	\brief
+ 	Source file for the MachineEvent class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineEvent.h"
 
 MachineEvent::MachineEvent(MachineEventType eventType, string eventMsg)

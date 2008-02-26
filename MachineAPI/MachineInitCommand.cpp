@@ -1,3 +1,13 @@
+/**
+ 	\file MachineController.cpp
+ 
+ 	\brief
+ 	Source file for the MachineInitCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineInitCommand.h"
 
 #define INIT_COMMAND_STRING "Machine init command"

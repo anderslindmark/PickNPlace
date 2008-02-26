@@ -1,9 +1,22 @@
+/**
+ 	\file MachineController.cpp
+ 
+ 	\brief
+ 	Source file for the MachineController class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineController.h"
 #include <iostream>
 
 using namespace std;
 
-struct ThreadArg {
+/// \struct ThreadArg
+/// \brief Argument to the thread function
+struct ThreadArg
+{
 	MachineController *mc;
 	ThreadArg(MachineController *_mc) : mc(_mc) { };
 };
@@ -26,6 +39,10 @@ MachineController::MachineController(string serialPort) : currentState(0, 0, 0, 
 
 MachineController::~MachineController(void)
 {
+	if (sp != NULL)
+	{
+		sp->closePort();
+	}
 	delete sp;
 	delete m_cmd;
 }
@@ -70,20 +87,24 @@ bool MachineController::runCommand(MachineCommand &cmd)
 	DWORD dwWaitResult;
 	ThreadArg *threadArg;
 
+	//Grab mutex
 	dwWaitResult = WaitForSingleObject( 
 		runCmdMutex,    // handle to mutex
 		INFINITE);  // no time-out interval
+
+	//Check result from mutex grab
 	switch (dwWaitResult) 
 	{
 		// The thread got ownership of the mutex
 		case WAIT_OBJECT_0: 
 			if (!working) {
-				//cout << "true"<<endl;
 				working = true;
 				delete m_cmd;
 				m_cmd = cmd.copy();
 				WaitForSingleObject(thread, INFINITE);
-				threadArg = new ThreadArg(this);
+				threadArg = new ThreadArg(this); //Thread argument
+
+				//Create a new thread to handle the command
 				thread = CreateThread( 
 					NULL,				// default security attributes
 					0,					// use default stack size  
@@ -99,6 +120,8 @@ bool MachineController::runCommand(MachineCommand &cmd)
 		case WAIT_ABANDONED: 
 			returnVal = false;
 	}
+
+	//Release mutex
 	if (! ReleaseMutex(runCmdMutex)) 
 	{ 
 					// Deal with error.
@@ -115,8 +138,9 @@ void MachineController::wait(void)
 
 void MachineController::doCommand() 
 {
-	//std::cout<<"MC CMD " <<cmd->getCommand() << std::endl;
 	MachineEvent *validateEvent;
+
+	//Validate command
 	if(!validateCommand(*m_cmd, validateEvent))
 	{
 		sendEvent(*validateEvent);
@@ -124,7 +148,16 @@ void MachineController::doCommand()
 	}
 	else
 	{
-		m_cmd->doCommand(*sp);
+		
+		try
+		{
+			m_cmd->doCommand(*sp);
+		}
+		catch (MachineEvent e)
+		{
+			//TODO: clean up, maybe try a park command? exit?.
+		}
+
 		if (initiating)
 		{
 			initialized = true;
@@ -133,11 +166,11 @@ void MachineController::doCommand()
 		}
 		sendEvent(MachineEvent(EVENT_DONE, m_cmd->toString()));
 	}
-	
 	working = false;
 }
 
-DWORD WINAPI MachineController::runThread( LPVOID lpParam ) {
+DWORD WINAPI MachineController::runThread( LPVOID lpParam )
+{
 	ThreadArg *threadArg = (ThreadArg*)lpParam;
 	(*(threadArg->mc)).doCommand();
 	
@@ -150,15 +183,10 @@ void MachineController::addEventHandler(Handler h)
 	m_handlers.push_back( h );
 }
 
-MachineState MachineController::getCurrentState()
-{
-	return currentState;
-}
-
 void MachineController::sendEvent(MachineEvent &e)
 {
 	MachineEvent *eCopy;
-	//int id;
+
 	for( unsigned int i = 0; i < m_handlers.size(); i++ )
 	{
 		eCopy = new MachineEvent(e);
@@ -169,9 +197,13 @@ void MachineController::sendEvent(MachineEvent &e)
 					eCopy,				// argument to thread function 
 					0,					// use default creation flags 
 					NULL);			// returns the thread identifier 
-		
-		//(*m_handlers[i])(*this, e);
 	}
+}
+
+
+MachineState MachineController::getCurrentState()
+{
+	return currentState;
 }
 
 bool MachineController::validateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)

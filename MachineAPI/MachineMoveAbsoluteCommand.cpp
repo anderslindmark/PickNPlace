@@ -1,3 +1,13 @@
+/**
+ 	\file MachineMoveAvsoluteCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineMoveAvsoluteCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineMoveAbsoluteCommand.h"
 #include <iostream>
 #include <sstream>

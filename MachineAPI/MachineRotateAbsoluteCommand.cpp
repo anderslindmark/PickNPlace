@@ -1,3 +1,13 @@
+/**
+ 	\file MachineRotateAbsoluteCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineRotateAbsoluteCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineRotateAbsoluteCommand.h"
 #include <sstream>
 
