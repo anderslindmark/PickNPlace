@@ -206,6 +206,11 @@ MachineState MachineController::GetCurrentState()
 	return currentState;
 }
 
+bool MachineController::IsInitialized()
+{
+	return initialized;
+}
+
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
 	// TODO: Move bounds to config:
