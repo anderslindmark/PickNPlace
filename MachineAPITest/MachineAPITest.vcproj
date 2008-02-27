@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\dev\PickNPlace\MachineAPI;&quot;C:\Documents and Settings\admin\Skrivbord\PickNPlace\trunk\MachineAPI&quot;"
+				AdditionalIncludeDirectories="..\MachineAPI;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -111,6 +111,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\MachineAPI;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -158,7 +159,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{289B07FC-C0F6-4C3B-9560-C8BC80800887}"
-			RelativePathToProject=".\MachineAPI.vcproj"
+			RelativePathToProject=".\MachineAPI\MachineAPI.vcproj"
 		/>
 	</References>
 	<Files>
