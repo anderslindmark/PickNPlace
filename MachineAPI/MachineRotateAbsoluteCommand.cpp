@@ -41,7 +41,7 @@ bool MachineRotateAbsoluteCommand::DoCommand(SerialPort &sp)
 {
 	char movecmd[20];
 	stringstream converter;
-	int pos = (int) m_angle/(2*M_PI) * 4000;
+	int pos = (int)(m_angle / (2 * M_PI) * 4000);
 	converter << M_POS_ABS_ROTATE;
 	strcpy_s(movecmd, converter.str().c_str());
 	ExecCommand(sp, M_READY_1515,		M_ANS_1);

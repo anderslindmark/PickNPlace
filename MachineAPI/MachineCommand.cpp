@@ -22,12 +22,12 @@ bool MachineCommand::ExecCommand(SerialPort &sp, const char *cmd, const char *re
 	{
 		// TODO: Check for errors in write/ReadLine in sp.
 		sp.WriteLine(cmd);
-		sp.ReadLine(ans);
+		sp.ReadLine(ans, sizeof(ans));
 
 		if (strcmp(ans, M_ANS_ERROR) == 0)
 		{
 			sp.WriteLine(M_DO_CR);
-			sp.ReadLine(ans);
+			sp.ReadLine(ans, sizeof(ans));
 			if (strcmp(ans, M_ANS_CC) != 0)
 			{
 				// TODO: Set errormsg somewhere

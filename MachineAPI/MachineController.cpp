@@ -216,7 +216,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 	int zMin = 0;
 	int zMax = 10000;
 	float rMin = 0;
-	float rMax = 2*M_PI;
+	float rMax = (float)(2 * M_PI);
 
 	MachineState state = cmd.GetAfterState(currentState);
 	cout << "AfterState: x:" << state.GetX() << " y:" << state.GetY() << " z:" << state.GetZ() << endl;

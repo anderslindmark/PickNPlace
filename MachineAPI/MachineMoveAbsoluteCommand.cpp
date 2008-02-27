@@ -33,15 +33,16 @@ MachineState MachineMoveAbsoluteCommand::GetAfterState(MachineState &oldms)
 {
 	switch (m_axis)
 	{
-	case AXIS_X:
-		return MachineState(m_pos, oldms.GetY(), oldms.GetZ(), oldms.GetRot());
-		break;
-	case AXIS_Y:
-		return MachineState(oldms.GetX(), m_pos, oldms.GetZ(), oldms.GetRot());
-		break;
-	case AXIS_Z:
-		return MachineState(oldms.GetX(), oldms.GetY(), m_pos, oldms.GetRot());
-		break;
+		default:
+		case AXIS_X:
+			return MachineState(m_pos, oldms.GetY(), oldms.GetZ(), oldms.GetRot());
+			break;
+		case AXIS_Y:
+			return MachineState(oldms.GetX(), m_pos, oldms.GetZ(), oldms.GetRot());
+			break;
+		case AXIS_Z:
+			return MachineState(oldms.GetX(), oldms.GetY(), m_pos, oldms.GetRot());
+			break;
 	}
 }
 

@@ -77,9 +77,10 @@ public:
 
 	/// \brief Read a line from the serial port, lines will be divided with a CR NL
 	///
-	/// \param sin where the line should be read
+	/// \param sin target buffer for the answer
+	/// \param bufsize the size of the target buffer
 	/// \return true if succeeded else false
-	bool ReadLine(char *sin);
+	bool ReadLine(char *sin, int bufsize);
 
 	/// \brief Close the serial port
 	void ClosePort();

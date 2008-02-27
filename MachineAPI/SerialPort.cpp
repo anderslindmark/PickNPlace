@@ -174,12 +174,15 @@ bool SerialPort::ReadByte(BYTE &resp)
 	//return false;
 }
 
-bool SerialPort::ReadLine(char *sin)
+bool SerialPort::ReadLine(char *sin, int bufsize)
 {
 	BYTE prev = 0;
 	BYTE cur = 0;
 	string s;
 	string read = "";
+
+	if (!sin)
+		return false;
 
 	while (prev != 13 && cur != 10) 
 	{
@@ -192,7 +195,7 @@ bool SerialPort::ReadLine(char *sin)
 	}
 	//cout << "READ: " << read << endl;
 	s = read.substr(0, read.length()-2);
-	strcpy(sin, s.c_str());
+	strcpy_s(sin, bufsize, s.c_str());
 
 	//cout << "DEBUG: SerialPort::ReadLine\t" << sin << endl;
 	return true;
