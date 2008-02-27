@@ -82,7 +82,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\MachineAPI\Release"
-				IgnoreDefaultLibraryNames="msvcrt"
+				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs=""
 				ProgramDatabaseFile=".\release/PicknPlaceGui.pdb"
 				SubSystem="2"
@@ -331,7 +331,6 @@
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
