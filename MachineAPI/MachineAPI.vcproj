@@ -164,6 +164,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineParkCommand.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineRotateAbsoluteCommand.cpp"
 				>
 			</File>
@@ -219,6 +223,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineMoveAbsoluteCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineParkCommand.h"
 				>
 			</File>
 			<File

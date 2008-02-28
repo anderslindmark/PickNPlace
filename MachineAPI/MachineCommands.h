@@ -5,5 +5,6 @@
 #include "MachineMoveAbsoluteCommand.h"
 #include "MachineInitCommand.h"
 #include "MachineRotateAbsoluteCommand.h"
+#include "MachineParkCommand.h"
 
 #endif // __MACHINECOMMANDS_H__

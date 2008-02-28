@@ -18,6 +18,7 @@
 class MachineRotateAbsoluteCommand :
 	public MachineCommand
 {
+	friend class MachineParkCommand;
 public:
 	MachineRotateAbsoluteCommand(float angle);
 	~MachineRotateAbsoluteCommand(void);
