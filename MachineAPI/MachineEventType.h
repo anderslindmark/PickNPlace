@@ -15,13 +15,15 @@
 /// \brief Type of an MachineEvent
 enum MachineEventType
 {
-	EVENT_DONE, ///< Command runned successfully
-	EVENT_INITIALIZED, ///< Machine is initiated
-	EVENT_MACHINE_ERROR, ///< Internal error in the MachineController
-	EVENT_ILLEGAL_COMMAND, 
+	EVENT_CMD_DONE, ///< Command runned successfully
 	EVENT_CMD_OUT_OF_BOUNDS, ///< The command tried to execute was out of bounds
-	EVENT_EXCEPTION_SP_READ, ///< Error while reading the SerialPort
-	EVENT_EXCEPTION_SP_WRITE ///< Error while writing the SerialPort
+	EVENT_CMD_ILLEGAL,	// TODO: Is this needed? or is it replaced by OUT_OF_BOUNDS?
+
+	EVENT_MACHINE_INITIALIZED, ///< Machine is initiated
+	EVENT_MACHINE_ERROR, ///< Internal error in the MachineController
+	
+	EVENT_SERIAL_READERROR, ///< Error while reading the SerialPort
+	EVENT_SERIAL_WRITEERROR ///< Error while writing the SerialPort
 };
 
 #endif // __MACHINEEVENTTYPE_H__

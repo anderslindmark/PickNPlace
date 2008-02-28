@@ -162,9 +162,9 @@ void MachineController::DoCommand()
 		{
 			initialized = true;
 			initiating = false;
-			SendEvent(MachineEvent(EVENT_INITIALIZED, m_cmd->ToString()));
+			SendEvent(MachineEvent(EVENT_MACHINE_INITIALIZED, m_cmd->ToString()));
 		}
-		SendEvent(MachineEvent(EVENT_DONE, m_cmd->ToString()));
+		SendEvent(MachineEvent(EVENT_CMD_DONE, m_cmd->ToString()));
 	}
 	working = false;
 }

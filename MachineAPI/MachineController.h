@@ -78,7 +78,7 @@ public:
 
 	/// \brief Initialize the Pick N Place Machine
 	///
-	/// When the machine initialization is done an EVENT_INITIALIZED event will be sent
+	/// When the machine initialization is done an EVENT_MACHINE_INITIALIZED event will be sent
 	/// and the initiated flag will be set.
 	///
 	/// return true if serial port is initialized and the init command started executing

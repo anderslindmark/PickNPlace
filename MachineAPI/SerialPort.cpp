@@ -128,7 +128,7 @@ bool SerialPort::WriteByte(BYTE bybyte)
 	iBytesWritten=0;
 	if(WriteFile(port,&bybyte,1,&iBytesWritten,NULL)==0)
 	{
-		throw MachineEvent(EVENT_EXCEPTION_SP_WRITE, "Serial port write error!");
+		throw MachineEvent(EVENT_SERIAL_WRITEERROR, "Serial port write error!");
 		//return false;
 	}
 	else 
@@ -170,7 +170,7 @@ bool SerialPort::ReadByte(BYTE &resp)
 			return true;
 		}
 	}
-	throw MachineEvent(EVENT_EXCEPTION_SP_READ, "Serial port read error!");
+	throw MachineEvent(EVENT_SERIAL_READERROR, "Serial port read error!");
 	//return false;
 }
 
