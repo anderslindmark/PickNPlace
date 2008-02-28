@@ -23,6 +23,7 @@ class MachineMoveAbsoluteCommand :
 	public MachineCommand
 {
 	friend class MachineParkCommand;
+	friend class MachineMoveRelativeCommand;
 public:
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);
