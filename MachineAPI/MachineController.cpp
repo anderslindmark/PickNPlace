@@ -211,6 +211,11 @@ bool MachineController::IsInitialized()
 	return initialized;
 }
 
+bool MachineController::IsBusy()
+{
+	return working;
+}
+
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
 	// TODO: Move bounds to config:

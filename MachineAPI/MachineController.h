@@ -96,6 +96,9 @@ public:
 	/// \brief Get the initialized flag, which specifies if the machine is ready for commands other than the init command.
 	bool IsInitialized();
 
+	/// \brief Check whether the machine is busy executing a command
+	bool IsBusy();
+
 private:
 	SerialPort *sp; ///< The serial communication object
 	string comPort; ///< What serial port should be used
