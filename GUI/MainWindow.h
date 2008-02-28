@@ -4,11 +4,8 @@
 
 #include <QtGui>
 
-// Generated.
-#include "ui_MainWindow.h"
-
-// MachineAPI.
-#include "MachineController.h"
+#include "ui_MainWindow.h"		// Generated.
+#include "MachineController.h"	// MachineAPI.
 
 namespace PicknPlaceGui
 {
@@ -20,10 +17,16 @@ namespace PicknPlaceGui
 		MainWindow();
 		~MainWindow();
 
-	public slots:
-		void setArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem);
+		void OnMachineEvent(MachineEvent *e);
+
+	private slots:
+		void SetArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem);
+		void CheckIfExecutable(int notused);
+		void ExecuteCommand(void);
 
 	private:
+		void ConnectSlots();
+
 		Ui::MainWindow m_ui;		///< Generated User Interface.
 		MachineController *m_pMC;	///< Machine controler.
 	};

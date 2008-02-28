@@ -1,30 +1,77 @@
 
-// GUI.
-#include "MainWindow.h"
 
-// Qt.
-#include <QString>
+#include "MainWindow.h"	// GUI.
+#include <QString>		// Qt.
+
+PicknPlaceGui::MainWindow *mainwindow;
+
+///
+/// \brief Callback wrapper function for Machine events.
+///        calls the corresponding member method on the mainwindow object.
+///
+void on_machine_event(MachineEvent *e)
+{
+	mainwindow->OnMachineEvent(e);
+}
 
 namespace PicknPlaceGui
 {
+	///
+	/// \brief Constructor.
+	///
 	MainWindow::MainWindow()
 	{
+		mainwindow = this;
+
 		// Runs the generated code that setups the initial UI.
 		this->m_ui.setupUi(this);
-		
-		// Connect the currently selected list item to what arguments are shown.
-		connect(
-			m_ui.m_pCommandsListWidget, 
-			SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
-			this, 
-			SLOT(setArgumentWidget(QListWidgetItem *, QListWidgetItem *)));
+	
+		this->ConnectSlots();
 
 		// Make sure something is selected in the command list.
 		this->m_ui.m_pCommandsListWidget->setCurrentRow(0);
-
-		this->m_pMC = new MachineController("com1");
+		
+		// Create the machine controller and associate a callback function with it.
+		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
+		this->m_pMC->AddEventHandler(&on_machine_event);
 	}
 
+	///
+	/// \brief Connects all slots for the GUI.
+	///
+	void MainWindow::ConnectSlots()
+	{
+		// Connect the currently selected list item to what arguments are shown.
+		QMainWindow::connect(
+				this->m_ui.m_pCommandsListWidget, 
+				SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+				this, 
+				SLOT(SetArgumentWidget(QListWidgetItem *, QListWidgetItem *)));
+
+		// Angle spin box changed.
+		QMainWindow::connect(
+				this->m_ui.m_pAngleSpinBox,
+				SIGNAL(valueChanged(int)),
+				this,
+				SLOT(CheckIfExecutable(int)));
+
+		// Position spin box changed.
+		QMainWindow::connect(
+				this->m_ui.m_pPositionSpinBox,
+				SIGNAL(valueChanged(int)),
+				this,
+				SLOT(CheckIfExecutable(int)));
+
+		QMainWindow::connect(
+				this->m_ui.m_pExecuteButton,
+				SIGNAL(clicked()),
+				this,
+				SLOT(ExecuteCommand()));
+	}
+
+	///
+	/// \brief Destructor, cleanup of the Machine controller.
+	///
 	MainWindow::~MainWindow()
 	{
 		delete this->m_pMC;
@@ -37,12 +84,12 @@ namespace PicknPlaceGui
 	/// \param	newCommandItem	The new command item selected from the command list widget.
 	/// \param	oldItem			The previous command item that was selected.
 	///
-	void MainWindow::setArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem)
+	void MainWindow::SetArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem)
 	{
 		QString txt = newCommandItem->text();
 
-		// Check for which command we should enable the execute button for.
-		if ((txt == "Initialize")) // TODO: Add check from MachineAPI here if the machine is initialized or not.
+		// Check for which command we should enable the execute button.
+		if (!this->m_pMC->IsBusy() && ((txt == "Initialize") || this->m_pMC->IsInitialized()))
 		{
 			m_ui.m_pExecuteButton->setEnabled(true);
 		}
@@ -86,14 +133,113 @@ namespace PicknPlaceGui
 			if (txt.endsWith("relative", Qt::CaseInsensitive))
 			{
 				m_ui.m_pDescriptionLabel->setText("Position the picker relative to its current state.");
+				m_ui.m_pPositionSpinBox->setMinimum(-400000);
 			}
 			else
 			{
 				m_ui.m_pDescriptionLabel->setText("Place the picker at an absolute position.");
+				m_ui.m_pPositionSpinBox->setMinimum(0);
 			}
 		}
+	}
 
+	///
+	/// \brief Decides if the execute button should be enabled or not based on the current command and arguments.
+	///
+	void MainWindow::CheckIfExecutable(int notused)
+	{
+		QListWidgetItem *currentItem = this->m_ui.m_pCommandsListWidget->currentItem();
+		QString txt = currentItem->text();
+		bool executable = false;
+
+		if (txt.startsWith("Rotate"))
+		{
+			// Only enable the execute button if an angle has been specified.
+			executable = (this->m_ui.m_pAngleSpinBox->value() > 0);
+		}
+		else if (txt.startsWith("Position"))
+		{
+			executable = (this->m_ui.m_pPositionSpinBox->value() > 0);
+		}
+
+		// Only enable the execute button if the machine controller is initialized.
+		executable = executable && this->m_pMC->IsInitialized() && !this->m_pMC->IsBusy();
+
+		this->m_ui.m_pExecuteButton->setEnabled(executable);
+	}
+
+	///
+	/// \brief Slot that connects to the signal for clicking the Execute command button.
+	///
+	void MainWindow::ExecuteCommand(void)
+	{
+		QListWidgetItem *currentItem = this->m_ui.m_pCommandsListWidget->currentItem();
+		QString txt = currentItem->text();
+
+		if (txt == "Initialize")
+		{
+			this->m_pMC->InitializeMachine();
+		}
+		else if (txt == "Park")
+		{
+			// TODO: Run park command.
+		}
+		else if (txt.startsWith("Position"))
+
+		{
+			Axis axis = Axis::AXIS_X;
+
+			if (this->m_ui.m_pAxisComboBox->currentText() == "X")
+			{
+				axis = Axis::AXIS_X;
+			}
+			else if (this->m_ui.m_pAxisComboBox->currentText() == "Y")
+			{
+				axis = Axis::AXIS_Y;
+			}
+			else if (this->m_ui.m_pAxisComboBox->currentText() == "Z")
+			{
+				axis = Axis::AXIS_Z;
+			}
+
+			if (txt.endsWith("absolute"))
+			{
+				MachineMoveAbsoluteCommand mc(axis, this->m_ui.m_pPositionSpinBox->value());
+				this->m_pMC->RunCommand(mc);
+			}
+			else
+			{
+				// TODO: Run relative position command.
+			}
+		}
+		else if (txt == "Rotate absolute")
+		{
+			int degrees = this->m_ui.m_pAngleSpinBox->value() * (this->m_ui.m_pLeftRotateRadioButton->isChecked() ? -1 : 1);
+			float radians = (float)(degrees * (M_PI / 180.0f));
+
+			MachineRotateAbsoluteCommand mc(radians);
+			this->m_pMC->RunCommand(mc);
+		}
+	}
+
+	///
+	/// \brief Callback function for any MachineController events.
+	///
+	void MainWindow::OnMachineEvent(MachineEvent *e)
+	{
+		MachineEventType type = e->GetEventType();
 		
+		if ((type == MachineEventType::EVENT_CMD_DONE) || (type == MachineEventType::EVENT_MACHINE_INITIALIZED))
+		{
+			this->m_ui.m_pExecuteButton->setEnabled(true);
+		}
+		
+		// TODO: Handle all event types and show error dialogs and such.
 	}
 }
+
+
+
+
+
 

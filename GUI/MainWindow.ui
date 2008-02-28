@@ -198,11 +198,11 @@ p, li { white-space: pre-wrap; }
            <x>210</x>
            <y>30</y>
            <width>181</width>
-           <height>161</height>
+           <height>172</height>
           </rect>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="m_pAnglePage" >
           <layout class="QVBoxLayout" >
@@ -220,31 +220,45 @@ p, li { white-space: pre-wrap; }
              </item>
              <item>
               <widget class="QSpinBox" name="m_pAngleSpinBox" >
+               <property name="minimum" >
+                <number>0</number>
+               </property>
                <property name="maximum" >
                 <number>360</number>
                </property>
               </widget>
              </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" >
              <item>
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
+              <widget class="QRadioButton" name="m_pLeftRotateRadioButton" >
+               <property name="layoutDirection" >
+                <enum>Qt::RightToLeft</enum>
                </property>
-               <property name="sizeType" >
-                <enum>QSizePolicy::Maximum</enum>
+               <property name="text" >
+                <string>Left</string>
                </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>25</width>
-                 <height>20</height>
-                </size>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="m_pRightRotateRadioButton" >
+               <property name="text" >
+                <string>Right</string>
                </property>
-              </spacer>
+               <property name="checked" >
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
            <item>
             <widget class="QDial" name="m_pAngleDial" >
+             <property name="minimum" >
+              <number>0</number>
+             </property>
              <property name="maximum" >
               <number>360</number>
              </property>
@@ -279,7 +293,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QDoubleSpinBox" name="m_pPositionDoubleSpinBox" />
+              <widget class="QSpinBox" name="m_pPositionSpinBox" />
              </item>
             </layout>
            </item>
@@ -289,6 +303,9 @@ p, li { white-space: pre-wrap; }
               <widget class="QLabel" name="m_pAxisLabel" >
                <property name="text" >
                 <string>Axis:</string>
+               </property>
+               <property name="buddy" >
+                <cstring>m_pAxisComboBox</cstring>
                </property>
               </widget>
              </item>
