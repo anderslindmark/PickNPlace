@@ -33,14 +33,14 @@ typedef void (*Handler)(MachineEvent*);
 /// \brief Used to communicate
 ///        with a Pick n Place machine.
 ///
-/// After beeing initialized it can 
-/// be feed with commands (MachineCommand) through the RunCommand function.
+/// After being initialized it can 
+/// be fed with commands (MachineCommand) through the RunCommand function.
 /// The class will only handle one command at a time, the
 /// RunCommand function will return false if the object hasn't
-/// been initialized correctly or if an other command is beeing
-/// handeled. The handeling of the command will be runned in a 
-/// own thread so that it doesent block the caller. Events are
-/// sent due to failure or succsses inside the Machine Controller 
+/// been initialized correctly or if another command is being
+/// handled. The handling of the command will be run in a separate 
+/// thread so that it does'nt block the caller. Events are
+/// sent due to failure or success inside the Machine Controller 
 /// object to all event subscribers. To subscribe for events use
 /// AddEventHandler.
 class MachineController
@@ -88,7 +88,7 @@ public:
 	/// \brief Add a event subscriber
 	///
 	/// \param handler the subscribers handler function that should be called
-	void AddEventHandler(Handler handler);
+	void AddEventHandler(Handler h);
 
 	/// \brief Get the current position of the machine
 	MachineState GetCurrentState();
