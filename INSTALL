@@ -25,7 +25,8 @@ To compile you'll need to follow these steps:
 5. a. Start -> Run -> cmd
    b. cd %QTDIR%
    c. configure
-   d. Wait for Qt to finish building :)
+   d. nmake
+   e. Wait for Qt to finish building :)
    
 6. Open the "Picknplace.sln" solution file in Visual Studio 2008 and build.
 
