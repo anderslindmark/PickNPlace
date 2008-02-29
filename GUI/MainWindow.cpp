@@ -187,19 +187,19 @@ namespace PicknPlaceGui
 		else if (txt.startsWith("Position"))
 
 		{
-			Axis axis = Axis::AXIS_X;
+			Axis axis = AXIS_X;
 
 			if (this->m_ui.m_pAxisComboBox->currentText() == "X")
 			{
-				axis = Axis::AXIS_X;
+				axis = AXIS_X;
 			}
 			else if (this->m_ui.m_pAxisComboBox->currentText() == "Y")
 			{
-				axis = Axis::AXIS_Y;
+				axis = AXIS_Y;
 			}
 			else if (this->m_ui.m_pAxisComboBox->currentText() == "Z")
 			{
-				axis = Axis::AXIS_Z;
+				axis = AXIS_Z;
 			}
 
 			if (txt.endsWith("absolute"))
@@ -229,7 +229,7 @@ namespace PicknPlaceGui
 	{
 		MachineEventType type = e->GetEventType();
 		
-		if ((type == MachineEventType::EVENT_CMD_DONE) || (type == MachineEventType::EVENT_MACHINE_INITIALIZED))
+		if ((type == EVENT_CMD_DONE) || (type == EVENT_MACHINE_INITIALIZED))
 		{
 			this->m_ui.m_pExecuteButton->setEnabled(true);
 		}
