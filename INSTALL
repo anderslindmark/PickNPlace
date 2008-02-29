@@ -1,0 +1,33 @@
+
+Compiling
+---------
+
+The program currently only runs on windows.
+
+To compile you'll need to follow these steps:
+
+1. Install Visual Studio 2008 
+   (If installing Express edition you might need to get the platform SDK)
+
+2. Download Qt 4.3+ @ http://trolltech.com/downloads/opensource
+
+3. Unpack Qt in a dir of your chosing for example: 
+   c:\qt-win-opensource-src-4.3.3
+   
+4. Set the environment variable QTDIR to point to this directory in windows:
+   
+   a. Right click My Computer -> Properties
+   b. Advanced tab -> Environment variables
+   c. Under "System variables" click "New"
+   d. Variable name: QTDIR
+   e. Variable value: c:\qt-win-opensource-src-4.3.3
+   
+5. a. Start -> Run -> cmd
+   b. cd %QTDIR%
+   c. configure
+   d. Wait for Qt to finish building :)
+   
+6. Open the "Picknplace.sln" solution file in Visual Studio 2008 and build.
+
+
+
