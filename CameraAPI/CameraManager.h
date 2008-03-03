@@ -17,14 +17,15 @@ class CameraManager
 		CameraManager();
 		~CameraManager();
 		
-		void addDriver(Driver *driver);
+		void addDriver(driver::Driver *driver);
 		void deleteAllDrivers();
-		int getCameraCount();
-		CameraIdentifier getCameraIdentifier(int index) const;
+		void updateCameraIdentifiers();
+		const CameraIdentifierList& getCameraIdentifiers();
+		//Camera createCamera(CameraIdentifier identifier);
 		
 	private:
-		std::vector<Driver *> drivers;
-		std::vector<CameraIdentifier> identifiers;
+		driver::DriverList drivers;
+		CameraIdentifierList identifiers;
 };
 
 } // namespace camera

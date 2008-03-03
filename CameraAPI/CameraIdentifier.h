@@ -2,6 +2,7 @@
 #define __CAMERAIDENTIFIER_H__
 
 #include <string>
+#include <vector>
 
 namespace camera {
 
@@ -11,6 +12,8 @@ struct CameraIdentifier
 	std::string driverIdentifier;
 	std::string cameraIdentifier;
 };
+
+typedef std::vector<CameraIdentifier> CameraIdentifierList;
 
 } // namespace camera
 

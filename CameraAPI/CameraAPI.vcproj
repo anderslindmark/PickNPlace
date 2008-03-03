@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DummyDriver.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\EuresysDriver.cpp"
 				>
 			</File>
@@ -207,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\Driver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DummyDriver.h"
 				>
 			</File>
 			<File

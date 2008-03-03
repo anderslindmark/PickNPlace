@@ -1,13 +1,14 @@
 #include <iostream>
 #include "CameraManager.h"
-#include "EuresysDriver.h"
+#include "DummyDriver.h"
 
 int main()
 {
 	std::cout << "Hello!" << std::endl;
 	
 	camera::CameraManager cm;
-	std::cout << "Num cameras = " << cm.getCameraCount() << std::endl;
+	cm.addDriver(new camera::driver::DummyDriver());
+	camera::CameraIdentifierList identifiers = cm.getCameraIdentifiers();
 	
-	cm.addDriver(new camera::EuresysDriver());
+	std::cout << "Num cameras = " << identifiers.size() << std::endl;
 }

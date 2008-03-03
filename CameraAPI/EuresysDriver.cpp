@@ -5,6 +5,7 @@
 #include "euresys/Include/MultiCam32.h"
 
 namespace camera {
+namespace driver {
 
 EuresysDriver::EuresysDriver()
 {
@@ -60,4 +61,5 @@ std::vector<CameraIdentifier> EuresysDriver::getCameraIdentifiers() {
 	return identifiers;
 }
 
+} // namespace driver
 } // namespace camera
