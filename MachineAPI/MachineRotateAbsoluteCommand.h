@@ -22,7 +22,7 @@ class MachineRotateAbsoluteCommand :
 public:
 	MachineRotateAbsoluteCommand(float angle);
 	~MachineRotateAbsoluteCommand(void);
-	MachineState GetAfterState(MachineState &current); 
+	MachineState GetAfterState(MachineState &oldms); 
 	string ToString();
 
 private:

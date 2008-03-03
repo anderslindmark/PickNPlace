@@ -144,6 +144,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\DiagonalTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineCommand.cpp"
 				>
 			</File>
@@ -195,6 +199,10 @@
 			>
 			<File
 				RelativePath=".\Axis.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DiagonalTest.h"
 				>
 			</File>
 			<File

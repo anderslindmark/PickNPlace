@@ -27,7 +27,12 @@ string MachineParkCommand::ToString(void)
 
 MachineState MachineParkCommand::GetAfterState(MachineState &oldms)
 {
-	return MachineState(0, 0, 0, 0.0);
+	MachineStateStruct mss = oldms.GetState();
+	mss.x = 0;
+	mss.y = 0;
+	mss.z = 0;
+	mss.rot = 0.0;
+	return MachineState(mss);
 }
 
 bool MachineParkCommand::DoCommand(SerialPort &sp)

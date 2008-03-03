@@ -22,7 +22,7 @@ MachineInitCommand::~MachineInitCommand(void)
 
 MachineState MachineInitCommand::GetAfterState(MachineState &current)
 {
-	return MachineState(0,0,0,0);
+	return MachineState();
 }
 
 string MachineInitCommand::ToString()

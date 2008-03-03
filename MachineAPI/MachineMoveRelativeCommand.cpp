@@ -20,9 +20,11 @@ string MachineMoveRelativeCommand::ToString()
 
 MachineState MachineMoveRelativeCommand::GetAfterState(MachineState &oldms)
 {
-	m_newX = oldms.GetX();
-	m_newY = oldms.GetY();
-	m_newZ = oldms.GetZ();
+	MachineStateStruct mss = oldms.GetState();
+
+	m_newX = mss.x;
+	m_newY = mss.y;
+	m_newZ = mss.z;
 
 	switch (m_axis)
 	{
@@ -39,7 +41,10 @@ MachineState MachineMoveRelativeCommand::GetAfterState(MachineState &oldms)
 	}
 	
 	m_stateKnown = true;
-	return MachineState(m_newX, m_newY, m_newZ, oldms.GetRot());
+	mss.x = m_newX;
+	mss.y = m_newY;
+	mss.z = m_newZ;
+	return MachineState(mss);
 }
 
 

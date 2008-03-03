@@ -22,9 +22,11 @@ MachineRotateAbsoluteCommand::~MachineRotateAbsoluteCommand(void)
 {
 }
 
-MachineState MachineRotateAbsoluteCommand::GetAfterState(MachineState &current)
+MachineState MachineRotateAbsoluteCommand::GetAfterState(MachineState &oldms)
 {
-	return MachineState(current.GetX(), current.GetY(), current.GetZ(), m_angle);
+	MachineStateStruct mss = oldms.GetState();
+	mss.rot = m_angle;
+	return MachineState(mss);
 }
 
 string MachineRotateAbsoluteCommand::ToString(void)

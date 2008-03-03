@@ -8,4 +8,6 @@
 #include "MachineParkCommand.h"
 #include "MachineMoveRelativeCommand.h"
 
+#include "DiagonalTest.h" // TODO: REMOVE ME
+
 #endif // __MACHINECOMMANDS_H__

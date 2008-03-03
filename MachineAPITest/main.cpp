@@ -29,17 +29,32 @@ int main(void)
 	}
 	mc.Wait();
 	
+	//mc.RunCommand(DiagonalTest()); mc.Wait();
 	//mc.RunCommand(*(new MachineInitCommand())); mc.Wait();
-
 	for (;;)
 	{
 		printf("x y z r: ");
 		scanf_s("%d %d %d %f", &xp, &yp, &zp, &rp);
-		mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, xp))); mc.Wait();
-		mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, yp))); mc.Wait();
-		mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Z, zp))); mc.Wait();
-		mc.RunCommand(*(new MachineRotateAbsoluteCommand(rp))); mc.Wait();
+		if (xp == -1)
+		{
+			mc.RunCommand(*(new MachineMoveRelativeCommand(AXIS_X, -2000))); mc.Wait();
+		}
+		else if (xp == -2)
+		{
+			break;
+		}
+		else
+		{
+			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, xp))); mc.Wait();
+			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, yp))); mc.Wait();
+			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Z, zp))); mc.Wait();
+			mc.RunCommand(*(new MachineRotateAbsoluteCommand(rp))); mc.Wait();
+		}
+		
 	}
+
+	mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
+
 
 	/*
 	mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, 0))); mc.Wait();

@@ -10,22 +10,27 @@
 
 #include "MachineState.h"
 
-MachineState::MachineState(int x, int y, int z, float rot)
+MachineState::MachineState()
 {
-	m_x = x;
-	m_y = y;
-	m_z = z;
-	m_rot = rot;
+	m_mss = MachineStateStruct();
+}
+
+MachineState::MachineState(MachineStateStruct &mss)
+{
+	m_mss = mss;
 }
 
 MachineState::MachineState(const MachineState& ms)
 {
-	m_x = ms.m_x;
-	m_y = ms.m_y;
-	m_z = ms.m_z;
-	m_rot = ms.m_rot;
+	m_mss = ms.m_mss;
 }
 
+MachineStateStruct MachineState::GetState()
+{
+	return m_mss;
+}
+
+/*
 int MachineState::GetX()
 {
 	return m_x;
@@ -45,3 +50,4 @@ float MachineState::GetRot()
 {
 	return m_rot;
 }
+*/

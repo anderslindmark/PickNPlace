@@ -21,7 +21,7 @@ struct ThreadArg
 	ThreadArg(MachineController *_mc) : mc(_mc) { };
 };
 
-MachineController::MachineController(string serialPort) : currentState(0, 0, 0, 0.0)
+MachineController::MachineController(string serialPort) : currentState()
 {
 	sp = NULL;
 	comPort = serialPort;
@@ -31,6 +31,7 @@ MachineController::MachineController(string serialPort) : currentState(0, 0, 0, 
 	initiating = false;
 	thread = NULL;
 	m_cmd = NULL;
+	m_settings = MachineSettings();
 	runCmdMutex = CreateMutex( 
         NULL,   // default security attributes
         FALSE,  // initially not owned
@@ -140,8 +141,8 @@ void MachineController::DoCommand()
 {
 	MachineEvent *validateEvent;
 
-	//Validate command
-	if(!ValidateCommand(*m_cmd, validateEvent))
+	// Validate command
+	if (!ValidateCommand(*m_cmd, validateEvent))
 	{
 		SendEvent(*validateEvent);
 		delete validateEvent;
@@ -155,7 +156,7 @@ void MachineController::DoCommand()
 		}
 		catch (MachineEvent e)
 		{
-			//TODO: clean up, maybe try a park command? exit?.
+			// TODO: clean up, maybe try a park command? exit?.
 		}
 
 		if (initiating)
@@ -218,39 +219,35 @@ bool MachineController::IsBusy()
 
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
-	// TODO: Move bounds to config:
-	int xMin = 0;
-	int xMax = 470000;	// Working area ends aroun 350000, Z need to be limited beyond that to avoid crash.
-	int yMin = 0;
-	int yMax = 193000;
-	int zMin = 0;
-	int zMax = 10000;
-	float rMin = 0;
-	float rMax = (float)(2 * M_PI);
-
 	MachineState state = cmd.GetAfterState(currentState);
-	cout << "AfterState: x:" << state.GetX() << " y:" << state.GetY() << " z:" << state.GetZ() << endl;
-	if (state.GetX() > 350000)
+	MachineStateStruct mss = state.GetState();
+
+	cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << endl;
+	if (mss.x > 350000)
 	{
-		zMax = 0;	// TODO: Find max Z
+		m_settings.zMax = 0;	// TODO: Find max Z
+	}
+	else
+	{
+		m_settings.zMax = 10000;
 	}
 
-	if (!(state.GetX() >= xMin && state.GetX() <= xMax))
+	if (!(mss.x >= m_settings.xMin && mss.x <= m_settings.xMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
 		return false;
 	}
-	else if (!(state.GetY() >= yMin && state.GetY() <= yMax))
+	else if (!(mss.y >= m_settings.yMin && mss.y <= m_settings.yMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
 		return false;
 	}
-	else if (!(state.GetZ() >= zMin && state.GetZ() <= zMax))
+	else if (!(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
 		return false;
 	}
-	else if (!(state.GetRot() >= rMin && state.GetRot() <= rMax))
+	else if (!(mss.rot >= m_settings.rotMin && mss.rot <= m_settings.rotMax))
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in rotation");
 		return false;

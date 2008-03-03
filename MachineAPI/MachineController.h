@@ -28,6 +28,20 @@ using namespace std;
 ///
 typedef void (*Handler)(MachineEvent*);
 
+struct MachineSettings
+{
+	int xMin;
+	int xMax;
+	int yMin;
+	int yMax;
+	int zMin;
+	int zMax;
+	float rotMin;
+	float rotMax;
+	MachineSettings():	xMin(0), xMax(470000), yMin(0), yMax(193000),
+						zMin(0), zMax(10000), rotMin(0.0), rotMax(2*M_PI) {};
+};
+
 
 /// \class MachineController
 /// \brief Used to communicate
@@ -85,7 +99,8 @@ public:
 	/// true does not mean that the machine is initialized.
 	bool InitializeMachine();
 
-	/// \brief Add a event subscriber
+	/// \brief Add a event subscriber. 
+	/// NOTE!: The event listener needs to delete the event object it recieves when it's done using it.
 	///
 	/// \param handler the subscribers handler function that should be called
 	void AddEventHandler(Handler h);
@@ -109,7 +124,7 @@ private:
 	vector<Handler> m_handlers; ///< Vector of event subscribers
 	MachineCommand *m_cmd;	///< Current command beeing processed
 	MachineState currentState; ///< Current state of the Pick n Place machine.
-
+	MachineSettings m_settings; ///< Settings for the machine.
 	/// \brief Send a event to all subscribers
 	///
 	/// \param e event to be sent
