@@ -17,7 +17,7 @@ BYTE b;
 
 int main(void)
 {
-	int xp, yp, zp;
+	int xp, yp, sp;
 	float rp;
 	string tmp;
 	MachineController mc("com1");
@@ -33,24 +33,12 @@ int main(void)
 	//mc.RunCommand(*(new MachineInitCommand())); mc.Wait();
 	for (;;)
 	{
-		printf("x y z r: ");
-		scanf_s("%d %d %d %f", &xp, &yp, &zp, &rp);
-		if (xp == -1)
-		{
-			mc.RunCommand(*(new MachineMoveRelativeCommand(AXIS_X, -2000))); mc.Wait();
-		}
-		else if (xp == -2)
-		{
-			break;
-		}
-		else
-		{
-			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, xp))); mc.Wait();
-			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, yp))); mc.Wait();
-			mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Z, zp))); mc.Wait();
-			mc.RunCommand(*(new MachineRotateAbsoluteCommand(rp))); mc.Wait();
-		}
-		
+		printf("x y s ");
+		scanf_s("%d %d %d", &xp, &yp, &sp);
+		mc.RunCommand(*(new MachineSetSpeedCommand(sp))); mc.Wait();
+		mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, xp))); mc.Wait();
+		mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, yp))); mc.Wait();
+
 	}
 
 	mc.RunCommand(*(new MachineParkCommand())); mc.Wait();

@@ -7,6 +7,7 @@
 #include "MachineRotateAbsoluteCommand.h"
 #include "MachineParkCommand.h"
 #include "MachineMoveRelativeCommand.h"
+#include "MachineSetSpeedCommand.h"
 
 #include "DiagonalTest.h" // TODO: REMOVE ME
 

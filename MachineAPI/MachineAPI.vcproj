@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="MachineAPI"
 	ProjectGUID="{289B07FC-C0F6-4C3B-9560-C8BC80800887}"
 	RootNamespace="MachineAPI"
@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineSetSpeedCommand.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineState.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineRotateAbsoluteCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetSpeedCommand.h"
 				>
 			</File>
 			<File

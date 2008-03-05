@@ -18,7 +18,8 @@ struct MachineStateStruct
 	int y;
 	int z;
 	float rot;
-	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0){};
+	int speed;
+	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), speed(0) {};
 };
 
 /// \class MachineState
