@@ -1,5 +1,6 @@
 #include "log.h"
 #include "CameraManager.h"
+#include "CameraException.h"
 
 namespace camera {
 
@@ -11,10 +12,9 @@ CameraManager::CameraManager()
 CameraManager::~CameraManager()
 {
 	LOG_TRACE("CameraManger::~CameraManager()");
-	deleteAllDrivers();
 }
 
-void CameraManager::addDriver(driver::Driver *driver)
+void CameraManager::addDriver(Driver *driver)
 {
 	LOG_TRACE("CameraManager::addDriver");
 	
@@ -30,16 +30,6 @@ void CameraManager::addDriver(driver::Driver *driver)
 	LOG_DEBUG("Added driver " << driver->getVersionString());
 }
 
-void CameraManager::deleteAllDrivers()
-{
-	LOG_TRACE("CameraManager::deleteAllDrivers()");
-	while(!drivers.empty())
-	{
-		delete drivers.back();
-		drivers.pop_back();
-	}
-}
-
 void CameraManager::updateCameraIdentifiers()
 {
 	LOG_TRACE("CameraManager::updateCameraIdentifiers()");
@@ -47,7 +37,7 @@ void CameraManager::updateCameraIdentifiers()
 	identifiers.clear();
 	
 	// Loop through all drivers
-	driver::DriverList::const_iterator iter;
+	DriverList::const_iterator iter;
 	for(iter = drivers.begin(); iter != drivers.end(); iter++)
 	{
 		// Get a list of camera identifiers...
@@ -64,9 +54,18 @@ const CameraIdentifierList& CameraManager::getCameraIdentifiers()
 	return identifiers;
 }
 
-//Camera CameraManager::createCamera(CameraIdentifier identifier)
-//{
-//	LOG_TRACE("CameraManger::createCamera()");
-//}
+Camera *CameraManager::createCamera(CameraIdentifier identifier)
+{
+	LOG_TRACE("CameraManger::createCamera()");
+	DriverList::const_iterator iter;
+	for(iter = drivers.begin(); iter != drivers.end(); iter++)
+	{
+		if(identifier.driverIdentifier == (*iter)->getIdentifier()) {
+			return (*iter)->createCamera(identifier);
+		}
+	}
+	
+	throw CameraException("No matching driver found");
+}
 
 } // namespace camera

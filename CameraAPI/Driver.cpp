@@ -3,7 +3,6 @@
 #include <sstream>
 
 namespace camera {
-namespace driver {
 
 Driver::Driver()
 {
@@ -23,5 +22,4 @@ std::string Driver::getVersionString()
 	return ss.str();
 }
 
-} // namespace driver
 } // namespace camera

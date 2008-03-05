@@ -4,7 +4,6 @@
 #include "Driver.h"
 
 namespace camera {
-namespace driver {
 
 class EuresysDriver : public Driver
 {
@@ -24,7 +23,6 @@ class EuresysDriver : public Driver
 		
 };
 
-} // namespace driver
 } // namespace camera
 
 #endif

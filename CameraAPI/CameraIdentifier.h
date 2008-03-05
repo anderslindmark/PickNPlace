@@ -6,11 +6,17 @@
 
 namespace camera {
 
-struct CameraIdentifier
+class CameraIdentifier
 {
-	std::string displayName;
-	std::string driverIdentifier;
-	std::string cameraIdentifier;
+	public:
+		CameraIdentifier() {};
+		CameraIdentifier(const std::string &str);
+		
+		void decode(const std::string &str);
+		std::string encode() const;
+		
+		std::string driverIdentifier;
+		std::string cameraIdentifier;
 };
 
 typedef std::vector<CameraIdentifier> CameraIdentifierList;

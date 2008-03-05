@@ -1,13 +1,16 @@
 #include "DummyDriver.h"
+#include "DummyCamera.h"
 #include "log.h"
 #include <sstream>
 
 namespace camera {
-namespace driver {
 
 DummyDriver::DummyDriver()
 {
 	LOG_TRACE("DummyDriver::DummyDriver()");
+	
+	_width = 256;
+	_height = 256;
 }
 
 DummyDriver::~DummyDriver()
@@ -31,15 +34,21 @@ CameraIdentifierList DummyDriver::getCameraIdentifiers()
 		ss << "camera" << i;
 		ci.cameraIdentifier = ss.str();
 		
-		ss.str("");
-		ss << "Dummy Camera " << i;
-		ci.displayName = ss.str();
-		
 		identifiers.push_back(ci);
-		LOG_TRACE("DummyDriver::getCameraIdentifiers(): Added " << ci.cameraIdentifier << " (" << ci.displayName << ")");
+		LOG_TRACE("DummyDriver::getCameraIdentifiers(): Added " << ci.encode());
 	}
-	return identifers;
+	return identifiers;
 }
 
-} // namespace driver
+Camera *DummyDriver::createCamera(CameraIdentifier identifier) {
+	LOG_TRACE("DummyDriver::createCamera()");
+	LOG_DEBUG("DummyDriver::createCamera(): Creating camera " << identifier.encode());
+	return new DummyCamera(_width, _height);
+}
+
+void DummyDriver::setImageSize(int width, int height) {
+	_width = width;
+	_height = height;
+}
+
 } // namespace camera

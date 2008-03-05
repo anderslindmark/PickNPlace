@@ -2,10 +2,10 @@
 #define __DRIVER_H__
 
 #include "CameraIdentifier.h"
+#include "Camera.h"
 #include <vector>
 
 namespace camera {
-namespace driver {
 
 class Driver
 {
@@ -41,12 +41,16 @@ class Driver
 		///
 		/// \brief Returns a list of camera identifiers
 		///
-		virtual const CameraIdentifierList getCameraIdentifiers() = 0;
+		virtual CameraIdentifierList getCameraIdentifiers() = 0;
+		
+		///
+		/// \brief Create a Camera
+		///
+		virtual Camera *createCamera(CameraIdentifier identifier) = 0;
 };
 
 typedef std::vector<Driver *> DriverList;
 
-} // namespace driver
 } // namespace camera
 
 #endif

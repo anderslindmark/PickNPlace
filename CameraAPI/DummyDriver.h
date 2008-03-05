@@ -4,7 +4,6 @@
 #include "Driver.h"
 
 namespace camera {
-namespace driver {
 
 class DummyDriver : public Driver
 {
@@ -18,9 +17,15 @@ class DummyDriver : public Driver
 		std::string getIdentifier() { return "dummy"; }
 		
 		CameraIdentifierList getCameraIdentifiers();
+		Camera *createCamera(CameraIdentifier identifier);
+		
+		void setImageSize(int width, int height);
+		
+	private:
+		int _width;
+		int _height;
 };
 
-} // namespace driver
 } // namespace camera
 
 #endif

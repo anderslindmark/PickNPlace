@@ -172,6 +172,18 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\BMP.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Camera.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CameraIdentifier.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CameraManager.cpp"
 				>
 			</File>
@@ -180,11 +192,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DummyCamera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DummyDriver.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\EuresysDriver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ImageBuffer.cpp"
 				>
 			</File>
 			<File
@@ -198,11 +218,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\BMP.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Camera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CameraException.h"
 				>
 			</File>
 			<File
 				RelativePath=".\CameraIdentifier.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CameraListener.h"
 				>
 			</File>
 			<File
@@ -214,11 +246,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DummyCamera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DummyDriver.h"
 				>
 			</File>
 			<File
 				RelativePath=".\EuresysDriver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ImageBuffer.h"
 				>
 			</File>
 			<File
