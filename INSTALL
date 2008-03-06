@@ -22,7 +22,7 @@ To compile you'll need to follow these steps:
    d. Variable name: QTDIR
    e. Variable value: c:\qt-win-opensource-src-4.3.3
    
-5. a. Start -> Run -> cmd
+5. a. Start -> Programs -> Microsoft Visual Studio 2008 -> Visual Studio Tools -> Visual Studio 2008 Command prompt
    b. cd %QTDIR%
    c. configure
    d. nmake
