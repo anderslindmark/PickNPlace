@@ -2,33 +2,41 @@
 #include "CameraException.h"
 #include "log.h"
 
-namespace camera {
+namespace camera 
+{
 
-Camera::Camera() {
+Camera::Camera() 
+{
 	LOG_TRACE("Camera::Camera()");
 	
 	_listener = NULL;
 }
 
-Camera::~Camera() {
+Camera::~Camera()
+{
 	LOG_TRACE("Camera::~Camera()");
 }
 
-void Camera::setListener(CameraListener *listener) {
+void Camera::setListener(CameraListener *listener) 
+{
 	LOG_TRACE("Camera::setCallbackClass()");
 	_listener = listener;
 }
 
-void Camera::doNewImageCallback() {
+void Camera::doNewImageCallback()
+{
 	LOG_TRACE("Camera::doNewImageCallback()");
-	if(_listener != NULL) {
+	if(_listener != NULL) 
+	{
 		_listener->cameraNewImage(this);
 	}
 }
 
-void Camera::doErrorCallback(int errorCode, const std::string &errorMessage) {
+void Camera::doErrorCallback(int errorCode, const std::string &errorMessage)
+{
 	LOG_TRACE("Camera::doErrorCallback()");
-	if(_listener != NULL) {
+	if(_listener != NULL)
+	{
 		_listener->cameraError(this, errorCode, errorMessage);
 	}
 }

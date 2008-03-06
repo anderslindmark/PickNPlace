@@ -1,16 +1,19 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-namespace camera {
+namespace camera 
+{
 	class Camera;
 }
 
 #include "CameraListener.h"
 #include "ImageBuffer.h"
 
-namespace camera {
+namespace camera 
+{
 
-class Camera {
+class Camera 
+{
 	public:
 		Camera();
 		virtual ~Camera();

@@ -3,7 +3,8 @@
 
 #include <stdexcept>
 
-namespace camera {
+namespace camera 
+{
 
 class CameraException : public std::runtime_error
 {

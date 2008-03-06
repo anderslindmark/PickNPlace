@@ -1,13 +1,16 @@
 #ifndef __IMAGEBUFFER_H__
 #define __IMAGEBUFFER_H__
 
-namespace camera {
+namespace camera 
+{
 
 typedef unsigned char Buffer;
 
-class ImageBuffer {
+class ImageBuffer 
+{
 	public:
-		static enum Format {
+		static enum Format 
+		{
 			FORMAT_Y8,
 			FORMAT_RGB32,
 			FORMAT_RGB24,

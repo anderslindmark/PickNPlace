@@ -6,11 +6,10 @@
 
 #include <vector>
 
-namespace camera {
+namespace camera 
+{
 
-/**
- * @todo Make class singleton?
- */
+// TODO: Make class singleton?
 class CameraManager
 {
 	public:

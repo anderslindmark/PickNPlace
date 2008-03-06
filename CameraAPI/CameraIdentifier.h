@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-namespace camera {
+namespace camera 
+{
 
 class CameraIdentifier
 {

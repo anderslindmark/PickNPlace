@@ -5,7 +5,8 @@
 #include "Camera.h"
 #include <vector>
 
-namespace camera {
+namespace camera 
+{
 
 class Driver
 {

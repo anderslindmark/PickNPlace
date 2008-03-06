@@ -3,7 +3,8 @@
 #include "log.h"
 #include <sstream>
 
-namespace camera {
+namespace camera 
+{
 
 DummyDriver::DummyDriver()
 {
@@ -40,13 +41,15 @@ CameraIdentifierList DummyDriver::getCameraIdentifiers()
 	return identifiers;
 }
 
-Camera *DummyDriver::createCamera(CameraIdentifier identifier) {
+Camera *DummyDriver::createCamera(CameraIdentifier identifier) 
+{
 	LOG_TRACE("DummyDriver::createCamera()");
 	LOG_DEBUG("DummyDriver::createCamera(): Creating camera " << identifier.encode());
 	return new DummyCamera(_width, _height);
 }
 
-void DummyDriver::setImageSize(int width, int height) {
+void DummyDriver::setImageSize(int width, int height)
+{
 	_width = width;
 	_height = height;
 }

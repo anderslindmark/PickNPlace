@@ -5,11 +5,13 @@
 #include "Camera.h"
 #include "ImageBuffer.h"
 
-namespace camera {
+namespace camera 
+{
 
 //typedef void (*CameraCallbackFunction)(void *context, Camera *camera);
 
-class CameraListener {
+class CameraListener 
+{
 	public:
 		virtual void cameraNewImage(Camera *camera) = 0;
 		virtual void cameraError(Camera *camera, int errorCode, const std::string &errorMessage) = 0;

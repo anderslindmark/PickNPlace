@@ -3,7 +3,8 @@
 
 #include "Driver.h"
 
-namespace camera {
+namespace camera 
+{
 
 class DummyDriver : public Driver
 {

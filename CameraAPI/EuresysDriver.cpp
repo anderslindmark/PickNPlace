@@ -4,7 +4,8 @@
 #include <sstream>
 #include "euresys/Include/MultiCam32.h"
 
-namespace camera {
+namespace camera 
+{
 
 EuresysDriver::EuresysDriver()
 {

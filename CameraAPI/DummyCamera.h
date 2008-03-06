@@ -3,9 +3,11 @@
 
 #include "Camera.h"
 
-namespace camera {
+namespace camera 
+{
 
-class DummyCamera : public Camera {
+class DummyCamera : public Camera 
+{
 	public:
 		DummyCamera(int width, int height);
 		~DummyCamera();

@@ -3,11 +3,14 @@
 #include <stdexcept>
 #include "log.h"
 
-namespace camera {
-namespace util {
+namespace camera 
+{
+namespace util 
+{
 
 /*
-struct BITMAPFILEHEADER { 
+struct BITMAPFILEHEADER 
+{ 
 	unsigned short	bfType;
 	unsigned long	bfSize;
 	unsigned short	bfReserved1;
@@ -15,7 +18,8 @@ struct BITMAPFILEHEADER {
 	unsigned long	bfOffBits;
 };
 
-struct BITMAPINFOHEADER {
+struct BITMAPINFOHEADER 
+{
 	unsigned long	biSize; 
 	long			biWidth; 
 	long			biHeight; 
@@ -31,13 +35,15 @@ struct BITMAPINFOHEADER {
 */
 
 // Because the datatype short is saved as a long (4 bytes) all short have been replaced
-struct BMPHeader { 
+struct BMPHeader 
+{ 
 	unsigned long	bfSize;
 	unsigned long	bfReserved1And2;
 	unsigned long	bfOffBits;
 };
 
-struct BMPInfoHeader {
+struct BMPInfoHeader 
+{
 	unsigned long	biSize;
 	long			biWidth;
 	long			biHeight;
@@ -51,15 +57,18 @@ struct BMPInfoHeader {
 };
 
 
-ImageBuffer *loadBMP(const char *filename) {
+ImageBuffer *loadBMP(const char *filename) 
+{
 	LOG_TRACE("loadBMP()");
 	LOG_ERROR("loadBMP not implemented! Returning NULL");
 	return NULL;
 }
 
-void saveBMP(const char *filename, const ImageBuffer *image) {
+void saveBMP(const char *filename, const ImageBuffer *image)
+{
 	LOG_TRACE("saveBMP()");
-	if(image->getFormat() != ImageBuffer::FORMAT_RGB24) {
+	if(image->getFormat() != ImageBuffer::FORMAT_RGB24) 
+	{
 		LOG_ERROR("saveBMP: Trying to save ImageBuffer with format " << image->getFormat());
 		throw std::runtime_error("The only supported format is RGB24");
 	}
@@ -96,18 +105,23 @@ void saveBMP(const char *filename, const ImageBuffer *image) {
 	
 	// Start with the bottom left pixel (WHY MICROSOFT? WHY?!)
 	buffer += 3 * (width * height - width);
-	for(int y = 0; y < height; y++) {
-		for(int x = 0; x < width; x++) {
+	for(int y = 0; y < height; y++) 
+	{
+		for(int x = 0; x < width; x++) 
+		{
 			file.put(*(buffer + 2)); // B
 			file.put(*(buffer + 1)); // G
 			file.put(*(buffer)); // R
 			// Move to next pixel
 			buffer += 3;
 		}
+
 		// Every line must be n * 4 bytes
-		for(int i = 0; i < linePadding; i++) {
+		for(int i = 0; i < linePadding; i++) 
+		{
 			file.put('\0');
 		}
+
 		// Move up one line
 		buffer -= 3 * 2 * width;
 	}

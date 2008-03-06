@@ -2,7 +2,8 @@
 #include "CameraManager.h"
 #include "CameraException.h"
 
-namespace camera {
+namespace camera 
+{
 
 CameraManager::CameraManager()
 {

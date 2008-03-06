@@ -2,7 +2,8 @@
 #include "log.h"
 #include <sstream>
 
-namespace camera {
+namespace camera 
+{
 
 Driver::Driver()
 {
