@@ -200,11 +200,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EuresysCamera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\EuresysDriver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ImageBuffer.cpp"
+				RelativePath=".\Image.cpp"
 				>
 			</File>
 			<File
@@ -254,11 +258,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EuresysCamera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EuresysDriver.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ImageBuffer.h"
+				RelativePath=".\Image.h"
 				>
 			</File>
 			<File

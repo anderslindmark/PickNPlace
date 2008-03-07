@@ -8,8 +8,7 @@ DummyCamera::DummyCamera(int width, int height)
 {
 	LOG_TRACE("DummyCamera::DummyCamera()");
 	
-	_image = new ImageBuffer(width, height, ImageBuffer::FORMAT_RGB24);
-	
+	_image = new Image(width, height, Image::FORMAT_RGB24);
 	// Set whole buffer to zero
 	int bufferSize = _image->getBufferSize();
 	unsigned char *p = _image->getBufferAddress();
@@ -29,7 +28,7 @@ DummyCamera::~DummyCamera()
 	delete _image;
 }
 
-ImageBuffer *DummyCamera::getLastImage() 
+Image *DummyCamera::getLastImage()
 {
 	LOG_TRACE("DummyCamera::getLastImage()");
 	return _image;
@@ -41,19 +40,21 @@ void DummyCamera::start()
 	_running = true;
 	
 	// Just draw something
-	Buffer *buffer = _image->getBufferAddress();
+	ImageBuffer *buffer = _image->getBufferAddress();
 	int height = _image->getHeight();
 	int width = _image->getWidth();
-	for(int y = 0; y < height; y++) 
+	ImageBuffer c;
+	for(int y = 0; y < height; y++)
 	{
-		for(int x = 0; x < width; x++) 
+		for(int x = 0; x < width; x++)
 		{
-			// It should be 3 bytes per pixel
-			*buffer = y^x % 256; // Red
+			// Using RGB24
+			c = y^x % 256;
+			*buffer = c; // Red
 			buffer++;
-			*buffer = y^x % 256; // Green
+			*buffer = c; // Green
 			buffer++;
-			*buffer = y^x % 256; // Blue
+			*buffer = c; // Blue
 			buffer++;
 		}
 	}

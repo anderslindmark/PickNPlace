@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Camera.h"
-#include "ImageBuffer.h"
 
 namespace camera 
 {

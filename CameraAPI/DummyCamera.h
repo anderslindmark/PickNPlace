@@ -15,11 +15,11 @@ class DummyCamera : public Camera
 		void start();
 		void stop();
 		bool isRunning();
-		ImageBuffer* getLastImage();
+		Image* getLastImage();
 		
 	private:
 		bool _running;
-		ImageBuffer *_image;
+		Image *_image;
 };
 
 } // namespace camera

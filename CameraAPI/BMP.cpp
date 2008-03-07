@@ -34,7 +34,7 @@ struct BITMAPINFOHEADER
 };
 */
 
-// Because the datatype short is saved as a long (4 bytes) all short have been replaced
+// Because the datatype char (1 byte) and short (2 bytes) is saved as a long (4 bytes) all char have been removed and all short have been replaced
 struct BMPHeader 
 { 
 	unsigned long	bfSize;
@@ -57,17 +57,17 @@ struct BMPInfoHeader
 };
 
 
-ImageBuffer *loadBMP(const char *filename) 
+Image *loadBMP(const char *filename)
 {
 	LOG_TRACE("loadBMP()");
 	LOG_ERROR("loadBMP not implemented! Returning NULL");
 	return NULL;
 }
 
-void saveBMP(const char *filename, const ImageBuffer *image)
+void saveBMP(const char *filename, const Image *image)
 {
 	LOG_TRACE("saveBMP()");
-	if(image->getFormat() != ImageBuffer::FORMAT_RGB24) 
+	if(image->getFormat() != Image::FORMAT_RGB24)
 	{
 		LOG_ERROR("saveBMP: Trying to save ImageBuffer with format " << image->getFormat());
 		throw std::runtime_error("The only supported format is RGB24");
@@ -100,7 +100,7 @@ void saveBMP(const char *filename, const ImageBuffer *image)
 	file.write((char *) &header, sizeof(BMPHeader));
 	file.write((char *) &infoHeader, sizeof(BMPInfoHeader));
 	
-	camera::Buffer *buffer = image->getBufferAddress();
+	camera::ImageBuffer *buffer = image->getBufferAddress();
 	int linePadding = width % 4;
 	
 	// Start with the bottom left pixel (WHY MICROSOFT? WHY?!)

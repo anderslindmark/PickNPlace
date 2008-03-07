@@ -2,6 +2,7 @@
 #define __EURESYSDRIVER_H__
 
 #include "Driver.h"
+#include "Image.h"
 
 namespace camera 
 {
@@ -9,7 +10,7 @@ namespace camera
 class EuresysDriver : public Driver
 {
 	public:
-		static const int MAX_CAMERAS_PER_BOARD = 16;
+		static const int MAX_BOARD_COUNT = 8;
 		
 		EuresysDriver();
 		~EuresysDriver();
@@ -19,9 +20,13 @@ class EuresysDriver : public Driver
 		int getVersionMinor() { return 1; }
 		std::string getIdentifier() { return "multicamforpicolo"; }
 		
-		std::vector<CameraIdentifier> getCameraIdentifiers();
-	private:
+		CameraIdentifierList getCameraIdentifiers();
+		Camera *createCamera(CameraIdentifier identifier);
 		
+		static Image::Format fromEuresysFormat(int format);
+		static int toEuresysFormat(Image::Format format);
+	private:
+		std::vector<CameraIdentifier> identifiers;
 };
 
 } // namespace camera
