@@ -168,11 +168,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineMovePolygonCommand.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineMoveRelativeCommand.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MachineParkCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachinePolygon.cpp"
 				>
 			</File>
 			<File
@@ -242,11 +250,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineMovePolygonCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineMoveRelativeCommand.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MachineParkCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachinePolygon.h"
 				>
 			</File>
 			<File

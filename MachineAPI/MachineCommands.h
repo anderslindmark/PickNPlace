@@ -8,6 +8,7 @@
 #include "MachineParkCommand.h"
 #include "MachineMoveRelativeCommand.h"
 #include "MachineSetSpeedCommand.h"
+#include "MachineMovePolygonCommand.h"
 
 #include "DiagonalTest.h" // TODO: REMOVE ME
 

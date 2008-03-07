@@ -4,9 +4,9 @@
 #include "MachineCommand.h"
 #include "MachineState.h"
 
-class MachineSetSpeedCommand :
-	public MachineCommand
+class MachineSetSpeedCommand : public MachineCommand
 {
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineSetSpeedCommand(int speed);
 	~MachineSetSpeedCommand(void);
@@ -16,7 +16,6 @@ private:
 	bool DoCommand(SerialPort &sp);
 	MachineSetSpeedCommand* Copy();
 	int m_speed;
-
 };
 
 #endif // __MACHINESETSPEEDCOMMAND_H__

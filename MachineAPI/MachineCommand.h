@@ -12,6 +12,12 @@
 #define __MACHINECOMMAND_H__
 
 #define M_PI	3.141592653589793238462643383279502884197169399375
+#define MACHINE_COMMAND_FRIENDS		friend class MachineMoveAbsoluteCommand; \
+									friend class MachineMovePolygonCommand; \
+									friend class MachineMoveRelativeCommand; \
+									friend class MachineParkCommand; \
+									friend class MachineRotateAbsoluteCommand; \
+									friend class MachineSetSpeedCommand
 
 #include <string>
 #include "MachineState.h"
@@ -35,6 +41,10 @@ public:
 	/// \param current the current state that the Pick n Place machine is in
 	/// \return the state after that this command would have been executed
 	virtual MachineState GetAfterState(MachineState &current) = 0;
+
+	/// \brief Checks whether the command has more states
+	/// \return true if the command has more states
+	virtual bool HasNextState();
 
 	/// \brief String representation of the command
 	///

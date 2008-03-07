@@ -18,9 +18,9 @@
 
 /// \class MachineParkCommand
 /// \brief Return the machine to origo and rotate the head to it's starting position
-class MachineParkCommand :
-	public MachineCommand
+class MachineParkCommand : public MachineCommand
 {
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineParkCommand(void);
 	~MachineParkCommand(void);

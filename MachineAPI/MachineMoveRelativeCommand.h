@@ -15,9 +15,9 @@
 #include "MachineMoveAbsoluteCommand.h"
 #include "MachineEvent.h"
 
-class MachineMoveRelativeCommand :
-	public MachineCommand
+class MachineMoveRelativeCommand : public MachineCommand
 {
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineMoveRelativeCommand(Axis axis, int distance);
 	~MachineMoveRelativeCommand(void);

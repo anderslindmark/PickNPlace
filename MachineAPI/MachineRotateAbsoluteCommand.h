@@ -15,10 +15,9 @@
 
 /// \class MachineRotateAbsoluteCommand
 /// \brief Rotate the head on the Pick N Place machine to a specific angle
-class MachineRotateAbsoluteCommand :
-	public MachineCommand
+class MachineRotateAbsoluteCommand : public MachineCommand
 {
-	friend class MachineParkCommand;
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineRotateAbsoluteCommand(float angle);
 	~MachineRotateAbsoluteCommand(void);

@@ -39,7 +39,7 @@ struct MachineSettings
 	float rotMin;
 	float rotMax;
 	MachineSettings():	xMin(0), xMax(470000), yMin(0), yMax(193000),
-						zMin(0), zMax(10000), rotMin(0.0), rotMax(2*M_PI) {};
+						zMin(0), zMax(10000), rotMin((float)0.0), rotMax((float)2*M_PI) {};
 };
 
 
@@ -123,7 +123,7 @@ private:
 	bool initiating; ///< Indication wheter the Machine Controller is being initialized
 	vector<Handler> m_handlers; ///< Vector of event subscribers
 	MachineCommand *m_cmd;	///< Current command beeing processed
-	MachineState currentState; ///< Current state of the Pick n Place machine.
+	MachineState m_currentState; ///< Current state of the Pick n Place machine.
 	MachineSettings m_settings; ///< Settings for the machine.
 	/// \brief Send a event to all subscribers
 	///

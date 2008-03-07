@@ -19,11 +19,9 @@
 
 /// \class MachineMoveAbsoluteCommand
 /// \brief Move the Pick n Place machine to an absolue position
-class MachineMoveAbsoluteCommand :
-	public MachineCommand
+class MachineMoveAbsoluteCommand : public MachineCommand
 {
-	friend class MachineParkCommand;
-	friend class MachineMoveRelativeCommand;
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);

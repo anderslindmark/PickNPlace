@@ -21,7 +21,7 @@ struct ThreadArg
 	ThreadArg(MachineController *_mc) : mc(_mc) { };
 };
 
-MachineController::MachineController(string serialPort) : currentState()
+MachineController::MachineController(string serialPort)
 {
 	sp = NULL;
 	comPort = serialPort;
@@ -32,6 +32,7 @@ MachineController::MachineController(string serialPort) : currentState()
 	thread = NULL;
 	m_cmd = NULL;
 	m_settings = MachineSettings();
+	m_currentState = MachineState();
 	runCmdMutex = CreateMutex( 
         NULL,   // default security attributes
         FALSE,  // initially not owned
@@ -150,17 +151,20 @@ void MachineController::DoCommand()
 	}
 	else
 	{
-		
-		try
+		do
 		{
-			m_cmd->DoCommand(*sp);
+			try
+			{
+				m_cmd->DoCommand(*sp);
+			}
+			catch (MachineEvent e)
+			{
+				cout << "Oh noes" << endl;
+				cout << e.GetEventMsg() << e.GetEventType() << endl;
+				// TODO: clean up, maybe try a park command? exit?.
+			}
 		}
-		catch (MachineEvent e)
-		{
-			cout << "Oh noes" << endl;
-			cout << e.GetEventMsg() << e.GetEventType() << endl;
-			// TODO: clean up, maybe try a park command? exit?.
-		}
+		while(m_cmd->HasNextState());
 
 		if (initiating)
 		{
@@ -168,6 +172,7 @@ void MachineController::DoCommand()
 			initiating = false;
 			SendEvent(MachineEvent(EVENT_MACHINE_INITIALIZED, m_cmd->ToString()));
 		}
+		
 		SendEvent(MachineEvent(EVENT_CMD_DONE, m_cmd->ToString()));
 	}
 	working = false;
@@ -207,7 +212,7 @@ void MachineController::SendEvent(MachineEvent &e)
 
 MachineState MachineController::GetCurrentState()
 {
-	return currentState;
+	return m_currentState;
 }
 
 bool MachineController::IsInitialized()
@@ -222,39 +227,45 @@ bool MachineController::IsBusy()
 
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
-	MachineState state = cmd.GetAfterState(currentState);
-	MachineStateStruct mss = state.GetState();
+	MachineState currentState = m_currentState;
+	do
+	{
+		MachineState state = cmd.GetAfterState(currentState);
+		MachineStateStruct mss = state.GetState();
 
-	cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.speed << endl;
-	if (mss.x > 350000)
-	{
-		m_settings.zMax = 0;	// TODO: Find max Z
-	}
-	else
-	{
-		m_settings.zMax = 10000;
-	}
+		cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.speed << endl;
+		if (mss.x > 350000)
+		{
+			m_settings.zMax = 0;	// TODO: Find max Z
+		}
+		else
+		{
+			m_settings.zMax = 10000;
+		}
 
-	if (!(mss.x >= m_settings.xMin && mss.x <= m_settings.xMax))
-	{
-		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
-		return false;
+		if (!(mss.x >= m_settings.xMin && mss.x <= m_settings.xMax))
+		{
+			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in X-axis");
+			return false;
+		}
+		else if (!(mss.y >= m_settings.yMin && mss.y <= m_settings.yMax))
+		{
+			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
+			return false;
+		}
+		else if (!(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax))
+		{
+			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
+			return false;
+		}
+		else if (!(mss.rot >= m_settings.rotMin && mss.rot <= m_settings.rotMax))
+		{
+			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in rotation");
+			return false;
+		}
+		currentState = state;
 	}
-	else if (!(mss.y >= m_settings.yMin && mss.y <= m_settings.yMax))
-	{
-		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
-		return false;
-	}
-	else if (!(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax))
-	{
-		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
-		return false;
-	}
-	else if (!(mss.rot >= m_settings.rotMin && mss.rot <= m_settings.rotMax))
-	{
-		validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in rotation");
-		return false;
-	}
-	currentState = state;
+	while (cmd.HasNextState());
+	m_currentState = currentState;
 	return true;
 }
