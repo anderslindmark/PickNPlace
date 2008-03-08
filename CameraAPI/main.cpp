@@ -1,12 +1,36 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "CameraManager.h"
 #include "DummyDriver.h"
 #include "EuresysDriver.h"
 #include "Camera.h"
+#include "CameraListener.h"
 #include "CameraException.h"
 #include "BMP.h"
+#include "Image.h"
 #include "log.h"
+
+class MyListener : public camera::CameraListener
+{
+	public:
+		MyListener() : image(NULL) {}
+
+		void cameraNewImage(camera::Camera *camera)
+		{
+			std::cout << "New image!" << std::endl;
+			image = camera->getLastImage();
+
+		}
+
+		void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
+		{
+			std::cout << "Error! (#" << errorCode << ": " << errorMessage << ")" << std::endl;
+		}
+		
+		camera::Image *image;
+};
+
 
 int main()
 {
@@ -18,10 +42,11 @@ int main()
 	dd.setImageSize(500, 500);
 	cm.addDriver(&dd);
 	
+	camera::EuresysDriver *ed;
 	try
 	{
-		camera::EuresysDriver ed;
-		cm.addDriver(&ed);
+		ed = new camera::EuresysDriver();
+		cm.addDriver(ed);
 	}
 	catch(camera::CameraException &e)
 	{
@@ -29,17 +54,104 @@ int main()
 	}
 	
 	camera::CameraIdentifierList identifiers = cm.getCameraIdentifiers();
-	std::cout << "Available cameras:" << std::endl;
-	int i = 0;
-	for(camera::CameraIdentifierList::const_iterator iter = identifiers.begin(); iter != identifiers.end(); iter++)
+	camera::Camera *c = NULL;
+	MyListener cameraListener;
+	std::string command;
+	while(1)
 	{
-		std::cout << "  #" << i << ": " << (*iter).encode() << std::endl;
-		i++;
+		std::cout << "Command: ";
+		std::cin >> command;
+		if(command == "exit")
+		{
+			break;
+		}
+		else if(command == "help")
+		{
+			std::cout << "Available commands:" << std::endl;
+			std::cout << "    exit:             Exit the program" << std::endl;
+			std::cout << "    help:             Show this help text" << std::endl;
+			std::cout << "    camera<nr>:       Change the active camera" << std::endl;
+			std::cout << "    start:            Start the active camera" << std::endl;
+			std::cout << "    stop:             Stop the active camera" << std::endl;
+			std::cout << "    save:             Save the last image from the active camera" << std::endl;
+			std::cout << std::endl;
+			std::cout << "    Available cameras:" << std::endl;
+			
+			int i = 0;
+			for(camera::CameraIdentifierList::const_iterator iter = identifiers.begin(); iter != identifiers.end(); iter++)
+			{
+				std::cout << "        #" << i << ": " << (*iter).encode() << std::endl;
+				i++;
+			}
+		}
+		else if(command.substr(0, 6) == "camera")
+		{
+			if(c != NULL)
+			{
+				delete c;
+			}
+
+			try
+			{
+				int id;
+				std::stringstream ss;
+				ss << command.substr(6);
+				ss >> id;
+				std::cout << "Creating camera #" << id <<"..." << std::endl;
+				c = cm.createCamera(identifiers.at(id));
+				c->setListener(&cameraListener);
+			}
+			catch(camera::CameraException &e)
+			{
+				std::cout << "Camera exception: " << e.what() << std::endl;
+			}
+			catch(...)
+			{
+				std::cout << "Unknown exception" << std::endl;
+			}
+		}
+		else if(command == "start")
+		{
+			if(c == NULL)
+			{
+				std::cout << "No camera active" << std::endl;
+			}
+			else
+			{
+				c->start();
+			}
+		}
+		else if(command == "stop")
+		{
+			if(c == NULL)
+			{
+				std::cout << "No camera active" << std::endl;
+			}
+			else
+			{
+				c->stop();
+			}
+		}
+		else if(command == "save")
+		{
+			try
+			{
+				camera::util::saveBMP("test.bmp", cameraListener.image);
+			}
+			catch(std::runtime_error &e)
+			{
+				std::cout << "Runtime error: " << e.what() << std::endl;
+			} catch(...)
+			{
+				std::cout << "Unknown exception" << std::endl;
+			}
+		}
+		else
+		{
+			std::cout << "Unknown command. Try 'help'" << std::endl;
+		}
 	}
-	
-	std::cout << "Creating camera #0..." << std::endl;
-	camera::Camera *c = cm.createCamera(identifiers.at(0));
-	c->start();
-	camera::util::saveBMP("test.bmp", c->getLastImage());
+
+	delete ed;
 	delete c;
 }

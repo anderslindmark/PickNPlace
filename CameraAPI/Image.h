@@ -27,6 +27,8 @@ class Image {
 		int getHeight() const;
 		int getBytesPerPixel() const;
 		static int formatBytesPerPixel(Format format);
+
+		void *userData;
 		
 	private:
 		void init(int width, int height, Format format, int bytesPerPixel);

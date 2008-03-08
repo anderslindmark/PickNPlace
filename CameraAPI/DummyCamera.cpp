@@ -58,6 +58,8 @@ void DummyCamera::start()
 			buffer++;
 		}
 	}
+
+	doNewImageCallback();
 }
 
 void DummyCamera::stop()

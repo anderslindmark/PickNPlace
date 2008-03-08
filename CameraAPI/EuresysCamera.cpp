@@ -10,38 +10,48 @@ namespace camera {
 namespace euresys {
 void WINAPI surfaceAvailableCallback(PVOID context, PECEVENTINFO eventInfo)
 {
-	((EuresysCamera *) context)->SurfaceAvailableCallback(eventInfo);
+	((EuresysCamera *) context)->surfaceAvailableCallback(eventInfo);
 }
 
 void WINAPI errorCallback(PVOID context, PECEVENTINFO eventInfo)
 {
-	((EuresysCamera *) context)->ErrorCallback(eventInfo);
+	((EuresysCamera *) context)->errorCallback(eventInfo);
 }
 
 } // namespace euresys
 
-EuresysCamera::EuresysCamera(const std::string &identifier) {
-	EuresysCamera(identifier, -1, -1, Image::FORMAT_RGB24, 1);
-}
-
 EuresysCamera::EuresysCamera(const std::string &identifier, int width, int height, Image::Format format, int numSurfaces)
 {
+	LOG_TRACE("EuresysCamera::EuresysCamera()");
+
+	lastImage = NULL;
+
 	initialize(identifier);
 	
 	setParameters(width, height, format);
 	
 	createSurfaces(numSurfaces);
 	
+	registerCallbacks();
+
+	stop();
+
 	startAcquisition();
 }
 
 EuresysCamera::~EuresysCamera()
 {
-	// TODO: Deallocate image buffers
+	LOG_TRACE("EuresysCamera::~EuresysCamera()");
+	while(!images.empty())
+	{
+		delete images.back();
+		images.pop_back();
+	}
 }
 
 void EuresysCamera::start()
 {
+	LOG_TRACE("EuresysCamera::start()");
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_RepeatGrabCount, -1 );
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_ChannelState, CHANNEL_STATE_ACTIVE);
 	_running = true;
@@ -49,23 +59,27 @@ void EuresysCamera::start()
 
 void EuresysCamera::stop()
 {
+	LOG_TRACE("EuresysCamera::stop()");
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_ChannelState, CHANNEL_STATE_IDLE);
 	_running = false;
 }
 
 bool EuresysCamera::isRunning()
 {
+	LOG_TRACE("EuresysCamera::isRunning()");
 	return _running;
 }
 
 Image* EuresysCamera::getLastImage()
 {
+	LOG_TRACE("EuresysCamera::getLastImage()");
 	// TODO: Return last image
-	return NULL;
+	return lastImage;
 }
 
 void EuresysCamera::initialize(const std::string &identifier)
 {
+	LOG_TRACE("EuresysCamera::initialize()");
 	std::string::size_type pos = identifier.find_first_of('.');
 	if(pos == std::string::npos) {
 		LOG_ERROR("EuresysCamera::initialize(): '" << identifier << "' is not a valid camera identifier");
@@ -88,16 +102,25 @@ void EuresysCamera::initialize(const std::string &identifier)
 
 void EuresysCamera::setParameters(int width, int height, Image::Format format)
 {
+	LOG_TRACE("EuresysCamera::setParameters()");
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_TriggerMask, TRIGGERMASK_NONE);
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_AssemblerMask, ASMMASK__DELAY);
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_Standard, EC_STANDARD_PAL);
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_FieldMode, 2);
 	MultiCamChannelSetParameterInt(_channel, EC_PARAM_AcqColFmt, EuresysDriver::toEuresysFormat(format));
-	//MultiCamChannelSetParameterInt(_channel, EC_PARAM_ImageSizeX, width);
-	//MultiCamChannelSetParameterInt(_channel, EC_PARAM_ImageSizeY, height);
+	if(width > 0)
+	{
+		//MultiCamChannelSetParameterInt(_channel, EC_PARAM_ImageSizeX, width);
+	}
+	if(height > 0)
+	{
+		//MultiCamChannelSetParameterInt(_channel, EC_PARAM_ImageSizeY, height);
+	}
 }
 
-void EuresysCamera::createSurfaces(int numSurfaces) {
+void EuresysCamera::createSurfaces(int numSurfaces)
+{
+	LOG_TRACE("EuresysCamera::createSurfaces()");
 	int width;
 	int height;
 	int euresysFormat;
@@ -117,6 +140,7 @@ void EuresysCamera::createSurfaces(int numSurfaces) {
 	for(int i = 0; i < numSurfaces; i++)
 	{
 		Image *image = new Image(width, height, format);
+		images.push_back(image);
 		surfaceInfo.Size = image->getBufferSize();
 		surfaceInfo.Pitch = image->getWidth() * image->getBytesPerPixel();
 		surfaceInfo.Address = image->getBufferAddress();
@@ -128,6 +152,9 @@ void EuresysCamera::createSurfaces(int numSurfaces) {
 			throw CameraException("Failed to create surface");
 		}
 		
+		// Save the handle in the image
+		image->userData = (void *) surface;
+
 		ECSTATUS status = MultiCamChannelAddSurface(_channel, surface);
 		if(status != EC_OK)
 		{
@@ -139,6 +166,7 @@ void EuresysCamera::createSurfaces(int numSurfaces) {
 
 void EuresysCamera::registerCallbacks()
 {
+	LOG_TRACE("EuresysCamera::registerCallbacks()");
 	// Unmask signal
 	MultiCamSignalMask(EC_SIGNAL_SURFACE_AVAILABLE, 1);
 	
@@ -159,6 +187,7 @@ void EuresysCamera::registerCallbacks()
 
 void EuresysCamera::startAcquisition()
 {
+	LOG_TRACE("EuresysCamera::startAcquisition()");
 	ECSTATUS status = MultiCamSystemAcquisitionStart();
 	if(status != EC_OK)
 	{
@@ -167,59 +196,38 @@ void EuresysCamera::startAcquisition()
 	}
 }
 
-void EuresysCamera::SurfaceAvailableCallback(PECEVENTINFO eventInfo)
+void EuresysCamera::surfaceAvailableCallback(PECEVENTINFO eventInfo)
 {
-	/*
-	if (!m_bOnGoingRefresh)
+	LOG_TRACE("EuresysCamera::surfaceAvailableCallback()");
+	LOG_DEBUG("EuresysCamera::surfaceAvailableCallback(): " << eventInfo->Flags);
+	
+	// TODO: To something cool if eventInfo->Flags & EC_ERROR_NOSIG
+	// TODO: Save eventInfo->TimeCode to the image
+
+	// Find the image
+	std::vector<Image *>::const_iterator iter;
+	for(iter = images.begin(); iter != images.end(); iter++)
 	{
-		for(int i=0;i<3;i++){
-			if(pInfo->SurfaceID == (UINT32)m_hSurface[i]){
-				ImgOper(IMG_INVERT, (EROIBW8*) m_pImage[i], (EROIBW8*) m_pTreatmentImage);
-				i=3;
-			}
+		if((*iter)->userData == (void *) eventInfo->SurfaceID)
+		{
+			lastImage = (*iter);
+			doNewImageCallback();
+			return;
 		}
-		RECT RectImageSize = { 0, 0, m_ImageSizeX-1 , m_ImageSizeY-1 };
-		m_bOnGoingRefresh = TRUE;
-		InvalidateRect(&RectImageSize, FALSE);
 	}
-	char pTexte [256] ;
 
-	if ( pInfo->Flags & EC_ERROR_NOSIG )
-	{
-		m_bLive = FALSE ;
-
-		sprintf(pTexte, "Event %d, Channel %03lx, Surface %08lx, Flags %08lx, TimeCode %03lx, Reserved %08lx.\n"
-				, pInfo->EventID 
-				, pInfo->ChannelID 
-				, pInfo->SurfaceID 
-				, pInfo->Flags 
-				, pInfo->TimeCode 
-				, pInfo->Reserved ) ;
-
-		MessageBox(pTexte, "Surface State Processing", MB_SYSTEMMODAL | MB_ICONHAND | MB_OK);
-	}
-	*/
+	// No image found
+	LOG_ERROR("EuresysCamera::surfaceAvailableCallback(): No image with handle " << eventInfo->SurfaceID << " found");
 }
-void EuresysCamera::ErrorCallback(PECEVENTINFO eventInfo)
+
+void EuresysCamera::errorCallback(PECEVENTINFO eventInfo)
 {
-	/*
-	char pTexte [256] ;
+	LOG_TRACE("EuresysCamera::errorCallback()");
+	LOG_DEBUG("EuresysCamera::errorCallback(): " << eventInfo->Flags);
+	
+	// TODO: Fix the callback
 
-	if ( pInfo->Flags & EC_ERROR_NOSIG )
-	{
-		sprintf(pTexte, "Event %d, Channel %03lx, Surface %08lx, Flags %08lx, TimeCode %03lx, Reserved %08lx.\n"
-				, pInfo->EventID 
-				, pInfo->ChannelID 
-				, pInfo->SurfaceID 
-				, pInfo->Flags 
-				, pInfo->TimeCode 
-				, pInfo->Reserved ) ;
-
-		m_bLive = FALSE ;
-
-		MessageBox(pTexte, "Error Signal Processing", MB_SYSTEMMODAL | MB_ICONHAND | MB_OK);
-	}
-	*/
+	doErrorCallback(eventInfo->Flags, "Internet?");
 }
 
 } // namespace camera

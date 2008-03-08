@@ -67,6 +67,11 @@ Image *loadBMP(const char *filename)
 void saveBMP(const char *filename, const Image *image)
 {
 	LOG_TRACE("saveBMP()");
+	if(image == NULL)
+	{
+		LOG_ERROR("saveBMP: image is NULL ");
+		throw std::runtime_error("image is NULL");
+	}
 	if(image->getFormat() != Image::FORMAT_RGB24)
 	{
 		LOG_ERROR("saveBMP: Trying to save ImageBuffer with format " << image->getFormat());

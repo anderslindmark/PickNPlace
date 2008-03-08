@@ -61,7 +61,8 @@ Camera *CameraManager::createCamera(CameraIdentifier identifier)
 	DriverList::const_iterator iter;
 	for(iter = drivers.begin(); iter != drivers.end(); iter++)
 	{
-		if(identifier.driverIdentifier == (*iter)->getIdentifier()) {
+		if(identifier.driverIdentifier == (*iter)->getIdentifier())
+		{
 			return (*iter)->createCamera(identifier);
 		}
 	}

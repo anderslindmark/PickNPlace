@@ -1,6 +1,7 @@
 #include "EuresysDriver.h"
 #include "euresys/Include/MultiCam32.h"
 #include "CameraException.h"
+#include "EuresysCamera.h"
 #include <sstream>
 #include "log.h"
 
@@ -66,8 +67,8 @@ CameraIdentifierList EuresysDriver::getCameraIdentifiers()
 
 Camera *EuresysDriver::createCamera(CameraIdentifier identifier)
 {
-	// TODO: Create a camera
-	return NULL;
+	LOG_TRACE("EuresysDriver::createCamera()");
+	return new EuresysCamera(identifier.cameraIdentifier);
 }
 
 Image::Format EuresysDriver::fromEuresysFormat(int format)
