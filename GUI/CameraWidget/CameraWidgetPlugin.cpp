@@ -39,8 +39,7 @@
 
 #include <QtPlugin>
 
-CameraWidgetPlugin::CameraWidgetPlugin(QObject *parent)
-    : QObject(parent)
+CameraWidgetPlugin::CameraWidgetPlugin(QObject *parent) : QObject(parent)
 {
     initialized = false;
 }
@@ -65,7 +64,7 @@ QWidget *CameraWidgetPlugin::createWidget(QWidget *parent)
 
 QString CameraWidgetPlugin::name() const
 {
-    return "Camera Widget";
+    return "CameraWidget";
 }
 
 QString CameraWidgetPlugin::group() const
@@ -95,7 +94,7 @@ bool CameraWidgetPlugin::isContainer() const
 
 QString CameraWidgetPlugin::domXml() const
 {
-    return "<widget class=\"CameraWidget\" name=\"CameraWidget\">\n"
+    return "<widget class=\"CameraWidget\" name=\"cameraWidget\">\n"
            " <property name=\"geometry\">\n"
            "  <rect>\n"
            "   <x>0</x>\n"
@@ -105,11 +104,10 @@ QString CameraWidgetPlugin::domXml() const
            "  </rect>\n"
            " </property>\n"
            " <property name=\"toolTip\" >\n"
-           "  <string>The current time</string>\n"
+           "  <string>Pick n Place camera widget</string>\n"
            " </property>\n"
            " <property name=\"whatsThis\" >\n"
-           "  <string>The analog clock widget displays "
-           "the current time.</string>\n"
+		   "  <string>The camera widget displays images from a pick n place camera.</string>\n"
            " </property>\n"
            "</widget>\n";
 }
@@ -119,4 +117,5 @@ QString CameraWidgetPlugin::includeFile() const
     return "CameraWidget.h";
 }
 
-Q_EXPORT_PLUGIN2(customwidgetplugin, CameraWidgetPlugin)
+Q_EXPORT_PLUGIN2(CameraWidgetPlugin, CameraWidgetPlugin)
+

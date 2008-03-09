@@ -52,7 +52,7 @@
 				AdditionalOptions="-Zm200"
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
+				AdditionalIncludeDirectories=".\CameraWidget;..\CameraAPI;..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
 				StringPooling="true"
 				RuntimeLibrary="3"
@@ -78,11 +78,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="qtmain.lib QtGui4.lib QtCore4.lib MachineAPI.lib"
+				AdditionalDependencies="qtmain.lib QtGui4.lib QtCore4.lib MachineAPI.lib CameraAPI.lib CameraWidgetPlugin.lib"
 				OutputFile="release\PicknPlaceGui.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Release;..\Debug;$(QTDIR)\lib"
+				AdditionalLibraryDirectories="..\MachineAPI\Release;..\Release;$(QTDIR)\lib;$(QTDIR)\plugins\designer"
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs=""
 				ProgramDatabaseFile=".\release/PicknPlaceGui.pdb"
@@ -126,7 +126,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Building Camera Widget Designer Plugin..."
-				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat"
+				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat &quot;$(InputDir)\CameraWidget&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200"
-				AdditionalIncludeDirectories="..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
+				AdditionalIncludeDirectories=".\CameraWidget;..\CameraAPI;..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
@@ -177,11 +177,11 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="false"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib MachineAPI.lib MSVCRTD.lib"
+				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib MachineAPI.lib MSVCRTD.lib CameraAPI.lib CameraWidgetPlugin.lib"
 				OutputFile="debug\PicknPlaceGui.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug;$(QTDIR)\lib"
+				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug;$(QTDIR)\lib;$(QTDIR)\plugins\designer"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib;libcmtd.lib"
 				DelayLoadDLLs=""

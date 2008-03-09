@@ -50,7 +50,7 @@
 				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="release,."
+				AdditionalIncludeDirectories="..\..\CameraAPI"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -128,7 +128,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
-				AdditionalIncludeDirectories="debug,."
+				AdditionalIncludeDirectories="..\..\CameraAPI"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
@@ -188,7 +188,7 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
+						AdditionalIncludeDirectories="C:\CVS\picknplace.new\trunk\CameraAPI"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -282,6 +282,10 @@
 			Name="Generated"
 			>
 			<File
+				RelativePath=".\debug\moc_CameraWidget.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
 				<FileConfiguration
@@ -294,14 +298,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\debug\moc_CameraWidget.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\release\moc_CameraWidgetPlugin.cpp"
 				>
 				<FileConfiguration
@@ -312,6 +308,10 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
+				>
 			</File>
 		</Filter>
 	</Files>

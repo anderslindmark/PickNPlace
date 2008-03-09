@@ -6,6 +6,12 @@
 
 #include "ui_MainWindow.h"		// Generated.
 #include "MachineController.h"	// MachineAPI.
+#include "CameraManager.h"
+#include "DummyDriver.h"
+#include "EuresysDriver.h"
+#include "Camera.h"
+#include "CameraListener.h"
+#include "CameraException.h"
 
 namespace PicknPlaceGui
 {
@@ -27,8 +33,10 @@ namespace PicknPlaceGui
 	private:
 		void ConnectSlots();
 
-		Ui::MainWindow m_ui;		///< Generated User Interface.
-		MachineController *m_pMC;	///< Machine controler.
+		Ui::MainWindow m_ui;					///< Generated User Interface.
+		MachineController *m_pMC;				///< Machine controler.
+		camera::CameraManager m_cameraManager;	///< Camera Manager.
+		std::vector<camera::Camera *> m_cams;	///< A list of cameras.
 	};
 }
 

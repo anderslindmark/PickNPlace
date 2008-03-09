@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PicknPlaceGui", "GUI\PicknP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MachineAPITest", "MachineAPITest\MachineAPITest.vcproj", "{783B42BC-07F2-464C-99EB-21FEE721A2AA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraWidgetPlugin", "GUI\CameraWidget\CameraWidgetPlugin.vcproj", "{988E5792-0CF3-497B-9D70-675ACF9D09F4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,10 +31,6 @@ Global
 		{783B42BC-07F2-464C-99EB-21FEE721A2AA}.Debug|Win32.Build.0 = Debug|Win32
 		{783B42BC-07F2-464C-99EB-21FEE721A2AA}.Release|Win32.ActiveCfg = Release|Win32
 		{783B42BC-07F2-464C-99EB-21FEE721A2AA}.Release|Win32.Build.0 = Release|Win32
-		{988E5792-0CF3-497B-9D70-675ACF9D09F4}.Debug|Win32.ActiveCfg = Debug|Win32
-		{988E5792-0CF3-497B-9D70-675ACF9D09F4}.Debug|Win32.Build.0 = Debug|Win32
-		{988E5792-0CF3-497B-9D70-675ACF9D09F4}.Release|Win32.ActiveCfg = Release|Win32
-		{988E5792-0CF3-497B-9D70-675ACF9D09F4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

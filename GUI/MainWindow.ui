@@ -19,86 +19,74 @@
       <item>
        <layout class="QVBoxLayout" >
         <item>
-         <widget class="QLabel" name="m_pCamera1Label" >
+         <widget class="CameraWidget" name="m_pCameraWidget1" >
           <property name="maximumSize" >
            <size>
             <width>133</width>
             <height>100</height>
            </size>
           </property>
+          <property name="toolTip" >
+           <string>Pick n Place camera widget</string>
+          </property>
+          <property name="whatsThis" >
+           <string>The camera widget displays images from a pick n place camera.</string>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="m_pCamera2Label" >
+         <widget class="CameraWidget" name="m_pCameraWidget2" >
           <property name="maximumSize" >
            <size>
             <width>133</width>
             <height>100</height>
            </size>
           </property>
+          <property name="toolTip" >
+           <string>Pick n Place camera widget</string>
+          </property>
+          <property name="whatsThis" >
+           <string>The camera widget displays images from a pick n place camera.</string>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="m_pCamera3Label" >
+         <widget class="CameraWidget" name="m_pCameraWidget3" >
           <property name="maximumSize" >
            <size>
             <width>133</width>
             <height>100</height>
            </size>
           </property>
+          <property name="toolTip" >
+           <string>Pick n Place camera widget</string>
+          </property>
+          <property name="whatsThis" >
+           <string>The camera widget displays images from a pick n place camera.</string>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="m_pMainCameraLabel" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="CameraWidget" name="m_pMainCameraWidget" >
+        <property name="toolTip" >
+         <string>The current time</string>
         </property>
-        <property name="minimumSize" >
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
+        <property name="whatsThis" >
+         <string>The analog clock widget displays the current time.</string>
         </property>
         <property name="frameShape" >
          <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="text" >
-         <string/>
-        </property>
-        <property name="scaledContents" >
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -424,6 +412,13 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CameraWidget</class>
+   <extends>QLabel</extends>
+   <header>CameraWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

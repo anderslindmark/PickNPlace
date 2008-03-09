@@ -34,6 +34,23 @@ namespace PicknPlaceGui
 		// Create the machine controller and associate a callback function with it.
 		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
 		this->m_pMC->AddEventHandler(&on_machine_event);
+
+		camera::DummyDriver *dd = new camera::DummyDriver();
+
+		dd->setImageSize(400, 400);
+		this->m_cameraManager.addDriver(dd);
+
+		camera::CameraIdentifierList identifiers = this->m_cameraManager.getCameraIdentifiers();
+		camera::Camera *c = NULL;
+		
+		for (int i = 0; i < 3; i++)
+		{
+			c = this->m_cameraManager.createCamera(identifiers.at(i));
+			c->setListener(this->m_ui.m_pMainCameraWidget);
+			this->m_cams.push_back(c);
+		}
+
+		c->start();
 	}
 
 	///

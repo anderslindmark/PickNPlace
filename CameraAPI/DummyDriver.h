@@ -1,5 +1,5 @@
 #ifndef __DUMMYDRIVER_H__
-#define __DYMMYDRIVER_H__
+#define __DUMMYDRIVER_H__
 
 #include "Driver.h"
 
@@ -29,4 +29,5 @@ class DummyDriver : public Driver
 
 } // namespace camera
 
-#endif
+#endif // __DUMMYDRIVER_H__
+
