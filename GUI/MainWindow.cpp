@@ -235,6 +235,8 @@ namespace PicknPlaceGui
 		}
 		
 		// TODO: Handle all event types and show error dialogs and such.
+
+		delete e;
 	}
 }
 
