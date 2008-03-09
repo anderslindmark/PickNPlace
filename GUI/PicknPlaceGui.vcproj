@@ -26,6 +26,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Building Camera Widget Designer Plugin..."
+				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat &quot;$(InputDir)\CameraWidget&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -123,9 +125,12 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Building Camera Widget Designer Plugin..."
+				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -276,7 +281,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on MainWindow.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui -I..\..\..\..\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Irelease -I. -I..\..\..\..\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_MainWindow.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_MainWindow.cpp&#x0D;&#x0A;"
 						Outputs="release\moc_MainWindow.cpp"
 					/>
 				</FileConfiguration>
@@ -286,7 +291,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on MainWindow.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtCore -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui -I..\..\..\..\qt-win-opensource-src-4.3.3\include\QtGui -I..\..\..\..\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Idebug -I. -I..\..\..\..\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_MainWindow.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_MainWindow.cpp&#x0D;&#x0A;"
 						Outputs="debug\moc_MainWindow.cpp"
 					/>
 				</FileConfiguration>
@@ -305,7 +310,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running UIC on MainWindow.ui"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
 						Outputs=".\ui_MainWindow.h"
 					/>
 				</FileConfiguration>
@@ -315,7 +320,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running UIC on MainWindow.ui"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
 						Outputs=".\ui_MainWindow.h"
 					/>
 				</FileConfiguration>
@@ -325,24 +330,26 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath="debug\moc_MainWindow.cpp"
+				RelativePath=".\Debug\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\release\moc_MainWindow.cpp"
+				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
 			</File>
