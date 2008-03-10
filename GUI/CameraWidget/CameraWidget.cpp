@@ -47,10 +47,16 @@ CameraWidget::CameraWidget(QWidget *parent) : QLabel(parent)
 void CameraWidget::cameraNewImage(camera::Camera *camera)
 {
 	camera::Image *image = camera->getLastImage();
-	QPixmap pixmap(image->getWidth(), image->getHeight());
-	pixmap.loadFromData(image->getBufferAddress(), image->getBufferSize());
+	/*QPixmap pixmap(image->getWidth(), image->getHeight());
+	pixmap.loadFromData(image->getBufferAddress(), image->getBufferSize(), "RGB24");
+	
+	this->setPixmap(pixmap);
+	*/
+	QImage qimage(image->getBufferAddress(), image->getWidth(), image->getHeight(), QImage::Format_RGB32);
+	QPixmap pixmap = QPixmap::fromImage(qimage);
 
 	this->setPixmap(pixmap);
+	//this->setText("Bajs");
 }
 
 void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)

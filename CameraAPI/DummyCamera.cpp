@@ -8,7 +8,7 @@ DummyCamera::DummyCamera(int width, int height)
 {
 	LOG_TRACE("DummyCamera::DummyCamera()");
 	
-	_image = new Image(width, height, Image::FORMAT_RGB24);
+	_image = new Image(width, height, Image::FORMAT_RGB32);
 	// Set whole buffer to zero
 	int bufferSize = _image->getBufferSize();
 	unsigned char *p = _image->getBufferAddress();
@@ -55,6 +55,7 @@ void DummyCamera::start()
 			*buffer = c; // Green
 			buffer++;
 			*buffer = c; // Blue
+			buffer++;
 			buffer++;
 		}
 	}

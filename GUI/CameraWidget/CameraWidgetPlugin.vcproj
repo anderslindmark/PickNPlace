@@ -47,7 +47,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
+				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\CameraAPI"
@@ -127,7 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtCore /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtGui /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtXml /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include\QtScript /Ic:\qt-win-opensource-src-4.3.3\include /Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt /Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -Zm200 "
+				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
 				AdditionalIncludeDirectories="..\..\CameraAPI"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
@@ -238,7 +238,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on CameraWidget.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Irelease -I. -Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidget.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidget.cpp&#x0D;&#x0A;"
 						Outputs="release\moc_CameraWidget.cpp"
 					/>
 				</FileConfiguration>
@@ -248,7 +248,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on CameraWidget.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Idebug -I. -Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidget.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidget.cpp&#x0D;&#x0A;"
 						Outputs="debug\moc_CameraWidget.cpp"
 					/>
 				</FileConfiguration>
@@ -262,7 +262,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on CameraWidgetPlugin.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Irelease -I. -Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
 						Outputs="release\moc_CameraWidgetPlugin.cpp"
 					/>
 				</FileConfiguration>
@@ -272,7 +272,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on CameraWidgetPlugin.h"
-						CommandLine="C:\qt-win-opensource-src-4.3.3\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -Ic:\qt-win-opensource-src-4.3.3\include\QtDesigner -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtCore -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtGui -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtXml -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include\QtScript -Ic:\qt-win-opensource-src-4.3.3\include -Ic:\qt-win-opensource-src-4.3.3\include\ActiveQt -Idebug -I. -Ic:\qt-win-opensource-src-4.3.3\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
 						Outputs="debug\moc_CameraWidgetPlugin.cpp"
 					/>
 				</FileConfiguration>

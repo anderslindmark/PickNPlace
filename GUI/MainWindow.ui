@@ -281,7 +281,14 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="m_pPositionSpinBox" />
+              <widget class="QSpinBox" name="m_pPositionSpinBox" >
+               <property name="maximum" >
+                <number>9999999</number>
+               </property>
+               <property name="singleStep" >
+                <number>1000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -388,7 +395,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>623</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_pMenuFile" >

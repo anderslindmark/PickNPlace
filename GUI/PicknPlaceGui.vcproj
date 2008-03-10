@@ -177,11 +177,11 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="false"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib MachineAPI.lib MSVCRTD.lib CameraAPI.lib CameraWidgetPlugin.lib"
+				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib MachineAPI.lib MSVCRTD.lib CameraAPI.lib CameraWidgetPlugin.lib multicam32.lib"
 				OutputFile="debug\PicknPlaceGui.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug;$(QTDIR)\lib;$(QTDIR)\plugins\designer"
+				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug;$(QTDIR)\lib;$(QTDIR)\plugins\designer;..\CameraAPI\euresys\Lib"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib;libcmtd.lib"
 				DelayLoadDLLs=""
@@ -281,7 +281,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on MainWindow.h"
-						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_MainWindow.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 &quot;$(InputPath)&quot; -o release\moc_MainWindow.cpp&#x0D;&#x0A;"
 						Outputs="release\moc_MainWindow.cpp"
 					/>
 				</FileConfiguration>
@@ -291,7 +291,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running MOC on MainWindow.h"
-						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_MainWindow.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 &quot;$(InputPath)&quot; -o debug\moc_MainWindow.cpp&#x0D;&#x0A;"
 						Outputs="debug\moc_MainWindow.cpp"
 					/>
 				</FileConfiguration>
@@ -310,7 +310,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running UIC on MainWindow.ui"
-						CommandLine="$(QTDIR)\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe &quot;$(InputPath)&quot; -o .\ui_MainWindow.h&#x0D;&#x0A;"
 						Outputs=".\ui_MainWindow.h"
 					/>
 				</FileConfiguration>
@@ -320,7 +320,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Running UIC on MainWindow.ui"
-						CommandLine="$(QTDIR)\bin\uic.exe $(InputPath) -o .\ui_MainWindow.h&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe &quot;$(InputPath)&quot; -o .\ui_MainWindow.h&#x0D;&#x0A;"
 						Outputs=".\ui_MainWindow.h"
 					/>
 				</FileConfiguration>

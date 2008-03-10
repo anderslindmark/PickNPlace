@@ -9,7 +9,7 @@ namespace camera {
 
 class EuresysCamera : public Camera {
 	public:
-		EuresysCamera(const std::string &identifier, int width = -1, int height = -1, Image::Format format = Image::FORMAT_RGB24, int numSurfaces = 3);
+		EuresysCamera(const std::string &identifier, int width = -1, int height = -1, Image::Format format = Image::FORMAT_RGB32, int numSurfaces = 3);
 		~EuresysCamera();
 		
 		void start();
