@@ -32,9 +32,6 @@
           <property name="whatsThis" >
            <string>The camera widget displays images from a pick n place camera.</string>
           </property>
-          <property name="frameShape" >
-           <enum>QFrame::StyledPanel</enum>
-          </property>
          </widget>
         </item>
         <item>
@@ -50,9 +47,6 @@
           </property>
           <property name="whatsThis" >
            <string>The camera widget displays images from a pick n place camera.</string>
-          </property>
-          <property name="frameShape" >
-           <enum>QFrame::StyledPanel</enum>
           </property>
          </widget>
         </item>
@@ -70,9 +64,6 @@
           <property name="whatsThis" >
            <string>The camera widget displays images from a pick n place camera.</string>
           </property>
-          <property name="frameShape" >
-           <enum>QFrame::StyledPanel</enum>
-          </property>
          </widget>
         </item>
        </layout>
@@ -84,9 +75,6 @@
         </property>
         <property name="whatsThis" >
          <string>The analog clock widget displays the current time.</string>
-        </property>
-        <property name="frameShape" >
-         <enum>QFrame::StyledPanel</enum>
         </property>
        </widget>
       </item>

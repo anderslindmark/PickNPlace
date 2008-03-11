@@ -39,7 +39,8 @@
 
 #include <QWidget>
 #include <QtDesigner/QDesignerExportWidget>
-#include <QtGui/QLabel>
+#include <QtGui/QPainter>
+#include <QtGui/QImage>
 #include "CameraManager.h"
 #include "DummyDriver.h"
 #include "EuresysDriver.h"
@@ -49,7 +50,7 @@
 #include "BMP.h"
 #include "Image.h"
 
-class QDESIGNER_WIDGET_EXPORT CameraWidget : public QLabel, public camera::CameraListener
+class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::CameraListener
 {
     Q_OBJECT
 	//Q_PROPERTY(Priority priority READ priority WRITE setPriority)
@@ -61,9 +62,10 @@ public:
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
 protected:
-    //void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 private:
-	camera::Image *m_pImage;
+	QImage m_image;
+	QPainter m_painter;
 };
 
 #endif // __CAMERAWIDGET_H__

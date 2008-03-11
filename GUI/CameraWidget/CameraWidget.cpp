@@ -35,28 +35,18 @@
 ****************************************************************************/
 
 #include <QtGui>
-#include <QtGui/QLabel>
 #include "CameraWidget.h"
 
-CameraWidget::CameraWidget(QWidget *parent) : QLabel(parent)
+CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 {
-	setWindowTitle(tr("Camera Widget"));
-	resize(200, 200);
+	//this->m_painter.begin(this);
 }
 
 void CameraWidget::cameraNewImage(camera::Camera *camera)
 {
-	camera::Image *image = camera->getLastImage();
-	/*QPixmap pixmap(image->getWidth(), image->getHeight());
-	pixmap.loadFromData(image->getBufferAddress(), image->getBufferSize(), "RGB24");
-	
-	this->setPixmap(pixmap);
-	*/
-	QImage qimage(image->getBufferAddress(), image->getWidth(), image->getHeight(), QImage::Format_RGB32);
-	QPixmap pixmap = QPixmap::fromImage(qimage);
-
-	this->setPixmap(pixmap);
-	//this->setText("Bajs");
+	camera::Image *newImage = camera->getLastImage();
+	this->m_image = QImage(newImage->getBufferAddress(), newImage->getWidth(), newImage->getHeight(), QImage::Format_RGB32);
+	update();
 }
 
 void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
@@ -64,4 +54,11 @@ void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std:
 	//std::cout << "Error! (#" << errorCode << ": " << errorMessage << ")" << std::endl;
 }
 
-
+void CameraWidget::paintEvent(QPaintEvent *event)
+{
+	
+	QRect updateRect = event->rect();
+	this->m_painter.begin(this);
+	this->m_painter.drawImage(updateRect, this->m_image, updateRect);
+	this->m_painter.end();
+}
