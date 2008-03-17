@@ -34,37 +34,33 @@
 **
 ****************************************************************************/
 
-#ifndef __CAMERAWIDGET_H__
-#define __CAMERAWIDGET_H__
+#ifndef __CAMERAWIDGETPLUGIN_H__
+#define __CAMERAWIDGETPLUGIN_H__
 
-#include <QWidget>
-#include <QtDesigner/QDesignerExportWidget>
-#include <QtGui/QPainter>
-#include <QtGui/QImage>
-#include "CameraManager.h"
-#include "DummyDriver.h"
-#include "EuresysDriver.h"
-#include "Camera.h"
-#include "CameraListener.h"
-#include "CameraException.h"
-#include "BMP.h"
-#include "Image.h"
+#include <QDesignerCustomWidgetInterface>
 
-class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::CameraListener
+class CameraWidgetPlugin : public QObject, public QDesignerCustomWidgetInterface
 {
     Q_OBJECT
-	//Q_PROPERTY(Priority priority READ priority WRITE setPriority)
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
 
 public:
-    CameraWidget(QWidget *parent = 0);
+    CameraWidgetPlugin(QObject *parent = 0);
 
-	void cameraNewImage(camera::Camera *camera);
-	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
+    bool isContainer() const;
+    bool isInitialized() const;
+    QIcon icon() const;
+    QString domXml() const;
+    QString group() const;
+    QString includeFile() const;
+    QString name() const;
+    QString toolTip() const;
+    QString whatsThis() const;
+    QWidget *createWidget(QWidget *parent);
+    void initialize(QDesignerFormEditorInterface *core);
 
-protected:
-    void paintEvent(QPaintEvent *event);
 private:
-	QImage m_image;
+    bool initialized;
 };
 
-#endif // __CAMERAWIDGET_H__
+#endif // __CAMERAWIDGETPLUGIN_H__

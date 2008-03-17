@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="PicknPlaceGui"
-	ProjectGUID="{D5C1F315-0D7F-47E6-B328-DCE6407B5859}"
-	RootNamespace="PicknPlaceGui"
+	Name="CameraWidgetPlugin"
+	ProjectGUID="{988E5792-0CF3-497B-9D70-675ACF9D09F4}"
+	RootNamespace="CameraWidgetPlugin"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -17,17 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\release"
+			OutputDirectory="$(QTDIR)\plugins\designer"
 			IntermediateDirectory=".\release"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Building Camera Widget Designer Plugin..."
-				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat &quot;$(InputDir)\CameraWidget&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -44,21 +42,21 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\release/PicknPlaceGui.tlb"
+				TypeLibraryName=".\release/CameraWidgetPlugin.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200"
+				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\CameraWidget;..\CameraAPI;..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
-				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
+				AdditionalIncludeDirectories="..\..\CameraAPI"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				StringPooling="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\release/PicknPlaceGui.pch"
+				PrecompiledHeaderFile=".\release/CameraWidgetPlugin.pch"
 				AssemblerListingLocation=".\release/"
 				ObjectFile=".\release/"
 				ProgramDataBaseFileName=".\release/"
@@ -77,24 +75,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="qtmain.lib QtGui4.lib QtCore4.lib MachineAPI.lib CameraAPI.lib CameraWidgetPlugin.lib"
-				OutputFile="release\PicknPlaceGui.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Release;..\Release;$(QTDIR)\lib;$(QTDIR)\plugins\designer"
-				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs=""
-				ProgramDatabaseFile=".\release/PicknPlaceGui.pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -102,13 +86,10 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\release/PicknPlaceGui.bsc"
+				OutputFile=".\release/CameraWidgetPlugin.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -116,21 +97,18 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\debug"
+			OutputDirectory="$(QTDIR)\plugins\designer"
 			IntermediateDirectory=".\debug"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Building Camera Widget Designer Plugin..."
-				CommandLine=".\CameraWidget\BuildCameraWidgetRelease.bat &quot;$(InputDir)\CameraWidget&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -144,17 +122,17 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\debug/PicknPlaceGui.tlb"
+				TypeLibraryName=".\debug/CameraWidgetPlugin.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200"
-				AdditionalIncludeDirectories=".\CameraWidget;..\CameraAPI;..\MachineAPI;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\mkspecs\default&quot;"
-				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;WIN32"
+				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
+				AdditionalIncludeDirectories="..\..\CameraAPI"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\debug/PicknPlaceGui.pch"
+				PrecompiledHeaderFile=".\debug/CameraWidgetPlugin.pch"
 				AssemblerListingLocation=".\debug/"
 				ObjectFile=".\debug/"
 				ProgramDataBaseFileName=".\debug/"
@@ -174,28 +152,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="false"
-				LinkLibraryDependencies="true"
-				AdditionalDependencies="qtmaind.lib QtGuid4.lib QtCored4.lib QtOpenGLd4.lib MachineAPI.lib MSVCRTD.lib CameraAPI.lib CameraWidgetPlugin.lib multicam32.lib"
-				OutputFile="debug\PicknPlaceGui.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Debug;..\Debug;$(QTDIR)\lib;$(QTDIR)\plugins\designer;..\CameraAPI\euresys\Lib"
-				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib;libcmtd.lib"
-				DelayLoadDLLs=""
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\debug/PicknPlaceGui.pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -203,13 +163,10 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\debug/PicknPlaceGui.bsc"
+				OutputFile=".\debug/CameraWidgetPlugin.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -224,14 +181,14 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="main.cpp"
+				RelativePath="CameraWidget.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
+						AdditionalIncludeDirectories="C:\CVS\picknplace.new\trunk\CameraAPI"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -246,7 +203,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="MainWindow.cpp"
+				RelativePath="CameraWidgetPlugin.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -273,16 +230,16 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="MainWindow.h"
+				RelativePath="CameraWidget.h"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Running MOC on MainWindow.h"
-						CommandLine="$(QTDIR)\bin\moc.exe -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 &quot;$(InputPath)&quot; -o release\moc_MainWindow.cpp&#x0D;&#x0A;"
-						Outputs="release\moc_MainWindow.cpp"
+						Description="Running MOC on CameraWidget.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidget.cpp&#x0D;&#x0A;"
+						Outputs="release\moc_CameraWidget.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -290,28 +247,23 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Running MOC on MainWindow.h"
-						CommandLine="$(QTDIR)\bin\moc.exe -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 &quot;$(InputPath)&quot; -o debug\moc_MainWindow.cpp&#x0D;&#x0A;"
-						Outputs="debug\moc_MainWindow.cpp"
+						Description="Running MOC on CameraWidget.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidget.cpp&#x0D;&#x0A;"
+						Outputs="debug\moc_CameraWidget.cpp"
 					/>
 				</FileConfiguration>
 			</File>
-		</Filter>
-		<Filter
-			Name="Form Files"
-			Filter="ui"
-			>
 			<File
-				RelativePath="MainWindow.ui"
+				RelativePath="CameraWidgetPlugin.h"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Running UIC on MainWindow.ui"
-						CommandLine="$(QTDIR)\bin\uic.exe &quot;$(InputPath)&quot; -o .\ui_MainWindow.h&#x0D;&#x0A;"
-						Outputs=".\ui_MainWindow.h"
+						Description="Running MOC on CameraWidgetPlugin.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Irelease -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o release\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
+						Outputs="release\moc_CameraWidgetPlugin.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -319,9 +271,9 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Running UIC on MainWindow.ui"
-						CommandLine="$(QTDIR)\bin\uic.exe &quot;$(InputPath)&quot; -o .\ui_MainWindow.h&#x0D;&#x0A;"
-						Outputs=".\ui_MainWindow.h"
+						Description="Running MOC on CameraWidgetPlugin.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_PLUGIN -DQT_SCRIPT_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -DQT_THREAD_SUPPORT -I$(QTDIR)\include\QtDesigner -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtCore -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtGui -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtXml -I$(QTDIR)\include\QtScript -I$(QTDIR)\include\QtScript -I$(QTDIR)\include -I$(QTDIR)\include\ActiveQt -Idebug -I. -I$(QTDIR)\mkspecs\default -D_MSC_VER=1200 -DWIN32 $(InputPath) -o debug\moc_CameraWidgetPlugin.cpp&#x0D;&#x0A;"
+						Outputs="debug\moc_CameraWidgetPlugin.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -330,7 +282,11 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\release\moc_MainWindow.cpp"
+				RelativePath=".\debug\moc_CameraWidget.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -342,10 +298,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Debug\moc_MainWindow.cpp"
+				RelativePath=".\release\moc_CameraWidgetPlugin.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -354,7 +310,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ui_MainWindow.h"
+				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
 				>
 			</File>
 		</Filter>

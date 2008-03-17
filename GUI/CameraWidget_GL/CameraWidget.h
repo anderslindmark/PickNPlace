@@ -37,7 +37,7 @@
 #ifndef __CAMERAWIDGET_H__
 #define __CAMERAWIDGET_H__
 
-#include <QWidget>
+#include <QtOpenGL/QGLWidget>
 #include <QtDesigner/QDesignerExportWidget>
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
@@ -50,7 +50,7 @@
 #include "BMP.h"
 #include "Image.h"
 
-class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::CameraListener
+class QDESIGNER_WIDGET_EXPORT CameraWidget : public QGLWidget, public camera::CameraListener
 {
     Q_OBJECT
 	//Q_PROPERTY(Priority priority READ priority WRITE setPriority)

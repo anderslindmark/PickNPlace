@@ -34,37 +34,30 @@
 **
 ****************************************************************************/
 
-#ifndef __CAMERAWIDGET_H__
-#define __CAMERAWIDGET_H__
+#include <QtGui>
+#include "CameraWidget.h"
 
-#include <QWidget>
-#include <QtDesigner/QDesignerExportWidget>
-#include <QtGui/QPainter>
-#include <QtGui/QImage>
-#include "CameraManager.h"
-#include "DummyDriver.h"
-#include "EuresysDriver.h"
-#include "Camera.h"
-#include "CameraListener.h"
-#include "CameraException.h"
-#include "BMP.h"
-#include "Image.h"
-
-class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::CameraListener
+CameraWidget::CameraWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::DirectRendering), parent)
 {
-    Q_OBJECT
-	//Q_PROPERTY(Priority priority READ priority WRITE setPriority)
+	if(!format().directRendering()) {
+		qWarning("Direct rendering not supported");
+	}
+}
 
-public:
-    CameraWidget(QWidget *parent = 0);
+void CameraWidget::cameraNewImage(camera::Camera *camera)
+{
+	camera::Image *newImage = camera->getLastImage();
+	this->m_image = QImage(newImage->getBufferAddress(), newImage->getWidth(), newImage->getHeight(), QImage::Format_RGB32);
+	update();
+}
 
-	void cameraNewImage(camera::Camera *camera);
-	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
+void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
+{
+	//std::cout << "Error! (#" << errorCode << ": " << errorMessage << ")" << std::endl;
+}
 
-protected:
-    void paintEvent(QPaintEvent *event);
-private:
-	QImage m_image;
-};
-
-#endif // __CAMERAWIDGET_H__
+void CameraWidget::paintEvent(QPaintEvent *event)
+{
+	QPainter painter(this);
+	painter.drawImage(0, 0, m_image);
+}

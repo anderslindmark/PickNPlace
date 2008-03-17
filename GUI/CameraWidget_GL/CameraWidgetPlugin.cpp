@@ -34,27 +34,88 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
 #include "CameraWidget.h"
+#include "CameraWidgetPlugin.h"
 
-CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
+#include <QtPlugin>
+
+CameraWidgetPlugin::CameraWidgetPlugin(QObject *parent) : QObject(parent)
 {
+    initialized = false;
 }
 
-void CameraWidget::cameraNewImage(camera::Camera *camera)
+void CameraWidgetPlugin::initialize(QDesignerFormEditorInterface * /* core */)
 {
-	camera::Image *newImage = camera->getLastImage();
-	this->m_image = QImage(newImage->getBufferAddress(), newImage->getWidth(), newImage->getHeight(), QImage::Format_RGB32);
-	update();
+    if (initialized)
+        return;
+
+    initialized = true;
 }
 
-void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
+bool CameraWidgetPlugin::isInitialized() const
 {
-	//std::cout << "Error! (#" << errorCode << ": " << errorMessage << ")" << std::endl;
+    return initialized;
 }
 
-void CameraWidget::paintEvent(QPaintEvent *event)
+QWidget *CameraWidgetPlugin::createWidget(QWidget *parent)
 {
-	QPainter painter(this);
-	painter.drawImage(0, 0, m_image);
+    return new CameraWidget(parent);
 }
+
+QString CameraWidgetPlugin::name() const
+{
+    return "CameraWidget";
+}
+
+QString CameraWidgetPlugin::group() const
+{
+    return "Pick n Place";
+}
+
+QIcon CameraWidgetPlugin::icon() const
+{
+    return QIcon();
+}
+
+QString CameraWidgetPlugin::toolTip() const
+{
+    return "";
+}
+
+QString CameraWidgetPlugin::whatsThis() const
+{
+    return "";
+}
+
+bool CameraWidgetPlugin::isContainer() const
+{
+    return false;
+}
+
+QString CameraWidgetPlugin::domXml() const
+{
+    return "<widget class=\"CameraWidget\" name=\"cameraWidget\">\n"
+           " <property name=\"geometry\">\n"
+           "  <rect>\n"
+           "   <x>0</x>\n"
+           "   <y>0</y>\n"
+           "   <width>100</width>\n"
+           "   <height>100</height>\n"
+           "  </rect>\n"
+           " </property>\n"
+           " <property name=\"toolTip\" >\n"
+           "  <string>Pick n Place camera widget</string>\n"
+           " </property>\n"
+           " <property name=\"whatsThis\" >\n"
+		   "  <string>The camera widget displays images from a pick n place camera.</string>\n"
+           " </property>\n"
+           "</widget>\n";
+}
+
+QString CameraWidgetPlugin::includeFile() const
+{
+    return "CameraWidget.h";
+}
+
+Q_EXPORT_PLUGIN2(CameraWidgetPlugin, CameraWidgetPlugin)
+
