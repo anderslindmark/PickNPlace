@@ -27,6 +27,11 @@ public:
 	~MachineMoveAbsoluteCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
+	bool IsValid()
+	{
+		return true;
+	}
+
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineMoveAbsoluteCommand* Copy();

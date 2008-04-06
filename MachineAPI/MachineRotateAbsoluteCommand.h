@@ -23,6 +23,10 @@ public:
 	~MachineRotateAbsoluteCommand(void);
 	MachineState GetAfterState(MachineState &oldms); 
 	string ToString();
+	bool IsValid()
+	{
+		return true;
+	}
 
 private:
 	float m_angle; ///< The angle the head should be rotated to

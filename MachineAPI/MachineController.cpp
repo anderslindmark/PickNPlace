@@ -228,6 +228,12 @@ bool MachineController::IsBusy()
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
 	MachineState currentState = m_currentState;
+	if (!cmd.IsValid())
+	{
+		validateEvent = new MachineEvent(EVENT_CMD_INVALID, "Invalid command");
+		return false;
+	}
+
 	do
 	{
 		MachineState state = cmd.GetAfterState(currentState);

@@ -23,6 +23,10 @@ public:
 	~MachineInitCommand(void);
 	MachineState GetAfterState(MachineState &current);
 	string ToString();
+	bool IsValid()
+	{
+		return true;
+	}
 
 private:
 	MachineCommand* Copy();

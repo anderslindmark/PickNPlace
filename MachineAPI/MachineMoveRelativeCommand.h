@@ -23,6 +23,11 @@ public:
 	~MachineMoveRelativeCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
+	bool IsValid()
+	{
+		return true;
+	}
+
 
 private:
 	bool DoCommand(SerialPort &sp);

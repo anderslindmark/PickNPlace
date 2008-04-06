@@ -12,6 +12,11 @@ public:
 	~MachineSetSpeedCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
+	bool IsValid()
+	{
+		return true;
+	}
+
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineSetSpeedCommand* Copy();

@@ -19,6 +19,7 @@ enum MachineEventType
 	EVENT_CMD_OUT_OF_BOUNDS, ///< The command results in a position that is out of bounds for the machine (i.e, would result in a collision with a wall)
 	EVENT_CMD_ILLEGAL,	// TODO: Is this needed? or is it replaced by OUT_OF_BOUNDS?
 	EVENT_CMD_FAILED, ///< Command failed to execute for some reason
+	EVENT_CMD_INVALID, ///< Command has internal errors.
 
 	EVENT_MACHINE_INITIALIZED, ///< Machine is initiated
 	EVENT_MACHINE_ERROR, ///< Internal error in the MachineController

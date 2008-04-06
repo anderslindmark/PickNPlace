@@ -9,7 +9,8 @@
 #include "MachineMoveRelativeCommand.h"
 #include "MachineSetSpeedCommand.h"
 #include "MachineMovePolygonCommand.h"
+#include "MachineMoveAllCommand.h"
 
-#include "DiagonalTest.h" // TODO: REMOVE ME
+//#include "DiagonalTest.h" // TODO: REMOVE ME
 
 #endif // __MACHINECOMMANDS_H__

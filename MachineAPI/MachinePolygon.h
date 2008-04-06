@@ -8,19 +8,23 @@ using namespace std;
 
 struct MachinePolygonPoint
 {
-	Axis axis;
-	int position;
-	MachinePolygonPoint(Axis a, int p): axis(a), position(p) {};
+	int x;
+	int y;
+	MachinePolygonPoint(int pos_x, int pos_y): x(pos_x), y(pos_y) {};
 };
 
 class MachinePolygon
 {
 public:
-	MachinePolygon(int startX, int startY, int startZ);
+	MachinePolygon();
 	MachinePolygon(const MachinePolygon &p);
 	~MachinePolygon(void);
-	void AddPoint(MachinePolygonPoint pp);
-	vector<MachinePolygonPoint> &GetPoints();
+	void AddPoint(MachinePolygonPoint pp); // Adds a point to the end of the list
+	void AddPoint(int index, MachinePolygonPoint pp); // Adds a point to the specified index of the list
+	void DelPoint(int index); // Deletes a point from the specified index
+	MachinePolygonPoint GetPoint(int index); // Returns the point at the specified index
+	int Size(); // Returns size of point-list
+	//vector<MachinePolygonPoint> &GetPoints();
 
 private:
 	vector<MachinePolygonPoint> m_points;

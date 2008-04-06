@@ -43,16 +43,23 @@ int main(void)
 
 	}
 	*/
-	MachinePolygon mp(0, 0, 0);
-	mp.AddPoint(MachinePolygonPoint(AXIS_Y, 10000));
-	mp.AddPoint(MachinePolygonPoint(AXIS_X, 10000));
-	mp.AddPoint(MachinePolygonPoint(AXIS_Y, 0));
-	mp.AddPoint(MachinePolygonPoint(AXIS_X, 20000));
-	mp.AddPoint(MachinePolygonPoint(AXIS_Y, 10000));
-	mp.AddPoint(MachinePolygonPoint(AXIS_X, 30000));
+	mc.RunCommand(*(new MachineMoveAllCommand(200000, 90000, 0))); mc.Wait();
+/*	MachinePolygon mp;
+	mp.AddPoint(MachinePolygonPoint(1000, 1000));
+	mp.AddPoint(MachinePolygonPoint(1000, 190000));
+	mp.AddPoint(MachinePolygonPoint(350000, 190000));
+	mp.AddPoint(MachinePolygonPoint(350000, 3));
+	mp.AddPoint(MachinePolygonPoint(0, 0));
 	mc.RunCommand(*(new MachineMovePolygonCommand(mp))); mc.Wait();
 
 	mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
+*/	
+	cin >> tmp;
+
+	/*
+	mc.RunCommand(*(new MachineMoveAllCommand(350000, 190000, 5000))); mc.Wait();
+	mc.RunCommand(*(new MachineMoveAllCommand(-1, 0, 0))); mc.Wait();
+	*/
 
 	/*
 	mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_X, 0))); mc.Wait();

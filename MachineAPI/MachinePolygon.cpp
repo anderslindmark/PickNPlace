@@ -1,10 +1,7 @@
 #include "MachinePolygon.h"
 
-MachinePolygon::MachinePolygon(int startX, int startY, int startZ)
+MachinePolygon::MachinePolygon()
 {
-	m_points.push_back(MachinePolygonPoint(AXIS_X, startX));
-	m_points.push_back(MachinePolygonPoint(AXIS_Y, startY));
-	m_points.push_back(MachinePolygonPoint(AXIS_Z, startZ));
 }
 
 MachinePolygon::MachinePolygon(const MachinePolygon &p)
@@ -21,8 +18,30 @@ void MachinePolygon::AddPoint(MachinePolygonPoint pp)
 	m_points.push_back(pp);
 }
 
+void MachinePolygon::AddPoint(int index, MachinePolygonPoint pp)
+{
+	m_points.insert(m_points.begin()+index, pp);
+}
+
+void MachinePolygon::DelPoint(int index)
+{
+	m_points.erase(m_points.begin()+index);
+}
+
+MachinePolygonPoint MachinePolygon::GetPoint(int index)
+{
+	return m_points[index];
+}
+
+int MachinePolygon::Size()
+{
+	return m_points.size();
+}
+
+/*
 vector<MachinePolygonPoint> &MachinePolygon::GetPoints()
 {
 	return m_points;
 }
+*/
 

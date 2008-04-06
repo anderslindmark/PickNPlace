@@ -37,6 +37,7 @@ MachineCommand* MachineInitCommand::Copy()
 
 bool MachineInitCommand::DoCommand(SerialPort &sp)
 {
+	ExecCommand(sp, "CR", M_ANS_CC);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "ST 1900", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);

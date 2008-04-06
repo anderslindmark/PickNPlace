@@ -17,7 +17,8 @@
 									friend class MachineMoveRelativeCommand; \
 									friend class MachineParkCommand; \
 									friend class MachineRotateAbsoluteCommand; \
-									friend class MachineSetSpeedCommand
+									friend class MachineSetSpeedCommand; \
+									friend class MachineMoveAllCommand
 
 #include <string>
 #include "MachineState.h"
@@ -50,6 +51,9 @@ public:
 	///
 	/// \return string representation of the command
 	virtual string ToString() = 0;
+
+	/// \brief If the command has errors internally other than moving out of bounds etc, this is where it shows....
+	virtual bool IsValid() = 0;
 
 protected:
 	/// \brief Do the command

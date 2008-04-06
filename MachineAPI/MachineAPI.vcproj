@@ -144,10 +144,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DiagonalTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MachineCommand.cpp"
 				>
 			</File>
@@ -165,6 +161,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineMoveAbsoluteCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAllCommand.cpp"
 				>
 			</File>
 			<File
@@ -214,10 +214,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DiagonalTest.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MachineCommand.h"
 				>
 			</File>
@@ -247,6 +243,10 @@
 			</File>
 			<File
 				RelativePath=".\MachineMoveAbsoluteCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAllCommand.h"
 				>
 			</File>
 			<File
