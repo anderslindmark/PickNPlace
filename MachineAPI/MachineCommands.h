@@ -7,10 +7,10 @@
 #include "MachineRotateAbsoluteCommand.h"
 #include "MachineParkCommand.h"
 #include "MachineMoveRelativeCommand.h"
-#include "MachineSetSpeedCommand.h"
+#include "MachineSetDispenceSpeedCommand.h"
 #include "MachineMovePolygonCommand.h"
 #include "MachineMoveAllCommand.h"
-
-//#include "DiagonalTest.h" // TODO: REMOVE ME
+#include "MachineDotDispenceCommand.h"
+#include "MachineMoveNeedleCommand.h"
 
 #endif // __MACHINECOMMANDS_H__

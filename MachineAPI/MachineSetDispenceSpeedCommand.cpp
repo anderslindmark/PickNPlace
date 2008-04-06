@@ -1,32 +1,32 @@
-#include "MachineSetSpeedCommand.h"
+#include "MachineSetDispenceSpeedCommand.h"
 #include <iostream>
 
 #define SET_SPEED_COMMAND_STRING "Machine Set Speed Command"
 #define CONVERT_TO_MACHINE_SPEED(x)	256*x+1
 
-MachineSetSpeedCommand::MachineSetSpeedCommand(int speed)
+MachineSetDispenceSpeedCommand::MachineSetDispenceSpeedCommand(int speed)
 {
 	m_speed = speed;
 }
 
-MachineSetSpeedCommand::~MachineSetSpeedCommand(void)
+MachineSetDispenceSpeedCommand::~MachineSetDispenceSpeedCommand(void)
 {
 }
 
-string MachineSetSpeedCommand::ToString()
+string MachineSetDispenceSpeedCommand::ToString()
 {
 	return string(SET_SPEED_COMMAND_STRING);
 }
 
-MachineState MachineSetSpeedCommand::GetAfterState(MachineState &oldms)
+MachineState MachineSetDispenceSpeedCommand::GetAfterState(MachineState &oldms)
 {
 	MachineStateStruct mss = oldms.GetState();
-	mss.speed = m_speed;
+	mss.dispenceState.speed = m_speed;
 	return MachineState(mss);
 }
 
 
-bool MachineSetSpeedCommand::DoCommand(SerialPort &sp)
+bool MachineSetDispenceSpeedCommand::DoCommand(SerialPort &sp)
 {
 	char speedStr[20];
 	sprintf_s(speedStr, sizeof(speedStr), "WR DM211 %d", CONVERT_TO_MACHINE_SPEED(m_speed));
@@ -39,7 +39,7 @@ bool MachineSetSpeedCommand::DoCommand(SerialPort &sp)
 	return true;
 }
 
-MachineSetSpeedCommand* MachineSetSpeedCommand::Copy()
+MachineSetDispenceSpeedCommand* MachineSetDispenceSpeedCommand::Copy()
 {
-	return new MachineSetSpeedCommand(m_speed);
+	return new MachineSetDispenceSpeedCommand(m_speed);
 }

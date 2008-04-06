@@ -11,6 +11,23 @@
 #ifndef __MACHINESTATE_H__
 #define __MACHINESTATE_H__
 
+#include <string>
+
+using namespace std;
+
+struct DispenceStateStruct
+{
+	int offsetX;
+	int offsetY;
+	int offsetZ;
+	int speed;
+	int beforeTime;
+	int afterTime;
+	int suckBackTime;
+	bool needleDown;
+
+	DispenceStateStruct(void): offsetX(0), offsetY(0), offsetZ(0), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
+};
 
 struct MachineStateStruct
 {
@@ -18,8 +35,8 @@ struct MachineStateStruct
 	int y;
 	int z;
 	float rot;
-	int speed;
-	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), speed(0) {};
+	DispenceStateStruct dispenceState;
+	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), dispenceState() {};
 };
 
 /// \class MachineState
@@ -45,6 +62,8 @@ public:
 	///
 	/// \return state struct
 	MachineStateStruct GetState();
+
+	string ToString();
 
 	/// \brief Get the x position of the state
 	/// 

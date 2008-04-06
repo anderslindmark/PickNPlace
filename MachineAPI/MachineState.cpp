@@ -9,6 +9,7 @@
 **/
 
 #include "MachineState.h"
+#include <sstream>
 
 MachineState::MachineState()
 {
@@ -30,24 +31,9 @@ MachineStateStruct MachineState::GetState()
 	return m_mss;
 }
 
-/*
-int MachineState::GetX()
+string MachineState::ToString()
 {
-	return m_x;
+	stringstream ss;
+	ss << "X: " << m_mss.x << " Y: " << m_mss.y << " Z: " << m_mss.z << " Speed: " << m_mss.dispenceState.speed;
+	return ss.str();
 }
-
-int MachineState::GetY()
-{
-	return m_y;
-}
-
-int MachineState::GetZ()
-{
-	return m_z;
-}
-
-float MachineState::GetRot()
-{
-	return m_rot;
-}
-*/

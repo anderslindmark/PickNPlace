@@ -50,15 +50,15 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "WR DM213 0", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WS T35 0", M_ANS_OK);
+	ExecCommand(sp, "WS T35 0", M_ANS_OK);	// Set Before time to 0s
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WS T36 0", M_ANS_OK);
+	ExecCommand(sp, "WS T36 0", M_ANS_OK);	// Set After time to 0s
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WS T37 0", M_ANS_OK);
+	ExecCommand(sp, "WS T37 0", M_ANS_OK);	// Set Suckback time to 0s
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WR DM210 57346", M_ANS_OK);
+	ExecCommand(sp, "WR DM210 57346", M_ANS_OK);	// Dispence speed prelude
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WR DM211 257", M_ANS_OK);
+	ExecCommand(sp, "WR DM211 257", M_ANS_OK);	// Set dispence speed to 1
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "WR DM300 35328", M_ANS_OK);
 	ExecCommand(sp, "WR DM301 2500", M_ANS_OK);

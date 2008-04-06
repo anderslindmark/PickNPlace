@@ -144,10 +144,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\MachineCommand.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MachineController.cpp"
 				>
 			</File>
@@ -156,39 +152,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MachineInitCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAbsoluteCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAllCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMovePolygonCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveRelativeCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineParkCommand.cpp"
+				RelativePath=".\MachineMoveNeedleCommand.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MachinePolygon.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineRotateAbsoluteCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineSetSpeedCommand.cpp"
 				>
 			</File>
 			<File
@@ -199,10 +167,6 @@
 				RelativePath=".\SerialPort.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\TestCommand.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -211,14 +175,6 @@
 			>
 			<File
 				RelativePath=".\Axis.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineCommandMacros.h"
 				>
 			</File>
 			<File
@@ -238,39 +194,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MachineInitCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAbsoluteCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveAllCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMovePolygonCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineMoveRelativeCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineParkCommand.h"
+				RelativePath=".\MachineMoveNeedleCommand.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MachinePolygon.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineRotateAbsoluteCommand.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MachineSetSpeedCommand.h"
 				>
 			</File>
 			<File
@@ -291,6 +219,98 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="Commands"
+			>
+			<File
+				RelativePath=".\MachineCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineCommandMacros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineDotDispenceCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineDotDispenceCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineInitCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineInitCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAbsoluteCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAbsoluteCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAllCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveAllCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMovePolygonCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMovePolygonCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveRelativeCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveRelativeCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineParkCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineParkCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineRotateAbsoluteCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineRotateAbsoluteCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetDispenceSpeedCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetDispenceSpeedCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestCommand.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

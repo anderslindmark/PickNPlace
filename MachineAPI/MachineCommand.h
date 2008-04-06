@@ -17,8 +17,11 @@
 									friend class MachineMoveRelativeCommand; \
 									friend class MachineParkCommand; \
 									friend class MachineRotateAbsoluteCommand; \
+									friend class MachineSetDispenceSpeedCommand; \
+									friend class MachineMoveAllCommand; \
+									friend class MachineDotDispenceCommand; \
 									friend class MachineSetSpeedCommand; \
-									friend class MachineMoveAllCommand
+									friend class MachineMoveNeedleCommand
 
 #include <string>
 #include "MachineState.h"

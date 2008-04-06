@@ -44,6 +44,7 @@ int main(void)
 	}
 	*/
 	mc.RunCommand(*(new MachineMoveAllCommand(200000, 90000, 0))); mc.Wait();
+	mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 /*	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(1000, 1000));
 	mp.AddPoint(MachinePolygonPoint(1000, 190000));

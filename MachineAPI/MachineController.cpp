@@ -239,7 +239,9 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 		MachineState state = cmd.GetAfterState(currentState);
 		MachineStateStruct mss = state.GetState();
 
-		cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.speed << endl;
+		//cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.dispenceState.speed << endl;
+		cout << state.ToString();
+
 		if (mss.x > 350000)
 		{
 			m_settings.zMax = 0;	// TODO: Find max Z
