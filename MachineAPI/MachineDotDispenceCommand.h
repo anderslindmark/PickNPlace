@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MACHINEDOTDISPENCECOMMAND_H__
+#define __MACHINEDOTDISPENCECOMMAND_H__
 #include "machinecommand.h"
 
 class MachineDotDispenceCommand :
@@ -10,11 +11,7 @@ public:
 	~MachineDotDispenceCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool HasNextState()
-	{
-		return false;
-	}
-
+	bool HasNextState();
 	bool IsValid()
 	{
 		return true;
@@ -25,5 +22,8 @@ private:
 	bool DoCommand(SerialPort &sp);
 
 	MachineStateStruct m_state;
+	bool m_moreStates;
 
 };
+
+#endif // __MACHINEDOTDISPENCECOMMAND_H__

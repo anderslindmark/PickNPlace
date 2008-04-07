@@ -11,7 +11,7 @@
 #ifndef __MACHINECOMMAND_H__
 #define __MACHINECOMMAND_H__
 
-#define M_PI	3.141592653589793238462643383279502884197169399375
+#define M_PI	3.141592653589793238462643383279502884197169399375f
 #define MACHINE_COMMAND_FRIENDS		friend class MachineMoveAbsoluteCommand; \
 									friend class MachineMovePolygonCommand; \
 									friend class MachineMoveRelativeCommand; \
@@ -21,7 +21,9 @@
 									friend class MachineMoveAllCommand; \
 									friend class MachineDotDispenceCommand; \
 									friend class MachineSetSpeedCommand; \
-									friend class MachineMoveNeedleCommand
+									friend class MachineSetDispenceTimeCommand; \
+									friend class MachineMoveNeedleCommand; \
+									friend class MachineLightBrightnessCommand
 
 #include <string>
 #include "MachineState.h"
@@ -48,7 +50,7 @@ public:
 
 	/// \brief Checks whether the command has more states
 	/// \return true if the command has more states
-	virtual bool HasNextState();
+	virtual bool HasNextState() { return false; };
 
 	/// \brief String representation of the command
 	///
@@ -56,7 +58,7 @@ public:
 	virtual string ToString() = 0;
 
 	/// \brief If the command has errors internally other than moving out of bounds etc, this is where it shows....
-	virtual bool IsValid() = 0;
+	virtual bool IsValid() { return true; };
 
 protected:
 	/// \brief Do the command

@@ -152,10 +152,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MachineMoveNeedleCommand.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MachinePolygon.cpp"
 				>
 			</File>
@@ -194,10 +190,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MachineMoveNeedleCommand.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MachinePolygon.h"
 				>
 			</File>
@@ -207,10 +199,6 @@
 			</File>
 			<File
 				RelativePath=".\SerialPort.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestCommand.h"
 				>
 			</File>
 		</Filter>
@@ -252,6 +240,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineLightBrightnessCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineLightBrightnessCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineMoveAbsoluteCommand.cpp"
 				>
 			</File>
@@ -265,6 +261,14 @@
 			</File>
 			<File
 				RelativePath=".\MachineMoveAllCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveNeedleCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineMoveNeedleCommand.h"
 				>
 			</File>
 			<File
@@ -308,7 +312,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineSetDispenceTimeCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetDispenceTimeCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestCommand.h"
 				>
 			</File>
 		</Filter>

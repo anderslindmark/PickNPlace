@@ -14,11 +14,6 @@
 
 using namespace std;
 
-bool MachineCommand::HasNextState()
-{
-	return false;
-}
-
 bool MachineCommand::ExecCommand(SerialPort &sp, const char *cmd, const char *ret)
 {
 	char ans[5];

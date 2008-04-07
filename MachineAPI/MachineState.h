@@ -21,12 +21,12 @@ struct DispenceStateStruct
 	int offsetY;
 	int offsetZ;
 	int speed;
-	int beforeTime;
-	int afterTime;
-	int suckBackTime;
+	float beforeTime;
+	float afterTime;
+	float suckBackTime;
 	bool needleDown;
 
-	DispenceStateStruct(void): offsetX(0), offsetY(0), offsetZ(0), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
+	DispenceStateStruct(void): offsetX(200000), offsetY(10000), offsetZ(3000), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
 };
 
 struct MachineStateStruct
@@ -35,8 +35,10 @@ struct MachineStateStruct
 	int y;
 	int z;
 	float rot;
+	int lampCameraBrightness;
+	int lampLookupBrightness;
 	DispenceStateStruct dispenceState;
-	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), dispenceState() {};
+	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), lampCameraBrightness(8), lampLookupBrightness(8),dispenceState() {};
 };
 
 /// \class MachineState

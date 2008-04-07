@@ -39,7 +39,7 @@ struct MachineSettings
 	float rotMin;
 	float rotMax;
 	MachineSettings():	xMin(0), xMax(470000), yMin(0), yMax(193000),
-						zMin(0), zMax(10000), rotMin((float)0.0), rotMax((float)2*M_PI) {};
+						zMin(0), zMax(10000), rotMin(0.0f), rotMax(2.0f*M_PI) {};
 };
 
 

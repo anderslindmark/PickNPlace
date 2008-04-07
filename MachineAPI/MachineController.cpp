@@ -151,8 +151,8 @@ void MachineController::DoCommand()
 	}
 	else
 	{
-		do
-		{
+		//do
+		//{
 			try
 			{
 				m_cmd->DoCommand(*sp);
@@ -163,8 +163,8 @@ void MachineController::DoCommand()
 				cout << e.GetEventMsg() << e.GetEventType() << endl;
 				// TODO: clean up, maybe try a park command? exit?.
 			}
-		}
-		while(m_cmd->HasNextState());
+		//}
+		//while(m_cmd->HasNextState());
 
 		if (initiating)
 		{

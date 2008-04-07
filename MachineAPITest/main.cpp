@@ -30,6 +30,18 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
+
+	int i = 0;
+	for(;;)
+	{
+		mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, i))); mc.Wait();
+		mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_LOOKUP, 15-i))); mc.Wait();
+		i++;
+		if (i == 16) i = 0;
+	}
+
+
+
 	/*
 	//mc.RunCommand(DiagonalTest()); mc.Wait();
 	//mc.RunCommand(*(new MachineInitCommand())); mc.Wait();
@@ -43,8 +55,8 @@ int main(void)
 
 	}
 	*/
-	mc.RunCommand(*(new MachineMoveAllCommand(200000, 90000, 0))); mc.Wait();
-	mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
+	//mc.RunCommand(*(new MachineMoveAllCommand(200000, 90000, 0))); mc.Wait();
+	//mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 /*	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(1000, 1000));
 	mp.AddPoint(MachinePolygonPoint(1000, 190000));
