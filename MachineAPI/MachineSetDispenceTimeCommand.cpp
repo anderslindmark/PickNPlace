@@ -2,7 +2,6 @@
 #include <iostream>
 
 #define COMMAND_STRING "Machine Set Time Command"
-#define TIMEUNIT	0.1f
 
 MachineSetDispenceTimeCommand::MachineSetDispenceTimeCommand(DispenceTimeType tt, int multiplier)
 {
@@ -25,13 +24,13 @@ MachineState MachineSetDispenceTimeCommand::GetAfterState(MachineState &oldms)
 	switch (m_tt)
 	{
 		case (DISPENCETIME_BEFORE):
-			mss.dispenceState.beforeTime = m_multiplier * TIMEUNIT;
+			mss.dispenceState.beforeTime = m_multiplier;
 			break;
 		case (DISPENCETIME_AFTER):
-			mss.dispenceState.afterTime = m_multiplier * TIMEUNIT;
+			mss.dispenceState.afterTime = m_multiplier;
 			break;
 		case (DISPENCETIME_SUCKBACK):
-			mss.dispenceState.suckBackTime = m_multiplier * TIMEUNIT;
+			mss.dispenceState.suckBackTime = m_multiplier;
 			break;
 	}
 	

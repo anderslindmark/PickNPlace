@@ -23,7 +23,8 @@
 									friend class MachineSetSpeedCommand; \
 									friend class MachineSetDispenceTimeCommand; \
 									friend class MachineMoveNeedleCommand; \
-									friend class MachineLightBrightnessCommand
+									friend class MachineLightBrightnessCommand; \
+									friend class MachinePolygonDispenceCommand
 
 #include <string>
 #include "MachineState.h"

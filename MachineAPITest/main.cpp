@@ -30,7 +30,17 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
+/*
+	mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, 3))); mc.Wait();
 
+	for (;;)
+	{
+		mc.RunCommand(*(new MachineMoveRelativeCommand(AXIS_Z, 1000))); mc.Wait();
+		cin >> tmp;
+	}
+*/
+
+	/*
 	int i = 0;
 	for(;;)
 	{
@@ -39,7 +49,7 @@ int main(void)
 		i++;
 		if (i == 16) i = 0;
 	}
-
+*/
 
 
 	/*
@@ -57,16 +67,47 @@ int main(void)
 	*/
 	//mc.RunCommand(*(new MachineMoveAllCommand(200000, 90000, 0))); mc.Wait();
 	//mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
-/*	MachinePolygon mp;
-	mp.AddPoint(MachinePolygonPoint(1000, 1000));
-	mp.AddPoint(MachinePolygonPoint(1000, 190000));
-	mp.AddPoint(MachinePolygonPoint(350000, 190000));
-	mp.AddPoint(MachinePolygonPoint(350000, 3));
-	mp.AddPoint(MachinePolygonPoint(0, 0));
-	mc.RunCommand(*(new MachineMovePolygonCommand(mp))); mc.Wait();
 
-	mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
-*/	
+
+	//mc.RunCommand(*(new MachineSetDispenceSpeedCommand(4))); mc.Wait();
+/***********************
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 50))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, 50))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 50))); mc.Wait();
+
+	MachinePolygon mp;
+	mp.AddPoint(MachinePolygonPoint(10000, 10000));
+	mp.AddPoint(MachinePolygonPoint(10000, 50000));
+	
+	mp.AddPoint(MachinePolygonPoint(20000, 50000));
+	mp.AddPoint(MachinePolygonPoint(20000, 10000));
+	
+	mp.AddPoint(MachinePolygonPoint(30000, 10000));
+	mp.AddPoint(MachinePolygonPoint(30000, 50000));
+
+	mp.AddPoint(MachinePolygonPoint(40000, 50000));
+	mp.AddPoint(MachinePolygonPoint(40000, 10000));
+	
+	mc.RunCommand(*(new MachinePolygonDispenceCommand(mp))); mc.Wait();
+*************/
+
+	MachineStateStruct mss = mc.GetCurrentState().GetState();
+	mss.dispenceState.offsetZ = 3000;
+	mc.SetCurrentState(MachineState(mss));
+
+	MachinePolygon mpY;
+	mpY.AddPoint(MachinePolygonPoint(10000, 10000));
+	mpY.AddPoint(MachinePolygonPoint(10000, 50000));
+
+	MachinePolygon mpX;
+	mpX.AddPoint(MachinePolygonPoint(10000, 10000));
+	mpX.AddPoint(MachinePolygonPoint(50000, 10000));
+
+	mc.RunCommand(*(new MachinePolygonDispenceCommand(mpY))); mc.Wait();
+	mc.RunCommand(*(new MachinePolygonDispenceCommand(mpX))); mc.Wait();
+
+	//mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
+
 	cin >> tmp;
 
 	/*
@@ -91,7 +132,7 @@ int main(void)
 
 void own(MachineEvent *e)
 {
-	cout << "EVENT MSG: " << e->GetEventMsg() << endl;
+	cout << "\nEVENT MSG: " << e->GetEventMsg() << endl << endl;
 	delete e;
 }
 

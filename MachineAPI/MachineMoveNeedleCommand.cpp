@@ -37,5 +37,7 @@ bool MachineMoveNeedleCommand::DoCommand(SerialPort &sp)
 		ExecCommand(sp, "RS 704",	M_ANS_OK);
 	else
 		ExecCommand(sp, "ST 704",	M_ANS_OK);
+
+	ExecCommand(sp, M_READY_1915, M_ANS_1);
 	return true;
 }

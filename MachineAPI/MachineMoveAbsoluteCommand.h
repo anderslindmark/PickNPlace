@@ -13,9 +13,6 @@
 
 #include "MachineCommand.h"
 #include "Axis.h"
-#define STEP_PRECISION_X	10.0
-#define STEP_PRECISION_Y	5.0
-#define STEP_PRECISION_Z	1.0
 
 /// \class MachineMoveAbsoluteCommand
 /// \brief Move the Pick n Place machine to an absolue position

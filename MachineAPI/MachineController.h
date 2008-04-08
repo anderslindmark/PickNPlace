@@ -107,6 +107,10 @@ public:
 
 	/// \brief Get the current position of the machine
 	MachineState GetCurrentState();
+	void SetCurrentState(MachineState ms)
+	{
+		m_currentState = ms;
+	}
 
 	/// \brief Get the initialized flag, which specifies if the machine is ready for commands other than the init command.
 	bool IsInitialized();

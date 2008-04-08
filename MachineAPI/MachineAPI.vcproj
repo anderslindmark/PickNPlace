@@ -296,6 +296,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachinePolygonDispenceCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachinePolygonDispenceCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineRotateAbsoluteCommand.cpp"
 				>
 			</File>

@@ -21,12 +21,12 @@ struct DispenceStateStruct
 	int offsetY;
 	int offsetZ;
 	int speed;
-	float beforeTime;
-	float afterTime;
-	float suckBackTime;
+	int beforeTime; // Time multipliers ( *0.1s)
+	int afterTime;
+	int suckBackTime;
 	bool needleDown;
 
-	DispenceStateStruct(void): offsetX(200000), offsetY(10000), offsetZ(3000), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
+	DispenceStateStruct(void): offsetX(0), offsetY(0), offsetZ(2500), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
 };
 
 struct MachineStateStruct
