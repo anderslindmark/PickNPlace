@@ -9,6 +9,7 @@
 **/
 
 #include "MachineInitCommand.h"
+#include "MachineCommands.h"
 
 #define INIT_COMMAND_STRING "Machine init command"
 
@@ -37,8 +38,11 @@ MachineCommand* MachineInitCommand::Copy()
 
 bool MachineInitCommand::DoCommand(SerialPort &sp)
 {
-	/*
 	ExecCommand(sp, "CR", M_ANS_CC);
+	// Set lamps to medium brightness
+	MachineLightBrightnessCommand(LAMP_CAMERA, 7).DoCommand(sp);
+	MachineLightBrightnessCommand(LAMP_LOOKUP, 7).DoCommand(sp);
+/*
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "ST 1900", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
@@ -141,7 +145,11 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM81 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM80 330", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
- */
+*/
+	// Set the dispence offsets to 0 for safety reasons
+	MachineSetDispenceOffsetCommand(OFFSET_Z, 0).DoCommand(sp);
+	MachineSetDispenceOffsetCommand(OFFSET_ZS, 0).DoCommand(sp);
+
 	return TRUE;
 	
 }

@@ -9,6 +9,7 @@
 #include "MachineMoveRelativeCommand.h"
 #include "MachineSetDispenceSpeedCommand.h"
 #include "MachineSetDispenceTimeCommand.h"
+#include "MachineSetDispenceOffsetCommand.h"
 #include "MachineMovePolygonCommand.h"
 #include "MachineMoveAllCommand.h"
 #include "MachineDotDispenceCommand.h"

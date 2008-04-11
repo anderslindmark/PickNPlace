@@ -29,9 +29,6 @@ MachineState MachinePolygonDispenceCommand::GetAfterState(MachineState &oldms)
 {
 	if (m_vectorIndex == 0)
 	{
-		printf("M_STATE:\t x=%d\n", m_state.x);
-		printf("M_STATE:\t y=%d\n", m_state.y);
-		printf("M_STATE:\t z=%d\n", m_state.z);
 		m_state = oldms.GetState();
 	}
 	else if (m_vectorIndex == m_polygon.Size())
@@ -81,7 +78,7 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 			MachinePolygonPoint startPp = m_polygon.GetPoint(0);
 			MachineMoveAllCommand(startPp.x+m_state.dispenceState.offsetX, startPp.y+m_state.dispenceState.offsetY, -1).DoCommand(sp);
 			ExecCommand(sp, "RS 1613", M_ANS_OK); // Set line dispence mode
-			MachineMoveAbsoluteCommand(AXIS_Z, m_state.dispenceState.offsetZ).DoCommand(sp);
+			// MachineMoveAbsoluteCommand(AXIS_Z, m_state.dispenceState.offsetZ).DoCommand(sp); // Not needed
 			MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN).DoCommand(sp);
 		}
 		else if (m_vectorIndex+1 == m_polygon.Size()) // Last step, set suckback etc
@@ -99,9 +96,7 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 		else if (m_vectorIndex == m_polygon.Size()) // Everything is done, return to home-position
 		{
 			MachineMoveNeedleCommand(NEEDLEMOVEMENT_UP).DoCommand(sp);
-			printf("M_STATE:\t x=%d\n", m_state.x);
-			printf("M_STATE:\t y=%d\n", m_state.y);
-			printf("M_STATE:\t z=%d\n", m_state.z);
+			MachineSetDispenceSpeedCommand(m_state.dispenceState.speed).DoCommand(sp); // Set normal speed incase last line was Y-line
 			MachineMoveAbsoluteCommand(AXIS_Z, m_state.z).DoCommand(sp);
 			MachineMoveAllCommand(m_state.x, m_state.y, -1).DoCommand(sp);
 		}
@@ -125,21 +120,27 @@ void MachinePolygonDispenceCommand::dispenceLine(SerialPort sp, MachinePolygonPo
 {
 	char cmdStr[15];
 	int length;
-	if (from.x == to.x)
+	if (from.x == to.x)	// Y-line
 	{
+		// Double speed (Y moves half as fast as X)
+		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed*2).DoCommand(sp);
 		length = abs(to.y - from.y);
 		length = (int)floor(length/STEP_PRECISION_Y + 0.5);
-		ExecCommand(sp, "WR DM213 0",	M_ANS_OK); // Set x-length of dispence to 0
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM215 %d", length); // Set y-length of dispence to ...
+		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length
+		ExecCommand(sp, "WR DM213 0",	M_ANS_OK); // Set x-length of dispence to 0
 	}
-	else
+	else	// X-line
 	{
+		// Set normal speed
+		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed).DoCommand(sp);
 		length = abs(to.x - from.x);
 		length = (int)floor(length/STEP_PRECISION_X + 0.5);
-		ExecCommand(sp, "WR DM215 0",	M_ANS_OK); // Set y-length of dispence to 0
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM213 %d", length); 
+		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length	
+		ExecCommand(sp, "WR DM215 0",	M_ANS_OK); // Set y-length of dispence to 0
 	}
-	ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length
+	
 
 	if (to.x < from.x || to.y < from.y) // Backa
 	{

@@ -31,10 +31,10 @@ bool SerialPort::Initialize() {
 	port = CreateFile(portName.c_str(),
 						  GENERIC_READ | GENERIC_WRITE,
 						  0,
-						  0,
+						  NULL,
 						  OPEN_EXISTING,
 						  0,
-						  0);
+						  NULL);
 	if(port==INVALID_HANDLE_VALUE)
 	{
 		return false;
@@ -48,6 +48,8 @@ bool SerialPort::Initialize() {
 bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 							   //BYTE Parity, BYTE StopBits) //DWORD fParity,
 {
+	SecureZeroMemory(&m_dcb, sizeof(DCB));
+    m_dcb.DCBlength = sizeof(DCB);
 	if((m_bPortReady = GetCommState(port, &m_dcb))==0)
 	{
 		CloseHandle(port);
@@ -64,27 +66,23 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 	m_dcb.fInX = false;
 	m_dcb.fOutX = false;
 
-
-	/*
-	m_dcb.BaudRate =BaudRate;
-	m_dcb.ByteSize = ByteSize;
-	m_dcb.Parity =Parity ;
-	m_dcb.StopBits =StopBits;
-	m_dcb.fBinary=TRUE;
+	m_dcb.fDtrControl=DTR_CONTROL_ENABLE;
+	m_dcb.fRtsControl=RTS_CONTROL_ENABLE;
 	m_dcb.fDsrSensitivity=false;
-	m_dcb.fParity=fParity;
-	m_dcb.fOutX=false;
-	m_dcb.fInX=false;
+
+	m_dcb.fBinary=true;
+	m_dcb.fDsrSensitivity=false;
+	m_dcb.fParity=true;
+
 	m_dcb.fNull=false;
 	m_dcb.fAbortOnError=TRUE;
 	m_dcb.fOutxCtsFlow=FALSE;
 	m_dcb.fOutxDsrFlow=false;
-	m_dcb.fDtrControl=DTR_CONTROL_DISABLE;
-	m_dcb.fDsrSensitivity=false;
-	m_dcb.fRtsControl=RTS_CONTROL_DISABLE;
 	m_dcb.fOutxCtsFlow=false;
 	m_dcb.fOutxCtsFlow=false;
-	*/
+	m_dcb.XonLim = 80;
+	m_dcb.XoffLim = 80;
+
 	m_bPortReady = SetCommState(port, &m_dcb);
 	if(m_bPortReady ==0)
 	{
@@ -93,7 +91,7 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 	}
 	return true;
 }
-
+// SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
 bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD ReadTotalTimeoutMultiplier,
 										  DWORD ReadTotalTimeoutConstant,
@@ -139,7 +137,7 @@ bool SerialPort::WriteByte(BYTE bybyte)
 
 bool SerialPort::WriteLine(const char *ch)
 {
-	//cout << "DEBUG: SerialPort::WriteLine\t" << ch << endl;
+	//cout << "\nDEBUG: SerialPort::WriteLine\t" << ch << endl;
 	//const char *ch = s.c_str();
 	//for (i = 0; i < c.length(); i++)
 	for (unsigned int i = 0; i < strlen(ch); i++)
@@ -193,11 +191,10 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 		}
 		read.append(1, (char)cur);
 	}
-	//cout << "READ: " << read << endl;
 	s = read.substr(0, read.length()-2);
 	strcpy_s(sin, bufsize, s.c_str());
 
-	//cout << "DEBUG: SerialPort::ReadLine\t" << sin << endl;
+	// cout << "\nDEBUG: SerialPort::ReadLine\t" << sin << endl;
 	return true;
 }
 

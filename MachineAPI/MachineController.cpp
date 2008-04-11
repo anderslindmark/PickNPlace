@@ -54,8 +54,10 @@ bool MachineController::InitializeSerial()
 	sp = new SerialPort(comPort);
 	if(sp->Initialize())
 	{
+		sp->ConfigurePort();
 		serialInitialized = true;
-		sp->SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
+		//sp->SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
+		sp->SetCommunicationTimeouts(0, 0, 0, 2, 5000);
 		return true;
 	}
 	else
@@ -225,6 +227,7 @@ bool MachineController::IsBusy()
 	return working;
 }
 
+// TODO: Check MachineSetDispenceOffset so that Z isn't out of bounds.....
 bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
 {
 	MachineState currentState = m_currentState;

@@ -312,6 +312,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineSetDispenceOffsetCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetDispenceOffsetCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineSetDispenceSpeedCommand.cpp"
 				>
 			</File>

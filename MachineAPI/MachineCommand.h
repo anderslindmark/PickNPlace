@@ -18,13 +18,15 @@
 									friend class MachineParkCommand; \
 									friend class MachineRotateAbsoluteCommand; \
 									friend class MachineSetDispenceSpeedCommand; \
+									friend class MachineSetDispenceOffsetCommand; \
 									friend class MachineMoveAllCommand; \
 									friend class MachineDotDispenceCommand; \
 									friend class MachineSetSpeedCommand; \
 									friend class MachineSetDispenceTimeCommand; \
 									friend class MachineMoveNeedleCommand; \
 									friend class MachineLightBrightnessCommand; \
-									friend class MachinePolygonDispenceCommand
+									friend class MachinePolygonDispenceCommand; \
+									friend class MachineInitCommand
 
 #include <string>
 #include "MachineState.h"
