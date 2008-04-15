@@ -48,13 +48,22 @@ CameraWidget::CameraWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::DirectRen
 #else
 CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 {
+	// TODO: Calculate the correction vector
+	correctionVectorA = {0.0000, 0.0000, 0.0000, 0.0002, 0.0001, -0.0176, 0.7515, 30.2657};
+	correctionVectorB = {0.0000, 0.0000, 0.0000, 0.0001, 0.0004, 0.8007, -0.1010, 59.3000};
 }
 #endif // USE_OPENGL_WIDGET
 
 void CameraWidget::cameraNewImage(camera::Camera *camera)
 {
-	correctDistortion(camera->getLastImage());
+	// Check that the format is RGB32. It's the only supported format at the moment
+	if(image->getFormat() != camera::Image::FORMAT_RGB32)
+	{
+		qWarning("Image from camera is not RGB32");
+		return;
+	}
 	
+	correctDistortion(camera->getLastImage());
 	this->m_image = QImage(correctedImage->getBufferAddress(), correctedImage->getWidth(), correctedImage->getHeight(), QImage::Format_RGB32);
 	update();
 }
@@ -83,6 +92,7 @@ void CameraWidget::resizeEvent (QResizeEvent * event)
 	}
 	correctedImage = new camera::Image(width, height, camera::Image::FORMAT_RGB32);
 	
+	// TODO: Check if reallocateing the pixel map takes to much time
 	// Realocate the mapping array
 	if(pixelMapping != NULL)
 	{
@@ -92,6 +102,7 @@ void CameraWidget::resizeEvent (QResizeEvent * event)
 	int *mapping = pixelMapping;
 	int dx, dy;
 	
+	// Calculate the values for the new mapping array
 	for(int y = 0; y < height; y++)
 	{
 		for(int x = 0; x < width; x++)
@@ -122,9 +133,16 @@ void CameraWidget::resizeEvent (QResizeEvent * event)
 
 void CameraWidget::correctDistortion(camera::Image *image)
 {
-	camera::ImageBuffer *correctedImageAddr = correctedImage->getBufferAddress();
-	camera::ImageBuffer *distortedImageBaseAddr = image->getBufferAddress();
-	camera::ImageBuffer *distortedImageAddr = NULL;
+	if(pixelMapping == NULL)
+	{
+		qWarning("pixelMapping == NULL");
+		return;
+	}
+	
+	camera::ImageBuffer *cBufferAddr = correctedImage->getBufferAddress();
+	camera::ImageBuffer *dBufferBaseAddr = image->getBufferAddress();
+	camera::ImageBuffer *dBufferAddr = NULL;
+	int dBufferSize = image->getBufferSize();
 	int *mapping = pixelMapping;
 	
 	for(int y = 0; y < correctedImage->getHeight(); y++)
@@ -132,23 +150,22 @@ void CameraWidget::correctDistortion(camera::Image *image)
 		for(int x = 0; x < correctedImage->getWidth(); x++)
 		{
 			// Calculate which pixel to use from the distorted image based on the pixel mapping calculated in resizeEvent
-			distortedImageAddr = distortedImageBaseAddr + (*mapping) * 4;
-			mapping++;
-			
-			// Copy the RGBX values from the distordet image to the corrected
-			*correctedImageAddr = *distortedImageAddr; // R
-			
-			correctedImageAddr++;
-			distortedImageAddr++;
-			*correctedImageAddr = *distortedImageAddr; // G
-			
-			correctedImageAddr++;
-			distortedImageAddr++;
-			*correctedImageAddr = *distortedImageAddr; // B
-			
-			correctedImageAddr++;
-			distortedImageAddr++;
-			*correctedImageAddr = *distortedImageAddr; // X
+			if(*mapping < 0 || *mapping > dBufferSize)
+			{
+				*(cBufferAddr++) = 0; // R
+				*(cBufferAddr++) = 0; // G
+				*(cBufferAddr++) = 0; // B
+				*(cBufferAddr++) = 0; // X
+			} else {
+				dBufferAddr = dBufferBaseAddr + (*mapping) * 4;
+				mapping++;
+				
+				// Copy the RGBX values from the distordet to the corrected image
+				*(cBufferAddr++) = *(dBufferAddr++); // R
+				*(cBufferAddr++) = *(dBufferAddr++); // G
+				*(cBufferAddr++) = *(dBufferAddr++); // B
+				*(cBufferAddr++) = *(dBufferAddr++); // X
+			}
 		}
 	}
 }
