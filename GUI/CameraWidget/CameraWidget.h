@@ -47,10 +47,13 @@
 #include "Camera.h"
 #include "CameraListener.h"
 #include "CameraException.h"
-#include "BMP.h"
 #include "Image.h"
 
+#ifdef USE_OPENGL_WIDGET
+class QDESIGNER_WIDGET_EXPORT CameraWidget : public QGLWidget, public camera::CameraListener
+#else
 class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::CameraListener
+#endif // USE_OPENGL_WIDGET
 {
     Q_OBJECT
 	//Q_PROPERTY(Priority priority READ priority WRITE setPriority)
@@ -63,7 +66,15 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event);
+    
 private:
+	void correctDistortion(camera::Image *image);
+	
+	float correctionVectorA[8];
+	float correctionVectorB[8];
+	int *pixelMapping = NULL;
+	
+	camera::Image *correctedImage = NULL;
 	QImage m_image;
 };
 
