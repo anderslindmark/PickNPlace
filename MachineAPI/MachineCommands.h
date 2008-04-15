@@ -16,5 +16,6 @@
 #include "MachineMoveNeedleCommand.h"
 #include "MachineLightBrightnessCommand.h"
 #include "MachinePolygonDispenceCommand.h"
+#include "MachineWrapperCommand.h"
 
 #endif // __MACHINECOMMANDS_H__

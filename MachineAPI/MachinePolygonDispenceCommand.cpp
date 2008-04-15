@@ -2,6 +2,9 @@
 #include "MachineCommands.h"
 #include "Axis.h"
 
+#include <iostream>
+using namespace std;
+
 #define COMMAND_STRING	"Machine Dispence Polygon Command"
 
 MachinePolygonDispenceCommand::MachinePolygonDispenceCommand(MachinePolygon polygon) : m_polygon(polygon)
@@ -30,11 +33,12 @@ MachineState MachinePolygonDispenceCommand::GetAfterState(MachineState &oldms)
 	if (m_vectorIndex == 0)
 	{
 		m_state = oldms.GetState();
+		m_tempState = m_state;
 	}
-	else if (m_vectorIndex == m_polygon.Size())
-	{
-		return MachineState(m_state);
-	}
+	//else if (m_vectorIndex == m_polygon.Size())
+	//{
+	//	return MachineState(m_state);
+	//}
 	MachinePolygonPoint pp = m_polygon.GetPoint(m_vectorIndex);
 	MachineStateStruct mss = oldms.GetState();
 	mss.x = pp.x+m_state.dispenceState.offsetX;
@@ -44,7 +48,7 @@ MachineState MachinePolygonDispenceCommand::GetAfterState(MachineState &oldms)
 
 bool MachinePolygonDispenceCommand::HasNextState()
 {
-	if (m_polygon.Size() == m_vectorIndex)
+	if (m_polygon.Size()-1 == m_vectorIndex)
 	{
 		m_vectorIndex = 0;
 		return false;
@@ -77,11 +81,14 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 			MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 0).DoCommand(sp); // No suckback between polygon points
 			MachinePolygonPoint startPp = m_polygon.GetPoint(0);
 			MachineMoveAllCommand(startPp.x+m_state.dispenceState.offsetX, startPp.y+m_state.dispenceState.offsetY, -1).DoCommand(sp);
+			// Update local state
+			m_tempState.x = startPp.x + m_state.dispenceState.offsetX;
+			m_tempState.y = startPp.y + m_state.dispenceState.offsetY;
 			ExecCommand(sp, "RS 1613", M_ANS_OK); // Set line dispence mode
 			// MachineMoveAbsoluteCommand(AXIS_Z, m_state.dispenceState.offsetZ).DoCommand(sp); // Not needed
 			MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN).DoCommand(sp);
 		}
-		else if (m_vectorIndex+1 == m_polygon.Size()) // Last step, set suckback etc
+		else if (m_vectorIndex == m_polygon.Size()-1) // Last step, set suckback etc
 		{
 			MachinePolygonPoint oldPp = m_polygon.GetPoint(m_vectorIndex-1);
 			MachinePolygonPoint pp = m_polygon.GetPoint(m_vectorIndex);
@@ -89,21 +96,23 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 			MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, m_state.dispenceState.afterTime).DoCommand(sp);
 			MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, m_state.dispenceState.suckBackTime).DoCommand(sp);
 
+			moveOffset(sp, oldPp, pp);
 			dispenceLine(sp, oldPp, pp);
 
 			MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, m_state.dispenceState.beforeTime).DoCommand(sp);
-		}
-		else if (m_vectorIndex == m_polygon.Size()) // Everything is done, return to home-position
-		{
+			
 			MachineMoveNeedleCommand(NEEDLEMOVEMENT_UP).DoCommand(sp);
 			MachineSetDispenceSpeedCommand(m_state.dispenceState.speed).DoCommand(sp); // Set normal speed incase last line was Y-line
-			MachineMoveAbsoluteCommand(AXIS_Z, m_state.z).DoCommand(sp);
-			MachineMoveAllCommand(m_state.x, m_state.y, -1).DoCommand(sp);
 		}
 		else
 		{
 			MachinePolygonPoint oldPp = m_polygon.GetPoint(m_vectorIndex-1);
 			MachinePolygonPoint pp = m_polygon.GetPoint(m_vectorIndex);
+
+			if (m_vectorIndex > 1)
+			{
+				moveOffset(sp, oldPp, pp);
+			}
 
 			dispenceLine(sp, oldPp, pp);
 			
@@ -116,12 +125,44 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 	return true;
 }
 
-void MachinePolygonDispenceCommand::dispenceLine(SerialPort sp, MachinePolygonPoint from, MachinePolygonPoint to)
+void MachinePolygonDispenceCommand::moveOffset(SerialPort &sp, MachinePolygonPoint oldPp, MachinePolygonPoint pp)
+{
+	if (m_state.dispenceState.offsetTurn != 0)
+	{
+		cout << "\n\nHej\n\n";
+		if (oldPp.x == pp.x) // Move in X
+		{
+			if (oldPp.y < pp.y)
+			{
+				MachineMoveAbsoluteCommand(AXIS_Y, m_tempState.y + m_state.dispenceState.offsetTurn, false).DoCommand(sp);
+			}
+			else
+			{
+				MachineMoveAbsoluteCommand(AXIS_Y, m_tempState.y - m_state.dispenceState.offsetTurn, false).DoCommand(sp);
+			}
+		}
+		else
+		{
+			if (oldPp.x < pp.x)
+			{
+				MachineMoveAbsoluteCommand(AXIS_X, m_tempState.x + m_state.dispenceState.offsetTurn, false).DoCommand(sp);
+			}
+			else
+			{
+				MachineMoveAbsoluteCommand(AXIS_X, m_tempState.x - m_state.dispenceState.offsetTurn, false).DoCommand(sp);
+			}
+		}
+	}
+}
+
+void MachinePolygonDispenceCommand::dispenceLine(SerialPort &sp, MachinePolygonPoint from, MachinePolygonPoint to)
 {
 	char cmdStr[15];
 	int length;
 	if (from.x == to.x)	// Y-line
 	{
+		from.y -= m_state.dispenceState.offsetTurn; // Make room for the "anti-blob" move
+
 		// Double speed (Y moves half as fast as X)
 		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed*2).DoCommand(sp);
 		length = abs(to.y - from.y);
@@ -129,9 +170,13 @@ void MachinePolygonDispenceCommand::dispenceLine(SerialPort sp, MachinePolygonPo
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM215 %d", length); // Set y-length of dispence to ...
 		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length
 		ExecCommand(sp, "WR DM213 0",	M_ANS_OK); // Set x-length of dispence to 0
+
+		m_tempState.y += to.y - from.y; // Update local state information
 	}
 	else	// X-line
 	{
+		from.x -= m_state.dispenceState.offsetTurn;
+
 		// Set normal speed
 		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed).DoCommand(sp);
 		length = abs(to.x - from.x);
@@ -139,6 +184,8 @@ void MachinePolygonDispenceCommand::dispenceLine(SerialPort sp, MachinePolygonPo
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM213 %d", length); 
 		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length	
 		ExecCommand(sp, "WR DM215 0",	M_ANS_OK); // Set y-length of dispence to 0
+
+		m_tempState.x += to.x - from.x;
 	}
 	
 

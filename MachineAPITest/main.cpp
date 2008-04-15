@@ -2,6 +2,7 @@
 #include "MachinePolygon.h"
 
 #include "MachineController.h"
+#include "MachineCommands.h"
 //#include "TestCommand.h"
 //#include "SerialPort.h"
 
@@ -67,14 +68,15 @@ int main(void)
 	//mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 
 
-	//mc.RunCommand(*(new MachineSetDispenceSpeedCommand(4))); mc.Wait();
+	
 
-	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 10))); mc.Wait();
-	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, 10))); mc.Wait();
-	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 10))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 1))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, 1))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 1))); mc.Wait();
 
-	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_Z, 8100))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_Z, 8000))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_ZS, 200))); mc.Wait();
+	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_TURN, 2000))); mc.Wait();
 
 	
 	/*
@@ -97,14 +99,26 @@ int main(void)
 	//mc.RunCommand(*(new MachineMoveAllCommand(1000, 1000, 0))); mc.Wait();
 
 //	mc.RunCommand(*(new MachineSetDispenceSpeedCommand(5))); mc.Wait();
-
+	
 	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(1000, 1000));
-	mp.AddPoint(MachinePolygonPoint(1000, 100000));
-	mp.AddPoint(MachinePolygonPoint(100000,100000));
-
-	mc.RunCommand(*(new MachineSetDispenceSpeedCommand(1))); mc.Wait();
+	mp.AddPoint(MachinePolygonPoint(1000, 50000));
+	mp.AddPoint(MachinePolygonPoint(50000,50000));
+	mp.AddPoint(MachinePolygonPoint(50000,1000));
+/*
+	mc.RunCommand(*(new MachineSetDispenceSpeedCommand(2))); mc.Wait();
 	mc.RunCommand(*(new MachinePolygonDispenceCommand(mp))); mc.Wait();
+
+	mc.RunCommand(*(new MachinePolygonDispenceCommand(mp))); mc.Wait();
+*/
+	mc.RunCommand(MachineMoveAllCommand(300000, 190000, 5000)); mc.Wait();
+	MachineWrapperCommand wrapper;
+	wrapper.Add(*(new MachineSetDispenceSpeedCommand(2)));
+	wrapper.Add(*(new MachinePolygonDispenceCommand(mp)));
+	wrapper.Add(*(new MachineSetDispenceSpeedCommand(6)));
+	wrapper.Add(*(new MachineSetDispenceOffsetCommand(OFFSET_X, 10000)));
+	wrapper.Add(*(new MachinePolygonDispenceCommand(mp)));
+	mc.RunCommand(wrapper); mc.Wait();
 
 	//mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
 

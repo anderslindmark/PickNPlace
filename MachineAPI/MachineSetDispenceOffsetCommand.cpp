@@ -35,6 +35,9 @@ MachineState MachineSetDispenceOffsetCommand::GetAfterState(MachineState &oldms)
 		case (OFFSET_ZS):
 			mss.dispenceState.offsetZs = m_offset;
 			break;
+		case (OFFSET_TURN):
+			mss.dispenceState.offsetTurn = m_offset;
+			break;
 	}
 	
 	return MachineState(mss);

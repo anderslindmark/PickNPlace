@@ -23,12 +23,13 @@ private:
 	bool DoCommand(SerialPort &sp);
 	MachinePolygonDispenceCommand *Copy();
 	bool ValidatePolygon();
-	void dispenceLine(SerialPort sp, MachinePolygonPoint from, MachinePolygonPoint to);
-
+	void dispenceLine(SerialPort &sp, MachinePolygonPoint from, MachinePolygonPoint to);
+	void moveOffset(SerialPort &sp, MachinePolygonPoint oldPp, MachinePolygonPoint pp);
 	MachinePolygon m_polygon;
 	int m_vectorIndex;
 	bool m_valid;
 	MachineStateStruct m_state;
+	MachineStateStruct m_tempState;
 };
 
 

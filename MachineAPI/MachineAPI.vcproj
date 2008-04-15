@@ -336,6 +336,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineWrapperCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineWrapperCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestCommand.cpp"
 				>
 			</File>

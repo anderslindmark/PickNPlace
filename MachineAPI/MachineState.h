@@ -21,13 +21,14 @@ struct DispenceStateStruct
 	int offsetY;
 	int offsetZ;
 	int offsetZs;
+	int offsetTurn; // The offset that the machine moves to avoid creating a blob when dispensing and making a turn.
 	int speed;
 	int beforeTime; // Time multipliers ( *0.1s)
 	int afterTime;
 	int suckBackTime;
 	bool needleDown;
 
-	DispenceStateStruct(void): offsetX(0), offsetY(0), offsetZ(0), offsetZs(0), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
+	DispenceStateStruct(void): offsetX(0), offsetY(0), offsetZ(0), offsetZs(0), offsetTurn(0), speed(1), beforeTime(0), afterTime(0), suckBackTime(0), needleDown(false) {};
 };
 
 struct MachineStateStruct

@@ -26,7 +26,8 @@
 									friend class MachineMoveNeedleCommand; \
 									friend class MachineLightBrightnessCommand; \
 									friend class MachinePolygonDispenceCommand; \
-									friend class MachineInitCommand
+									friend class MachineInitCommand; \
+									friend class MachineWrapperCommand
 
 #include <string>
 #include "MachineState.h"
@@ -41,6 +42,7 @@ using namespace std;
 class MachineCommand
 {
 	friend class MachineController;
+	friend class MachineWrapperCommand;
 public:
 	/// \brief Destructor
 	virtual ~MachineCommand() = 0 {};

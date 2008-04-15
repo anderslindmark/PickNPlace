@@ -9,7 +9,8 @@ enum OffsetAxis
 	OFFSET_X,
 	OFFSET_Y,
 	OFFSET_Z,
-	OFFSET_ZS
+	OFFSET_ZS,
+	OFFSET_TURN
 };
 
 class MachineSetDispenceOffsetCommand : public MachineCommand

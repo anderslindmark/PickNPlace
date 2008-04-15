@@ -18,7 +18,16 @@ MachineMoveAbsoluteCommand::MachineMoveAbsoluteCommand(Axis axis, int position)
 {
 	m_axis = axis;
 	m_pos = position;
+	m_raiseZ = true;
 }
+
+MachineMoveAbsoluteCommand::MachineMoveAbsoluteCommand(Axis axis, int position, bool raiseZ)
+{
+	m_axis = axis;
+	m_pos = position;
+	m_raiseZ = raiseZ;
+}
+
 
 MachineMoveAbsoluteCommand::~MachineMoveAbsoluteCommand(void)
 {
@@ -60,7 +69,7 @@ bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 	switch (m_axis)
 	{
 	case AXIS_X:
-		MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);	
+		if (m_raiseZ) MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);	
 		fpos = m_pos/STEP_PRECISION_X;
 		pos = (int)floor(fpos + 0.5);
 		converter << M_POS_ABS_MOVE_X;
@@ -74,7 +83,7 @@ bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 		break;
 
 	case AXIS_Y:
-		MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
+		if (m_raiseZ) MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 		fpos = m_pos/STEP_PRECISION_Y;
 		pos = (int)floor(fpos + 0.5);
 		converter << M_POS_ABS_MOVE_Y;

@@ -264,7 +264,9 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
 			return false;
 		}
-		else if (!(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax))
+		else if ( !(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax)
+			|| ((mss.dispenceState.offsetZ+mss.dispenceState.offsetZs) >= m_settings.zMax && (mss.dispenceState.offsetZ+mss.dispenceState.offsetZs) <= m_settings.zMin)
+			)
 		{
 			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
 			return false;

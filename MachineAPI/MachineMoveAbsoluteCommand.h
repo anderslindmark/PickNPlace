@@ -30,10 +30,12 @@ public:
 	}
 
 private:
+	MachineMoveAbsoluteCommand(Axis axis, int position, bool raiseZ);
 	bool DoCommand(SerialPort &sp);
 	MachineMoveAbsoluteCommand* Copy();
 	Axis m_axis;
 	int m_pos;
+	bool m_raiseZ;
 };
 
 #endif //__MACHINEMOVEABSOLUTECOMMAND_H__
