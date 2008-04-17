@@ -39,6 +39,7 @@ namespace PicknPlaceGui
 		//dd->setImageSize(400, 400);
 		//this->m_cameraManager.addDriver(dd);
 
+		// TODO: Clean up all created objects in destructor
 		camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
 		this->m_cameraManager.addDriver(euresysDriver);
 

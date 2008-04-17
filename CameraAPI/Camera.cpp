@@ -8,7 +8,7 @@ namespace camera
 Camera::Camera() 
 {
 	LOG_TRACE("Camera::Camera()");
-	
+		
 	_listener = NULL;
 }
 
