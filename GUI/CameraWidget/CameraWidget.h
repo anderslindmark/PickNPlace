@@ -68,11 +68,15 @@ protected:
     void paintEvent(QPaintEvent *event);
     
 private:
+	void gaussJordan(float A[9][8]);
 	void correctDistortion(camera::Image *image);
 	
 	float correctionVectorA[8];
 	float correctionVectorB[8];
 	int *pixelMapping = NULL;
+	
+	float dx[8];
+	float dy[8];
 	
 	camera::Image *correctedImage = NULL;
 	QImage m_image;
