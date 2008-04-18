@@ -15,6 +15,16 @@
 
 using namespace std;
 
+struct PickAndPlaceStruct
+{
+	int afterPickTime;	// Wait after pick (* 0.1s)
+	int pickPressDownTime;	// Press-Down time during pick (* 0.1s)
+	int placePressDownTime; // Press-Down time during place (* 0.1s)
+	int afterPlaceTime;	// Wait after place (* 0.1s)
+
+	PickAndPlaceStruct(void): afterPickTime(0), pickPressDownTime(0), placePressDownTime(0), afterPlaceTime(0) {};
+};
+
 struct DispenceStateStruct
 {
 	int offsetX;
@@ -40,7 +50,8 @@ struct MachineStateStruct
 	int lampCameraBrightness;
 	int lampLookupBrightness;
 	DispenceStateStruct dispenceState;
-	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), lampCameraBrightness(8), lampLookupBrightness(8),dispenceState() {};
+	PickAndPlaceStruct pickAndPlaceState;
+	MachineStateStruct(void): x(0), y(0), z(0), rot(0.0), lampCameraBrightness(8), lampLookupBrightness(8),dispenceState(), pickAndPlaceState() {};
 };
 
 /// \class MachineState

@@ -17,5 +17,7 @@
 #include "MachineLightBrightnessCommand.h"
 #include "MachinePolygonDispenceCommand.h"
 #include "MachineWrapperCommand.h"
+#include "MachinePickCommand.h"
+#include "MachineSetPickTimeCommand.h"
 
 #endif // __MACHINECOMMANDS_H__

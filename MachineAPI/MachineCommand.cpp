@@ -43,3 +43,20 @@ bool MachineCommand::ExecCommand(SerialPort &sp, const char *cmd, const char *re
 	
 	return true;
 }
+
+int MachineCommand::ExecCommandInt(SerialPort &sp, const char *cmd)
+{
+	char ans[5];
+	int i;
+	// TODO: Check for errors in write/ReadLine in sp.
+	sp.WriteLine(cmd);
+	sp.ReadLine(ans, sizeof(ans));
+	if(EOF == sscanf_s(ans, "%d", &i))
+	{
+		return -1;
+	}
+
+	
+	
+	return i;
+}

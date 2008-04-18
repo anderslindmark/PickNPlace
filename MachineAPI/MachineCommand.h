@@ -27,7 +27,9 @@
 									friend class MachineLightBrightnessCommand; \
 									friend class MachinePolygonDispenceCommand; \
 									friend class MachineInitCommand; \
-									friend class MachineWrapperCommand
+									friend class MachineWrapperCommand; \
+									friend class MachinePickCommand; \
+									friend class MachineSetPickTimeCommand
 
 #include <string>
 #include "MachineState.h"
@@ -85,6 +87,13 @@ protected:
 	/// \param ret the return value that is expected from the Pick n Place machine
 	bool ExecCommand(SerialPort &sp, const char *cmd, const char *ret);
 	
+	/// \brief A helper function to send a command to the Pick n Place 
+	/// machine and wait for a int return value
+	///
+	/// \param sp the serial port to be used
+	/// \param cmd the cmd to be sent to the Pick n Place machine
+	/// \return a integer value
+	int ExecCommandInt(SerialPort &sp, const char *cmd);
 };
 
 #endif //__MACHINECOMMAND_H__
