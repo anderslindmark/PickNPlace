@@ -36,6 +36,7 @@
 
 #include <QtGui>
 #include "CameraWidget.h"
+#define ABS(x) (x < 0 ? -x : x)
 
 #ifdef USE_OPENGL_WIDGET
 CameraWidget::CameraWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::DirectRendering), parent)
@@ -44,12 +45,33 @@ CameraWidget::CameraWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::DirectRen
 	{
 		qWarning("Direct rendering not supported");
 	}
+	
+	correctedImage = NULL;
+	pixelMapping = NULL;
 }
 #else
 CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 {
 	correctedImage = NULL;
 	pixelMapping = NULL;
+	
+	m_yd[0] = 60;
+	m_yd[1] = 30;
+	m_yd[2] = 17;
+	m_yd[3] = 288;
+	m_yd[4] = 288;
+	m_yd[5] = 513;
+	m_yd[6] = 542;
+	m_yd[7] = 550;
+	
+	m_xd[0] = 31;
+	m_xd[1] = 350;
+	m_xd[2] = 732;
+	m_xd[3] = 30;
+	m_xd[4] = 741;
+	m_xd[5] = 37;
+	m_xd[6] = 355;
+	m_xd[7] = 731;
 }
 #endif // USE_OPENGL_WIDGET
 
@@ -62,19 +84,20 @@ void CameraWidget::cameraNewImage(camera::Camera *camera)
 		return;
 	}
 	
+	// TODO: Can the camera image change size?
 	if(correctedImage == NULL)
 	{
 		correctedImage = new camera::Image(camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), camera::Image::FORMAT_RGB32);
 	}
-
+	
 	correctDistortion(camera->getLastImage());
-	this->m_image = QImage(correctedImage->getBufferAddress(), correctedImage->getWidth(), correctedImage->getHeight(), QImage::Format_RGB32);
+	m_image = QImage(correctedImage->getBufferAddress(), correctedImage->getWidth(), correctedImage->getHeight(), QImage::Format_RGB32);
 	update();
 }
 
 void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
 {
-	//std::cout << "Error! (#" << errorCode << ": " << errorMessage << ")" << std::endl;
+	qWarning("cameraError: #%d: %s", errorCode, errorMessage);
 }
 
 void CameraWidget::paintEvent(QPaintEvent *event)
@@ -88,74 +111,64 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	int width = 768; //event->size().width();
 	int height = 576; //event->size().height();
 	qDebug("resizeEvent: width = %d, height = %d", width, height);
-
-	yd[0] = 60;
-	yd[1] = 30;
-	yd[2] = 17;
-	yd[3] = 288;
-	yd[4] = 288;
-	yd[5] = 513;
-	yd[6] = 542;
-	yd[7] = 550;
-	
-	xd[0] = 31;
-	xd[1] = 350;
-	xd[2] = 732;
-	xd[3] = 30;
-	xd[4] = 741;
-	xd[5] = 37;
-	xd[6] = 355;
-	xd[7] = 731;
 	
 	// Calculate the correction vectors
 	//float xc[8] = {0, width / 2, width - 1, 0, width - 1, 0, width / 2, width - 1};
 	//float yc[8] = {0, 0, 0, height / 2, height / 2, height - 1, height - 1, height - 1};
 	float xc[8] = {1, width / 2, width, 1, width, 1, width / 2, width};
 	float yc[8] = {1, 1, 1, height / 2, height / 2, height, height, height};
-	float A[9][8];
-	for(int y = 0; y < 8; y++)
+	float M[8][9];
+	float correctionVectorA[8];
+	float correctionVectorB[8];
+	int r, c, r2, c2;
+	float tmp;
+	
+	for(int r = 0; r < 8; r++)
 	{
-		A[0][y] = yc[y]*yc[y]*xc[y];
-		A[1][y] = yc[y]*xc[y]*xc[y];
-		A[2][y] = yc[y]*yc[y];
-		A[3][y] = xc[y]*xc[y];
-		A[4][y] = yc[y]*xc[y];
-		A[5][y] = yc[y];
-		A[6][y] = xc[y];
-		A[7][y] = 1;
-		A[8][y] = xd[y];
-	}
-	gaussJordan(A);
-	qDebug("resizeEvent: correctionVectorA = ");
-	for(int y = 0; y < 8; y++)
-	{
-		correctionVectorA[y] = A[8][y];
-		qDebug("%f", correctionVectorA[y]);
+		M[r][0] = yc[y]*yc[y]*xc[y];
+		M[r][1] = yc[y]*xc[y]*xc[y];
+		M[r][2] = yc[y]*yc[y];
+		M[r][3] = xc[y]*xc[y];
+		M[r][4] = yc[y]*xc[y];
+		M[r][5] = yc[y];
+		M[r][6] = xc[y];
+		M[r][7] = 1;
+		M[r][8] = m_yd[y];
 	}
 	
-
-	for(int y = 0; y < 8; y++)
-	{
-		A[0][y] = yc[y]*yc[y]*xc[y];
-		A[1][y] = yc[y]*xc[y]*xc[y];
-		A[2][y] = yc[y]*yc[y];
-		A[3][y] = xc[y]*xc[y];
-		A[4][y] = yc[y]*xc[y];
-		A[5][y] = yc[y];
-		A[6][y] = xc[y];
-		A[7][y] = 1;
-		A[8][y] = yd[y];
-	}
-	gaussJordan(A);
+	solveLinearEquation(M);
+	
 	qDebug("resizeEvent: correctionVectorA = ");
-	for(int y = 0; y < 8; y++)
+	for(int r = 0; r < 8; r++)
 	{
-		correctionVectorB[y] = A[8][y];
-		qDebug("%f", correctionVectorA[y]);
+		correctionVectorA[r] = A[r][8];
+		qDebug("%f", correctionVectorA[r]);
+	}
+	
+for(int r = 0; r < 8; r++)
+	{
+		M[r][0] = yc[y]*yc[y]*xc[y];
+		M[r][1] = yc[y]*xc[y]*xc[y];
+		M[r][2] = yc[y]*yc[y];
+		M[r][3] = xc[y]*xc[y];
+		M[r][4] = yc[y]*xc[y];
+		M[r][5] = yc[y];
+		M[r][6] = xc[y];
+		M[r][7] = 1;
+		M[r][8] = m_xd[y];
+	}
+	
+	solveLinearEquation(M);
+	
+	qDebug("resizeEvent: correctionVectorB = ");
+	for(int r = 0; r < 8; r++)
+	{
+		correctionVectorB[r] = A[r][8];
+		qDebug("%f", correctionVectorB[r]);
 	}
 	
 	// TODO: Check if reallocateing the image takes to much time
-	// TODO: resizeEvent and cameraNewImage runs in separate threads, so the resize of correctedImage can not be done while painting it
+	// TODO: resizeEvent and cameraNewImage runs in separate threads, so the resize of correctedImage can not be done while a new image is being painted
 	// Create a new Image to store the corrected image data
 	if(correctedImage != NULL)
 	{
@@ -164,7 +177,7 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	correctedImage = new camera::Image(width, height, camera::Image::FORMAT_RGB32);
 
 	// TODO: Check if reallocateing the pixel map takes to much time
-	// Realocate the mapping array
+	// Reallocate the mapping array
 	if(pixelMapping != NULL)
 	{
 		delete pixelMapping;
@@ -172,8 +185,8 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	pixelMapping = new int[width * height];
 	int *mapping = pixelMapping;
 	int dx, dy;
-	//
-	//// Calculate the values for the new mapping array
+	
+	// Calculate the values for the new mapping array
 	for(int y = 0; y < height; y++)
 	{
 		for(int x = 0; x < width; x++)
@@ -204,106 +217,72 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	qDebug("resizeEvent: Done");
 }
 
-void CameraWidget::gaussJordan(float A[9][8])
+void CameraWidget::solveLinearEquation(float M[8][9])
 {
-	qDebug("gaussJordan: A = ");
-	for(int y = 0; y < 8; y++)
-	{
-		qDebug("    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f", A[0][y], A[1][y], A[2][y], A[3][y], A[4][y], A[5][y], A[6][y], A[7][y], A[8][y]);
-	}
-
-	int lead = 0;
 	int rowCount = 8;
 	int columnCount = 9;
-	for(int r = 0; r < rowCount; r++)
+	int r, c, r2, c2;
+	float tmp;
+	
+	r = 0;
+	c = 0;
+	while(r < rowCount && c < columnCount)
 	{
-		if(columnCount <= lead)
+		int maxR = r;
+		for(r2 = r + 1; r2 < rowCount; r2++)
 		{
-			return;
+			if(ABS(M[r2][c]) > ABS(M[maxR][c]))
+			{
+				maxR = r2;
+			}
 		}
 		
-		int i = r;
-		while(A[lead][i] == 0.0)
+		if(M[maxR][c] != 0)
 		{
-			i++;
-			if(rowCount == i)
+			// Swap row r and maxR
+			for(c2 = 0; c2 < columnCount; c2++)
 			{
-				i = r;
-				lead++;
-				if(columnCount == lead)
+				tmp = M[r][c2];
+				M[r][c2] = M[maxR][c2];
+				M[maxR][c2] = tmp;
+			}
+			
+			// Devide row r with the value in M[r][c]
+			tmp = M[r][c];
+			for(c2 = 0; c2 < columnCount; c2++)
+			{
+				M[r][c2] /= tmp;
+			}
+			
+			// Subtract A[r2][c] * row r from row r2
+			for(r2 = r + 1; r2 < rowCount; r2++)
+			{
+				tmp = M[r2][c];
+				for(c2 = 0; c2 < columnCount; c2++)
 				{
-					return;
+					M[r2][c2] -= M[r][c2] * tmp;
 				}
 			}
+			// Next row
+			r++;
 		}
 		
-		// Swap row i and r
-		float tmp;
-		for(int c = 0; c < columnCount; c++)
-		{
-			tmp = A[c][i];
-			A[c][i] = A[c][r];
-			A[c][r] = tmp;
-		}
-			
-		// Divide row r by A[lead][r]
-		tmp = A[lead][r];
-		for(int c = 0; c < columnCount; c++)
-		{
-			A[c][r] /= tmp;
-		}
-		
-		// FOR all rows i, from 0 to number of rows, every row except r
-		for(i = 0; i < rowCount; i++)
-		{
-			if(i == r)
-			{
-				continue;
-			}
-			
-			// Subtract A[lead][i] multiplied by row r from row i
-			for(int c = 0; c < columnCount; c++)
-			{
-				A[c][i] -= A[lead][i] * A[c][r];
-			}
-		}
-		lead++;
+		// Next column
+		c++;
 	}
 	
-//ToReducedRowEchelonForm(Matrix M)
-//  Let lead = 0
-//  Let rowCount be the number of rows in M
-//  Let columnCount be the number of columns in M
-//  FOR r = 0 to rowCount - 1
-//    IF columnCount <= lead
-//      STOP
-//    END IF
-//    Let i = r
-//    WHILE M[i, lead] = 0
-//      Increment i
-//      IF rowCount = i
-//        Let i = r
-//        Increment lead
-//        IF columnCount = lead
-//          STOP
-//        END IF
-//      END IF
-//    END WHILE
-//    Swap rows i and r
-//    Divide row r by M[r, lead]
-//    FOR all rows i, from 0 to number of rows, every row except r
-//      Subtract M[i, lead] multiplied by row r from row i
-//    END FOR
-//    Increment lead
-//  END FOR
-//END ToReducedRowEchelonForm
-
-	qDebug("gaussJordan: After, A = ");
-	for(int y = 0; y < 8; y++)
+	// Do back-substitution
+	for(r = rowCount - 1; r >= 0; r--)
 	{
-		qDebug("    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f    %10.2f", A[0][y], A[1][y], A[2][y], A[3][y], A[4][y], A[5][y], A[6][y], A[7][y], A[8][y]);
+		for(r2 = 0; r2 < r; r2++)
+		{
+			tmp = M[r2][r];
+			for(c = r; c < columnCount; c++)
+			{
+				M[r2][c] -= M[r][c] * tmp;
+			}
+		}
 	}
-
 }
 
 void CameraWidget::correctDistortion(camera::Image *distortedImage)
