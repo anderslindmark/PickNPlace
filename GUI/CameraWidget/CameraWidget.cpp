@@ -52,8 +52,8 @@ CameraWidget::CameraWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::DirectRen
 #else
 CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 {
-	correctedImage = NULL;
-	pixelMapping = NULL;
+	m_correctedImage = NULL;
+	m_pixelMapping = NULL;
 	
 	m_yd[0] = 60;
 	m_yd[1] = 30;
@@ -85,13 +85,13 @@ void CameraWidget::cameraNewImage(camera::Camera *camera)
 	}
 	
 	// TODO: Can the camera image change size?
-	if(correctedImage == NULL)
+	if(m_correctedImage == NULL)
 	{
-		correctedImage = new camera::Image(camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), camera::Image::FORMAT_RGB32);
+		m_correctedImage = new camera::Image(camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), camera::Image::FORMAT_RGB32);
 	}
 	
 	correctDistortion(camera->getLastImage());
-	m_image = QImage(correctedImage->getBufferAddress(), correctedImage->getWidth(), correctedImage->getHeight(), QImage::Format_RGB32);
+	m_image = QImage(m_correctedImage->getBufferAddress(), m_correctedImage->getWidth(), m_correctedImage->getHeight(), QImage::Format_RGB32);
 	update();
 }
 
@@ -108,9 +108,11 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 
 void CameraWidget::resizeEvent(QResizeEvent * event)
 {
+	if(event->size() == event->oldSize())
+		return;
 	int width = 768; //event->size().width();
 	int height = 576; //event->size().height();
-	qDebug("resizeEvent: width = %d, height = %d", width, height);
+	qDebug("resizeEvent: From %d, %d to %d, %d", event->oldSize().width(), event->oldSize().height(), event->size().width(), event->size().height());
 	
 	// Calculate the correction vectors
 	//float xc[8] = {0, width / 2, width - 1, 0, width - 1, 0, width / 2, width - 1};
@@ -120,20 +122,18 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	float M[8][9];
 	float correctionVectorA[8];
 	float correctionVectorB[8];
-	int r, c, r2, c2;
-	float tmp;
 	
 	for(int r = 0; r < 8; r++)
 	{
-		M[r][0] = yc[y]*yc[y]*xc[y];
-		M[r][1] = yc[y]*xc[y]*xc[y];
-		M[r][2] = yc[y]*yc[y];
-		M[r][3] = xc[y]*xc[y];
-		M[r][4] = yc[y]*xc[y];
-		M[r][5] = yc[y];
-		M[r][6] = xc[y];
+		M[r][0] = yc[r]*yc[r]*xc[r];
+		M[r][1] = yc[r]*xc[r]*xc[r];
+		M[r][2] = yc[r]*yc[r];
+		M[r][3] = xc[r]*xc[r];
+		M[r][4] = yc[r]*xc[r];
+		M[r][5] = yc[r];
+		M[r][6] = xc[r];
 		M[r][7] = 1;
-		M[r][8] = m_yd[y];
+		M[r][8] = m_yd[r];
 	}
 	
 	solveLinearEquation(M);
@@ -141,21 +141,21 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	qDebug("resizeEvent: correctionVectorA = ");
 	for(int r = 0; r < 8; r++)
 	{
-		correctionVectorA[r] = A[r][8];
+		correctionVectorA[r] = M[r][8];
 		qDebug("%f", correctionVectorA[r]);
 	}
 	
 for(int r = 0; r < 8; r++)
 	{
-		M[r][0] = yc[y]*yc[y]*xc[y];
-		M[r][1] = yc[y]*xc[y]*xc[y];
-		M[r][2] = yc[y]*yc[y];
-		M[r][3] = xc[y]*xc[y];
-		M[r][4] = yc[y]*xc[y];
-		M[r][5] = yc[y];
-		M[r][6] = xc[y];
+		M[r][0] = yc[r]*yc[r]*xc[r];
+		M[r][1] = yc[r]*xc[r]*xc[r];
+		M[r][2] = yc[r]*yc[r];
+		M[r][3] = xc[r]*xc[r];
+		M[r][4] = yc[r]*xc[r];
+		M[r][5] = yc[r];
+		M[r][6] = xc[r];
 		M[r][7] = 1;
-		M[r][8] = m_xd[y];
+		M[r][8] = m_xd[r];
 	}
 	
 	solveLinearEquation(M);
@@ -163,27 +163,27 @@ for(int r = 0; r < 8; r++)
 	qDebug("resizeEvent: correctionVectorB = ");
 	for(int r = 0; r < 8; r++)
 	{
-		correctionVectorB[r] = A[r][8];
+		correctionVectorB[r] = M[r][8];
 		qDebug("%f", correctionVectorB[r]);
 	}
 	
 	// TODO: Check if reallocateing the image takes to much time
 	// TODO: resizeEvent and cameraNewImage runs in separate threads, so the resize of correctedImage can not be done while a new image is being painted
 	// Create a new Image to store the corrected image data
-	if(correctedImage != NULL)
+	if(m_correctedImage != NULL)
 	{
-		delete correctedImage;
+		delete m_correctedImage;
 	}
-	correctedImage = new camera::Image(width, height, camera::Image::FORMAT_RGB32);
+	m_correctedImage = new camera::Image(width, height, camera::Image::FORMAT_RGB32);
 
 	// TODO: Check if reallocateing the pixel map takes to much time
 	// Reallocate the mapping array
-	if(pixelMapping != NULL)
+	if(m_pixelMapping != NULL)
 	{
-		delete pixelMapping;
+		delete m_pixelMapping;
 	}
-	pixelMapping = new int[width * height];
-	int *mapping = pixelMapping;
+	m_pixelMapping = new int[width * height];
+	int *mapping = m_pixelMapping;
 	int dx, dy;
 	
 	// Calculate the values for the new mapping array
@@ -191,25 +191,24 @@ for(int r = 0; r < 8; r++)
 	{
 		for(int x = 0; x < width; x++)
 		{
-			//dx = correctionVectorA[0]*x*x*y +
-			//	correctionVectorA[1]*x*y*y +
-			//	correctionVectorA[2]*x*x +
-			//	correctionVectorA[3]*y*y +
-			//	correctionVectorA[4]*x*y +
-			//	correctionVectorA[5]*x +
-			//	correctionVectorA[6]*y +
-			//	correctionVectorA[7];
-			//
-			//dy = correctionVectorB[0]*x*x*y +
-			//	correctionVectorB[1]*x*y*y +
-			//	correctionVectorB[2]*x*x +
-			//	correctionVectorB[3]*y*y +
-			//	correctionVectorB[4]*x*y +
-			//	correctionVectorB[5]*x +
-			//	correctionVectorB[6]*y +
-			//	correctionVectorB[7];
-			dx = x;
-			dy = y;
+			dy = correctionVectorA[0]*x*y*y +
+				correctionVectorA[1]*x*x*y +
+				correctionVectorA[2]*y*y +
+				correctionVectorA[3]*x*x +
+				correctionVectorA[4]*x*y +
+				correctionVectorA[5]*y +
+				correctionVectorA[6]*x +
+				correctionVectorA[7];
+			
+			dx = correctionVectorB[0]*x*y*y +
+				correctionVectorB[1]*x*x*y +
+				correctionVectorB[2]*y*y +
+				correctionVectorB[3]*x*x +
+				correctionVectorB[4]*x*y +
+				correctionVectorB[5]*y +
+				correctionVectorB[6]*x +
+				correctionVectorB[7];
+			
 			*mapping = dy * width + dx;
 			mapping++;
 		}
@@ -223,6 +222,12 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 	int columnCount = 9;
 	int r, c, r2, c2;
 	float tmp;
+	
+	qDebug("solveLinearEquation: Before Gaussian: M = ");
+	for(r = 0; r < 8; r++)
+	{
+		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
+	}
 	
 	r = 0;
 	c = 0;
@@ -271,6 +276,12 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 		c++;
 	}
 	
+	qDebug("solveLinearEquation: After Gaussian: M = ");
+	for(r = 0; r < 8; r++)
+	{
+		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
+	}
+
 	// Do back-substitution
 	for(r = rowCount - 1; r >= 0; r--)
 	{
@@ -283,42 +294,50 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 			}
 		}
 	}
+
+	qDebug("solveLinearEquation: After back-substitution: M = ");
+	for(r = 0; r < 8; r++)
+	{
+		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
+	}
+
 }
 
 void CameraWidget::correctDistortion(camera::Image *distortedImage)
 {
-	if(pixelMapping == NULL)
+	if(m_pixelMapping == NULL)
 	{
 		qWarning("pixelMapping == NULL");
 		return;
 	}
 	
-	camera::ImageBuffer *cBufferAddr = correctedImage->getBufferAddress();
+	camera::ImageBuffer *cBufferAddr = m_correctedImage->getBufferAddress();
 	camera::ImageBuffer *dBufferBaseAddr = distortedImage->getBufferAddress();
 	camera::ImageBuffer *dBufferAddr = NULL;
 	int dBufferSize = distortedImage->getBufferSize();
-	int *mapping = pixelMapping;
-	int s = correctedImage->getWidth() * correctedImage->getHeight();
-	
+	int *mapping = m_pixelMapping;
+	int s = m_correctedImage->getWidth() * m_correctedImage->getHeight();
+	int offset;
 	dBufferAddr = dBufferBaseAddr;
 
 	for(int i = 0; i < s; i++) {
+		offset = (*mapping) * 4;
+		mapping++;
 		// Calculate which pixel to use from the distorted image based on the pixel mapping calculated in resizeEvent
-		//if(*mapping < 0 || *mapping > dBufferSize)
-		//{
-			//*(cBufferAddr++) = 0; // B
-			//*(cBufferAddr++) = 0; // G
-			//*(cBufferAddr++) = 0; // R
-			//*(cBufferAddr++) = 0; // X
-		//} else {
-			//dBufferAddr = dBufferBaseAddr + i * 4; //(*mapping) * 4;
-			//mapping++;
+		if(offset < 0 || offset > dBufferSize)
+		{
+			*(cBufferAddr++) = 255; // B
+			*(cBufferAddr++) = 0; // G
+			*(cBufferAddr++) = 255; // R
+			*(cBufferAddr++) = 0; // X
+		} else {
+			dBufferAddr = dBufferBaseAddr + offset;
 			
 			// Copy the RGBX values from the distordet to the corrected image
 			*(cBufferAddr++) = *(dBufferAddr++); // R
 			*(cBufferAddr++) = *(dBufferAddr++); // G
 			*(cBufferAddr++) = *(dBufferAddr++); // B
 			*(cBufferAddr++) = *(dBufferAddr++); // X
-		//}
+		}
 	}
 }
