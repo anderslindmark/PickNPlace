@@ -108,8 +108,6 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 
 void CameraWidget::resizeEvent(QResizeEvent * event)
 {
-	if(event->size() == event->oldSize())
-		return;
 	int width = 768; //event->size().width();
 	int height = 576; //event->size().height();
 	qDebug("resizeEvent: From %d, %d to %d, %d", event->oldSize().width(), event->oldSize().height(), event->size().width(), event->size().height());
@@ -135,17 +133,13 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 		M[r][7] = 1;
 		M[r][8] = m_yd[r];
 	}
-	
 	solveLinearEquation(M);
-	
-	qDebug("resizeEvent: correctionVectorA = ");
 	for(int r = 0; r < 8; r++)
 	{
 		correctionVectorA[r] = M[r][8];
-		qDebug("%f", correctionVectorA[r]);
 	}
 	
-for(int r = 0; r < 8; r++)
+	for(int r = 0; r < 8; r++)
 	{
 		M[r][0] = yc[r]*yc[r]*xc[r];
 		M[r][1] = yc[r]*xc[r]*xc[r];
@@ -157,14 +151,10 @@ for(int r = 0; r < 8; r++)
 		M[r][7] = 1;
 		M[r][8] = m_xd[r];
 	}
-	
 	solveLinearEquation(M);
-	
-	qDebug("resizeEvent: correctionVectorB = ");
 	for(int r = 0; r < 8; r++)
 	{
 		correctionVectorB[r] = M[r][8];
-		qDebug("%f", correctionVectorB[r]);
 	}
 	
 	// TODO: Check if reallocateing the image takes to much time
@@ -223,12 +213,6 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 	int r, c, r2, c2;
 	float tmp;
 	
-	qDebug("solveLinearEquation: Before Gaussian: M = ");
-	for(r = 0; r < 8; r++)
-	{
-		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
-	}
-	
 	r = 0;
 	c = 0;
 	while(r < rowCount && c < columnCount)
@@ -276,12 +260,6 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 		c++;
 	}
 	
-	qDebug("solveLinearEquation: After Gaussian: M = ");
-	for(r = 0; r < 8; r++)
-	{
-		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
-	}
-
 	// Do back-substitution
 	for(r = rowCount - 1; r >= 0; r--)
 	{
@@ -294,13 +272,6 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 			}
 		}
 	}
-
-	qDebug("solveLinearEquation: After back-substitution: M = ");
-	for(r = 0; r < 8; r++)
-	{
-		qDebug(" %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f %15.3f", M[r][0], M[r][1], M[r][2], M[r][3], M[r][4], M[r][5], M[r][6], M[r][7], M[r][8]);
-	}
-
 }
 
 void CameraWidget::correctDistortion(camera::Image *distortedImage)
