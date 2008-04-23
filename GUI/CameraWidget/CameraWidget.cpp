@@ -348,3 +348,55 @@ void CameraWidget::correctDistortion(camera::Image *distortedImage)
 		}
 	}
 }
+
+void CameraWidget::setCamera(const camera::CameraIdentifier &cameraid)
+{
+}
+
+void CameraWidget::setImageCorrectionParameters(float distortedX[8], float distortedY[8])
+{
+}
+
+void CameraWidget::setCoordinateMapping(int leftOffset, float leftZDiff, 
+						  int rightOffset, float rightZDiff, 					  
+						  int topOffset, float topZDiff, 
+						  int bottomOffset, float bottomZDiff)
+{
+}
+
+void CameraWidget::setMachineCoordinates(int x, int y, int z)
+{
+}
+
+void CameraWidget::getVisibleRegion(int &left, int &right, int &top, int &bottom)
+{
+}
+
+void CameraWidget::start()
+{
+}
+
+void CameraWidget::stop()
+{
+}
+
+void CameraWidget::setDrawCommands(bool enabled)
+{
+}
+
+void CameraWidget::setDrawHeadPosition(bool enabled)
+{
+}
+
+void CameraWidget::setDrawEdges(bool enabled)
+{
+}
+
+camera::Image *CameraWidget::getImage()
+{
+}
+
+QImage *CameraWidget::getQImage()
+{
+}
+

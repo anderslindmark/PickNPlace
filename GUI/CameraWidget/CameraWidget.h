@@ -64,6 +64,22 @@ public:
 	void cameraNewImage(camera::Camera *camera);
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
+	void setCamera(const camera::CameraIdentifier &cameraid);
+	void setImageCorrectionParameters(float distortedX[8], float distortedY[8]);
+	void setCoordinateMapping(int leftOffset, float leftZDiff, 
+							  int rightOffset, float rightZDiff, 					  
+							  int topOffset, float topZDiff, 
+							  int bottomOffset, float bottomZDiff);
+	void setMachineCoordinates(int x, int y, int z);
+	void getVisibleRegion(int &left, int &right, int &top, int &bottom);
+	void start();
+	void stop();
+	void setDrawCommands(bool enabled);
+	void setDrawHeadPosition(bool enabled);
+	void setDrawEdges(bool enabled);
+	camera::Image *getImage();
+	QImage *getQImage();
+
 protected:
     void paintEvent(QPaintEvent *event);
 	void resizeEvent(QResizeEvent * event);
