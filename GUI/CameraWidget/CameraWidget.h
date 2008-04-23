@@ -71,6 +71,7 @@ protected:
 private:
 	void solveLinearEquation(float M[8][9]);
 	void correctDistortion(camera::Image *distortedImage);
+	void calculatePixelMapping(int width, int height);
 	
 	int *m_pixelMapping;
 	float m_xd[8];
