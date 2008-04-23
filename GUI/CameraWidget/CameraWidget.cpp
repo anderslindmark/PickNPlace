@@ -75,9 +75,13 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 }
 #endif // USE_OPENGL_WIDGET
 
+///
+/// \brief Event handler for when a new image arrives from the camera. 
+/// \param camera Pointer to the camera that produced the new image.
+///
 void CameraWidget::cameraNewImage(camera::Camera *camera)
 {
-	// Check that the format is RGB32. It's the only supported format at the moment
+	// Check that the format is RGB32. It's the only supported format at the moment.
 	if(camera->getLastImage()->getFormat() != camera::Image::FORMAT_RGB32)
 	{
 		qWarning("Image from camera is not RGB32");
@@ -90,6 +94,7 @@ void CameraWidget::cameraNewImage(camera::Camera *camera)
 		m_correctedImage = new camera::Image(camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), camera::Image::FORMAT_RGB32);
 	}
 	
+	// Correct the distortion of the new image and then show it on the control.
 	correctDistortion(camera->getLastImage());
 	m_image = QImage(m_correctedImage->getBufferAddress(), m_correctedImage->getWidth(), m_correctedImage->getHeight(), QImage::Format_RGB32);
 	update();
@@ -106,22 +111,36 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 	painter.drawImage(0, 0, m_image);
 }
 
+///
+/// \brief The camera widget was resized. Since the size of the camera image changes, we need to recalculate the correction vectors
+///        used to correct the camera image here.
+///
 void CameraWidget::resizeEvent(QResizeEvent * event)
 {
 	int width = 768; //event->size().width();
 	int height = 576; //event->size().height();
 	qDebug("resizeEvent: From %d, %d to %d, %d", event->oldSize().width(), event->oldSize().height(), event->size().width(), event->size().height());
 	
-	// Calculate the correction vectors
-	//float xc[8] = {0, width / 2, width - 1, 0, width - 1, 0, width / 2, width - 1};
-	//float yc[8] = {0, 0, 0, height / 2, height / 2, height - 1, height - 1, height - 1};
+	calculatePixelMapping(width, height);
+	
+	qDebug("resizeEvent: Done");
+}
+
+///
+/// \brief Calculates the pixel offsets that is used when correcting a distorted camera image.
+/// \param width The width of the distorted camera image.
+/// \param height The height of the distorted camera image.
+///
+void CameraWidget::calculatePixelMapping(int width, int height)
+{
+	// Calculate the correction vectors.
 	float xc[8] = {1, width / 2, width, 1, width, 1, width / 2, width};
 	float yc[8] = {1, 1, 1, height / 2, height / 2, height, height, height};
 	float M[8][9];
 	float correctionVectorA[8];
 	float correctionVectorB[8];
 	
-	for(int r = 0; r < 8; r++)
+	for (int r = 0; r < 8; r++)
 	{
 		M[r][0] = yc[r]*yc[r]*xc[r];
 		M[r][1] = yc[r]*xc[r]*xc[r];
@@ -134,7 +153,7 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 		M[r][8] = m_yd[r];
 	}
 	solveLinearEquation(M);
-	for(int r = 0; r < 8; r++)
+	for (int r = 0; r < 8; r++)
 	{
 		correctionVectorA[r] = M[r][8];
 	}
@@ -157,29 +176,32 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 		correctionVectorB[r] = M[r][8];
 	}
 	
-	// TODO: Check if reallocateing the image takes to much time
-	// TODO: resizeEvent and cameraNewImage runs in separate threads, so the resize of correctedImage can not be done while a new image is being painted
+	// TODO: Check if reallocateing the image takes to much time.
+	// TODO: resizeEvent and cameraNewImage runs in separate threads, so the resize of correctedImage can not be done while a new image is being painted.
+	
 	// Create a new Image to store the corrected image data
-	if(m_correctedImage != NULL)
+	if (m_correctedImage != NULL)
 	{
 		delete m_correctedImage;
 	}
 	m_correctedImage = new camera::Image(width, height, camera::Image::FORMAT_RGB32);
 
-	// TODO: Check if reallocateing the pixel map takes to much time
-	// Reallocate the mapping array
-	if(m_pixelMapping != NULL)
+	// TODO: Check if reallocating the pixel map takes to much time.
+	
+	// Reallocate the mapping array.
+	if (m_pixelMapping != NULL)
 	{
 		delete m_pixelMapping;
 	}
 	m_pixelMapping = new int[width * height];
 	int *mapping = m_pixelMapping;
+	
 	int dx, dy;
 	
-	// Calculate the values for the new mapping array
-	for(int y = 0; y < height; y++)
+	// Calculate the values for the new mapping array.
+	for (int y = 0; y < height; y++)
 	{
-		for(int x = 0; x < width; x++)
+		for (int x = 0; x < width; x++)
 		{
 			dy = correctionVectorA[0]*x*y*y +
 				correctionVectorA[1]*x*x*y +
@@ -203,9 +225,11 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 			mapping++;
 		}
 	}
-	qDebug("resizeEvent: Done");
 }
 
+/// \brief Reduces a 8x9 linear equation into row echelon form. This is used when undistorting the camera image.
+/// \param M A matrix of size 8x9 containing the linear equation.
+///
 void CameraWidget::solveLinearEquation(float M[8][9])
 {
 	int rowCount = 8;
@@ -260,7 +284,7 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 		c++;
 	}
 	
-	// Do back-substitution
+	// Do back-substitution.
 	for(r = rowCount - 1; r >= 0; r--)
 	{
 		for(r2 = 0; r2 < r; r2++)
@@ -274,41 +298,53 @@ void CameraWidget::solveLinearEquation(float M[8][9])
 	}
 }
 
+///
+/// \brief Corrects an incoming camera image (that is distorted by default).
+/// \param distortedImage The distorted image from the camera.
+///
 void CameraWidget::correctDistortion(camera::Image *distortedImage)
 {
+	// The pixel mapping array contains the pixel offsets, this must be known here.
 	if(m_pixelMapping == NULL)
 	{
 		qWarning("pixelMapping == NULL");
 		return;
 	}
 	
-	camera::ImageBuffer *cBufferAddr = m_correctedImage->getBufferAddress();
-	camera::ImageBuffer *dBufferBaseAddr = distortedImage->getBufferAddress();
-	camera::ImageBuffer *dBufferAddr = NULL;
-	int dBufferSize = distortedImage->getBufferSize();
-	int *mapping = m_pixelMapping;
-	int s = m_correctedImage->getWidth() * m_correctedImage->getHeight();
+	camera::ImageBuffer *cBufferAddr		= m_correctedImage->getBufferAddress();
+	camera::ImageBuffer *dBufferBaseAddr	= distortedImage->getBufferAddress();
+	camera::ImageBuffer *dBufferAddr		= NULL;
+	int dBufferSize							= distortedImage->getBufferSize();
+	int *mapping							= m_pixelMapping;
+	int s									= m_correctedImage->getWidth() * m_correctedImage->getHeight();
 	int offset;
+
 	dBufferAddr = dBufferBaseAddr;
 
-	for(int i = 0; i < s; i++) {
-		offset = (*mapping) * 4;
+	// Loop through all pixels in the distorted image and use the pixel mapping array
+	// to remap the pixels to their corrected position and place the result in the corrected image.
+	for(int i = 0; i < s; i++) 
+	{
+		offset = (*mapping) * 4; // RGBX
 		mapping++;
-		// Calculate which pixel to use from the distorted image based on the pixel mapping calculated in resizeEvent
-		if(offset < 0 || offset > dBufferSize)
+
+		// Calculate which pixel to use from the distorted image based on the pixel mapping calculated in resizeEvent.
+		if ((offset < 0) || (offset > dBufferSize))
 		{
 			*(cBufferAddr++) = 255; // B
-			*(cBufferAddr++) = 0; // G
+			*(cBufferAddr++) = 0;	// G
 			*(cBufferAddr++) = 255; // R
-			*(cBufferAddr++) = 0; // X
-		} else {
+			*(cBufferAddr++) = 0;	// X (not used)
+		} 
+		else 
+		{
 			dBufferAddr = dBufferBaseAddr + offset;
 			
-			// Copy the RGBX values from the distordet to the corrected image
+			// Copy the RGBX values from the distorted to the corrected image.
 			*(cBufferAddr++) = *(dBufferAddr++); // R
 			*(cBufferAddr++) = *(dBufferAddr++); // G
 			*(cBufferAddr++) = *(dBufferAddr++); // B
-			*(cBufferAddr++) = *(dBufferAddr++); // X
+			*(cBufferAddr++) = *(dBufferAddr++); // X (not used)
 		}
 	}
 }
