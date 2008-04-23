@@ -3,7 +3,7 @@
 
 #define STEP_PRECISION_X	10.0
 #define STEP_PRECISION_Y	5.0
-#define STEP_PRECISION_Z	1.0
+#define STEP_PRECISION_Z	5.0
 
 #define M_ANS_ERROR	"E1"
 #define M_ANS_OK	"OK"

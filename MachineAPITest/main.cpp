@@ -29,6 +29,26 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
+
+
+	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 0)); mc.Wait();
+	cin >> tmp;
+	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 5000)); mc.Wait();
+
+	/*
+	mc.RunCommand(MachineMoveAllCommand(50000, 50000, 0)); mc.Wait();
+
+	mc.RunCommand(MachinePickCommand(PICKCMD_PICK)); mc.Wait();
+	cin >> tmp;
+	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 0)); mc.Wait();
+	mc.RunCommand(MachinePickCommand(PICKCMD_PLACE)); mc.Wait();
+	cin >> tmp;
+*/
+
+
+
+
+
 /*
 	mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, 3))); mc.Wait();
 
@@ -68,7 +88,7 @@ int main(void)
 	//mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 
 
-	
+	/*
 
 	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 1))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, 1))); mc.Wait();
@@ -78,7 +98,7 @@ int main(void)
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_ZS, 200))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_TURN, 2000))); mc.Wait();
 
-	
+	*/
 	/*
 	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(10000, 10000));
@@ -99,18 +119,20 @@ int main(void)
 	//mc.RunCommand(*(new MachineMoveAllCommand(1000, 1000, 0))); mc.Wait();
 
 //	mc.RunCommand(*(new MachineSetDispenceSpeedCommand(5))); mc.Wait();
-	
+	/*
 	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(1000, 1000));
 	mp.AddPoint(MachinePolygonPoint(1000, 50000));
 	mp.AddPoint(MachinePolygonPoint(50000,50000));
 	mp.AddPoint(MachinePolygonPoint(50000,1000));
+	*/
 /*
 	mc.RunCommand(*(new MachineSetDispenceSpeedCommand(2))); mc.Wait();
 	mc.RunCommand(*(new MachinePolygonDispenceCommand(mp))); mc.Wait();
 
 	mc.RunCommand(*(new MachinePolygonDispenceCommand(mp))); mc.Wait();
 */
+	/*
 	mc.RunCommand(MachineMoveAllCommand(300000, 190000, 5000)); mc.Wait();
 	MachineWrapperCommand wrapper;
 	wrapper.Add(*(new MachineSetDispenceSpeedCommand(2)));
@@ -121,7 +143,7 @@ int main(void)
 	mc.RunCommand(wrapper); mc.Wait();
 
 	//mc.RunCommand(*(new MachineParkCommand())); mc.Wait();
-
+*/
 /*	mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 	mc.RunCommand(*(new MachineMoveAllCommand(1000, 1000, 8000))); mc.Wait();
 	cin >> tmp;

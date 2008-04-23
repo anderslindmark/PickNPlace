@@ -22,7 +22,12 @@ struct PickAndPlaceStruct
 	int placePressDownTime; // Press-Down time during place (* 0.1s)
 	int afterPlaceTime;	// Wait after place (* 0.1s)
 
-	PickAndPlaceStruct(void): afterPickTime(0), pickPressDownTime(0), placePressDownTime(0), afterPlaceTime(0) {};
+	int headHeight; // Height in micrometer of the head-tool.
+	int pickHeight; // Height in micrometers between the floor and the head-tool in it's lowest position (during pick)
+	int placeHeight; // Height in micrometers between the PCB and the head-tool in it's lowest position (during place)
+
+	PickAndPlaceStruct(void): afterPickTime(0), pickPressDownTime(0), placePressDownTime(0), afterPlaceTime(0),
+		headHeight(43000), pickHeight(0), placeHeight(0) {};
 };
 
 struct DispenceStateStruct

@@ -42,6 +42,8 @@ private:
 	PickCommandType m_cmd;
 	bool DoCommand(SerialPort &sp);
 	MachinePickCommand *Copy();
+
+	int m_oldZ;
 };
 
 

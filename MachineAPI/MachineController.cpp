@@ -243,7 +243,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 		MachineStateStruct mss = state.GetState();
 
 		//cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.dispenceState.speed << endl;
-		cout << state.ToString();
+		cout << endl << state.ToString() << endl;
 
 		if (mss.x > 350000)
 		{
