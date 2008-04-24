@@ -29,7 +29,9 @@
 									friend class MachineInitCommand; \
 									friend class MachineWrapperCommand; \
 									friend class MachinePickCommand; \
-									friend class MachineSetPickTimeCommand
+									friend class MachineSetPickTimeCommand; \
+									friend class MachineSetPickOffsetCommand; \
+									friend class MachineGotoStateCommand
 
 #include <string>
 #include "MachineState.h"

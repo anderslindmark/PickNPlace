@@ -51,12 +51,12 @@ bool MachineMoveAllCommand::DoCommand(SerialPort &sp)
 	stringstream converter_y;
 	stringstream converter_z;
 
-	MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
+	//MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 
 	// Get the machine-world coordinates:
-	int pos_x = (int)floor(m_x/STEP_PRECISION_X + 0.5);
-	int pos_y = (int)floor(m_y/STEP_PRECISION_Y + 0.5);
-	int pos_z = (int)floor(m_z/STEP_PRECISION_Z + 0.5);
+	int pos_x = ROUND(m_x/STEP_PRECISION_X);
+	int pos_y = ROUND(m_y/STEP_PRECISION_Y);
+	int pos_z = ROUND(m_z/STEP_PRECISION_Z);
 
 	pos = pos_x;
 	converter_x << M_POS_ABS_MOVE_X;

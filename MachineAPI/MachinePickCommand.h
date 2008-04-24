@@ -29,7 +29,7 @@ public:
 	/// \brief Constructor for MachinePickCommand
 	///
 	/// \param polygon	Initial polygon
-	MachinePickCommand(PickCommandType cmd);
+	MachinePickCommand(PickCommandType cmd, int componentX, int componentY);
 	
 	/// \brief Destructor for the MachinePickCommand
 	~MachinePickCommand(void);
@@ -43,7 +43,10 @@ private:
 	bool DoCommand(SerialPort &sp);
 	MachinePickCommand *Copy();
 
-	int m_oldZ;
+	MachineStateStruct m_state;
+	bool m_firstState;
+	int m_x;
+	int m_y;
 };
 
 

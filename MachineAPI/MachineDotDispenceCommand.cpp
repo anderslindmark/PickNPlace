@@ -53,10 +53,9 @@ MachineDotDispenceCommand *MachineDotDispenceCommand::Copy()
 bool MachineDotDispenceCommand::DoCommand(SerialPort &sp)
 {
 	// Move solder tool above the spot:
+	MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 	MachineMoveAllCommand(m_state.x+m_state.dispenceState.offsetX, m_state.y+m_state.dispenceState.offsetY, -1).DoCommand(sp);
-	MachineMoveAbsoluteCommand(AXIS_Z, m_state.dispenceState.offsetZ).DoCommand(sp);
-	
-	
+		
 	//SOLDER:
 	ExecCommand(sp, "ST 1613",	M_ANS_OK); // Set dot dispence mode
 	MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN).DoCommand(sp);

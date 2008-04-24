@@ -19,5 +19,7 @@
 #include "MachineWrapperCommand.h"
 #include "MachinePickCommand.h"
 #include "MachineSetPickTimeCommand.h"
+#include "MachineSetPickOffsetCommand.h"
+#include "MachineGotoStateCommand.h"
 
 #endif // __MACHINECOMMANDS_H__

@@ -28,19 +28,19 @@ MachineState MachineSetPickTimeCommand::GetAfterState(MachineState &oldms)
 	switch (m_type)
 	{
 	case (PICKTIME_AFTER_PICK):
-		mss.pickAndPlaceState.afterPickTime = m_time;
+		mss.pickState.afterPickTime = m_time;
 		break;
 
 	case (PICKTIME_AFTER_PLACE):
-		mss.pickAndPlaceState.afterPlaceTime = m_time;
+		mss.pickState.afterPlaceTime = m_time;
 		break;
 
 	case (PICKTIME_PRESS_PICK):
-		mss.pickAndPlaceState.pickPressDownTime = m_time;
+		mss.pickState.pickPressDownTime = m_time;
 		break;
 
 	case (PICKTIME_PRESS_PLACE):
-		mss.pickAndPlaceState.placePressDownTime = m_time;
+		mss.pickState.placePressDownTime = m_time;
 		break;
 	}
 

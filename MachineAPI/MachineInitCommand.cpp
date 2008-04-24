@@ -23,7 +23,9 @@ MachineInitCommand::~MachineInitCommand(void)
 
 MachineState MachineInitCommand::GetAfterState(MachineState &current)
 {
-	return MachineState();
+	MachineState state = MachineState();
+	m_state = state.GetState();
+	return state;
 }
 
 string MachineInitCommand::ToString()
@@ -40,9 +42,9 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 {
 	ExecCommand(sp, "CR", M_ANS_CC);
 	// Set lamps to medium brightness
-	MachineLightBrightnessCommand(LAMP_CAMERA, 7).DoCommand(sp);
-	MachineLightBrightnessCommand(LAMP_LOOKUP, 7).DoCommand(sp);
-/*
+	MachineLightBrightnessCommand(LAMP_CAMERA, m_state.lampCameraBrightness).DoCommand(sp);
+	MachineLightBrightnessCommand(LAMP_LOOKUP, m_state.lampLookupBrightness).DoCommand(sp);
+
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "ST 1900", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
@@ -130,7 +132,7 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM71 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM70 320", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WR DM330 57460", M_ANS_OK);
+	ExecCommand(sp, "WR DM330 57460", M_ANS_OK);	// Settings for Z (speed perhaps?)
 	ExecCommand(sp, "WR DM331 2561", M_ANS_OK);
 	ExecCommand(sp, "WR DM81 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM80 330", M_ANS_OK);
@@ -145,11 +147,10 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM81 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM80 330", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-*/
-	// Set the dispence offsets to 0 for safety reasons
-	MachineSetDispenceOffsetCommand(OFFSET_Z, 0).DoCommand(sp);
-	MachineSetDispenceOffsetCommand(OFFSET_ZS, 0).DoCommand(sp);
 
-	return TRUE;
-	
+	// Set the dispence offsets to 0 for safety reasons
+	MachineSetDispenceOffsetCommand(OFFSET_Z, m_state.dispenceState.offsetZ).DoCommand(sp);
+	MachineSetDispenceOffsetCommand(OFFSET_ZS, m_state.dispenceState.offsetZs).DoCommand(sp);
+
+	return true;
 }

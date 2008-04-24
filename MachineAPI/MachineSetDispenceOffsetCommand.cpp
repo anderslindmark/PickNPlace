@@ -58,9 +58,9 @@ bool MachineSetDispenceOffsetCommand::DoCommand(SerialPort &sp)
 		default:
 			return true;
 	}
-	int length = floor(m_offset/STEP_PRECISION_Z + 0.5);
+	int length = ROUND(m_offset/STEP_PRECISION_Z);
 	sprintf_s(cmdStr, sizeof(cmdStr), "WR DM321 %d", length); // Set offset
-	cout << "Setting Z-offset: " << cmdStr << endl;
+
 	ExecCommand(sp, cmdStr, M_ANS_OK);
 	ExecCommand(sp, "WR DM71 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM70 320", M_ANS_OK);

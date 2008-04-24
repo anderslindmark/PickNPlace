@@ -18,6 +18,7 @@
 class MachineInitCommand :
 	public MachineCommand
 {
+	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineInitCommand(void);
 	~MachineInitCommand(void);
@@ -31,6 +32,8 @@ public:
 private:
 	MachineCommand* Copy();
 	bool DoCommand(SerialPort &sp);
+
+	MachineStateStruct m_state;
 };
 
 #endif //__MACHINEINITCOMMAND_H__

@@ -29,26 +29,20 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
-
-
-	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 0)); mc.Wait();
+	mc.RunCommand(MachineSetPickOffsetCommand(PICKOFFSET_X, 5000)); mc.Wait();
+	mc.RunCommand(MachineSetPickOffsetCommand(PICKOFFSET_Y, 5000)); mc.Wait();
+	
+	MachineWrapperCommand pickplace;
+	pickplace.Add(MachineMoveAllCommand(100000, 100000, 0));
+	pickplace.Add(MachinePickCommand(PICKCMD_PICK, 55000, 55000));
+	pickplace.Add(MachinePickCommand(PICKCMD_PLACE, 10000, 55000));
+	pickplace.Add(MachinePickCommand(PICKCMD_PICK, 10000, 55000));
+	pickplace.Add(MachinePickCommand(PICKCMD_DROP, 100000, 10000));
+	
+	mc.RunCommand(pickplace); mc.Wait();
+	
 	cin >> tmp;
-	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 5000)); mc.Wait();
-
-	/*
-	mc.RunCommand(MachineMoveAllCommand(50000, 50000, 0)); mc.Wait();
-
-	mc.RunCommand(MachinePickCommand(PICKCMD_PICK)); mc.Wait();
-	cin >> tmp;
-	mc.RunCommand(MachineMoveAbsoluteCommand(AXIS_Z, 0)); mc.Wait();
-	mc.RunCommand(MachinePickCommand(PICKCMD_PLACE)); mc.Wait();
-	cin >> tmp;
-*/
-
-
-
-
-
+	
 /*
 	mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, 3))); mc.Wait();
 

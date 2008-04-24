@@ -232,6 +232,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MachineGotoStateCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineGotoStateCommand.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MachineInitCommand.cpp"
 				>
 			</File>
@@ -341,6 +349,14 @@
 			</File>
 			<File
 				RelativePath=".\MachineSetDispenceTimeCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetPickOffsetCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MachineSetPickOffsetCommand.h"
 				>
 			</File>
 			<File

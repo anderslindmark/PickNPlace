@@ -5,6 +5,10 @@
 #define STEP_PRECISION_Y	5.0
 #define STEP_PRECISION_Z	5.0
 
+#define ROUND(val)	(int)floor(val+0.5)
+
+#define TOOL_MOUNT_MAX_Z		89000	// The distance before the tool mount hits the floor (in micrometers)
+
 #define M_ANS_ERROR	"E1"
 #define M_ANS_OK	"OK"
 #define M_ANS_1		"1"

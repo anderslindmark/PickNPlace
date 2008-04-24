@@ -161,12 +161,11 @@ void MachineController::DoCommand()
 			}
 			catch (MachineEvent e)
 			{
-				cout << "Oh noes" << endl;
+				// DEBUG:
+				cout << "Failed to execute command:" << endl;
 				cout << e.GetEventMsg() << e.GetEventType() << endl;
 				// TODO: clean up, maybe try a park command? exit?.
 			}
-		//}
-		//while(m_cmd->HasNextState());
 
 		if (initiating)
 		{
@@ -242,7 +241,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 		MachineState state = cmd.GetAfterState(currentState);
 		MachineStateStruct mss = state.GetState();
 
-		//cout << "AfterState: x:" << mss.x << " y:" << mss.y << " z:" << mss.z << " speed:" << mss.dispenceState.speed << endl;
+		// DEBUG:
 		cout << endl << state.ToString() << endl;
 
 		if (mss.x > 350000)

@@ -71,7 +71,7 @@ bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 	case AXIS_X:
 		if (m_raiseZ) MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);	
 		fpos = m_pos/STEP_PRECISION_X;
-		pos = (int)floor(fpos + 0.5);
+		pos = ROUND(fpos);
 		converter << M_POS_ABS_MOVE_X;
 		strcpy_s(movecmd, converter.str().c_str());
 		ExecCommand(sp, M_READY_1515,		M_ANS_1);
@@ -85,7 +85,7 @@ bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 	case AXIS_Y:
 		if (m_raiseZ) MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 		fpos = m_pos/STEP_PRECISION_Y;
-		pos = (int)floor(fpos + 0.5);
+		pos = ROUND(fpos);
 		converter << M_POS_ABS_MOVE_Y;
 		strcpy_s(movecmd, converter.str().c_str());
 		ExecCommand(sp, M_READY_1515,		M_ANS_1);
@@ -98,7 +98,7 @@ bool MachineMoveAbsoluteCommand::DoCommand(SerialPort &sp)
 
 	case AXIS_Z:
 		fpos = m_pos/STEP_PRECISION_Z;
-		pos = (int)floor(fpos + 0.5);
+		pos = ROUND(fpos);
 		converter << M_POS_ABS_MOVE_Z;
 		strcpy_s(movecmd, converter.str().c_str());
 		ExecCommand(sp, M_READY_1515,		M_ANS_1);

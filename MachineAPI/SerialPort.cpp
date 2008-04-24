@@ -137,19 +137,14 @@ bool SerialPort::WriteByte(BYTE bybyte)
 
 bool SerialPort::WriteLine(const char *ch)
 {
-	//cout << "\nDEBUG: SerialPort::WriteLine\t" << ch << endl;
-	//const char *ch = s.c_str();
-	//for (i = 0; i < c.length(); i++)
 	for (unsigned int i = 0; i < strlen(ch); i++)
 	{
 		if (!WriteByte(ch[i]))
 		{
 			return false;
 		}
-		//cout << "Sent byte " << ch[i] << "\n";
 	}
 	WriteByte('\r');
-	//cout << "Sent byte \\r\n";
 	return true;
 }
 
@@ -194,7 +189,6 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 	s = read.substr(0, read.length()-2);
 	strcpy_s(sin, bufsize, s.c_str());
 
-	// cout << "\nDEBUG: SerialPort::ReadLine\t" << sin << endl;
 	return true;
 }
 

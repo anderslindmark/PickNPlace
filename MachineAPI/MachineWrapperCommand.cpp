@@ -10,7 +10,7 @@ MachineWrapperCommand::MachineWrapperCommand()
 
 MachineWrapperCommand::~MachineWrapperCommand(void)
 {
-	for (int i = 0; i < m_commands.size(); i++)
+	for (unsigned int i = 0; i < m_commands.size(); i++)
 	{
 		delete m_commands[i];
 	}
@@ -47,7 +47,7 @@ bool MachineWrapperCommand::HasNextState()
 
 bool MachineWrapperCommand::IsValid()
 {
-	for (int i = 0; i < m_commands.size() ; i++)
+	for (unsigned int i = 0; i < m_commands.size() ; i++)
 	{
 		if (!m_commands[i]->IsValid())
 		{
@@ -60,18 +60,19 @@ bool MachineWrapperCommand::IsValid()
 
 bool MachineWrapperCommand::DoCommand(SerialPort &sp)
 {
-	for ( int i = 0; i < m_commands.size(); i++)
+	for (unsigned int i = 0; i < m_commands.size(); i++)
 	{
 		m_commands[i]->DoCommand(sp);
 	}
 	MachineMoveAllCommand(m_state.x, m_state.y, m_state.z).DoCommand(sp);
+	
 	return true;
 }
 
 MachineWrapperCommand* MachineWrapperCommand::Copy()
 {
 	MachineWrapperCommand *newWC = new MachineWrapperCommand();
-	for (int i = 0; i < m_commands.size(); i++)
+	for (unsigned int i = 0; i < m_commands.size(); i++)
 	{
 		newWC->Add(*(m_commands[i]->Copy()));
 	}
@@ -80,5 +81,5 @@ MachineWrapperCommand* MachineWrapperCommand::Copy()
 
 void MachineWrapperCommand::Add(MachineCommand &cmd)
 {
-	m_commands.push_back(&cmd);
+	m_commands.push_back(cmd.Copy());
 }

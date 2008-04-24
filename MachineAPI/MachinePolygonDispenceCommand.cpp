@@ -80,7 +80,8 @@ bool MachinePolygonDispenceCommand::DoCommand(SerialPort &sp)
 			MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 0).DoCommand(sp);	// Set after times to 0 for all but the last polygon
 			MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 0).DoCommand(sp); // No suckback between polygon points
 			MachinePolygonPoint startPp = m_polygon.GetPoint(0);
-			MachineMoveAllCommand(startPp.x+m_state.dispenceState.offsetX, startPp.y+m_state.dispenceState.offsetY, -1).DoCommand(sp);
+			MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
+			MachineMoveAllCommand(startPp.x - m_state.dispenceState.offsetX, startPp.y - m_state.dispenceState.offsetY, -1).DoCommand(sp);
 			// Update local state
 			m_tempState.x = startPp.x + m_state.dispenceState.offsetX;
 			m_tempState.y = startPp.y + m_state.dispenceState.offsetY;
@@ -129,7 +130,6 @@ void MachinePolygonDispenceCommand::moveOffset(SerialPort &sp, MachinePolygonPoi
 {
 	if (m_state.dispenceState.offsetTurn != 0)
 	{
-		cout << "\n\nHej\n\n";
 		if (oldPp.x == pp.x) // Move in X
 		{
 			if (oldPp.y < pp.y)
@@ -166,7 +166,7 @@ void MachinePolygonDispenceCommand::dispenceLine(SerialPort &sp, MachinePolygonP
 		// Double speed (Y moves half as fast as X)
 		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed*2).DoCommand(sp);
 		length = abs(to.y - from.y);
-		length = (int)floor(length/STEP_PRECISION_Y + 0.5);
+		length = ROUND(length/STEP_PRECISION_Y);
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM215 %d", length); // Set y-length of dispence to ...
 		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length
 		ExecCommand(sp, "WR DM213 0",	M_ANS_OK); // Set x-length of dispence to 0
@@ -180,7 +180,7 @@ void MachinePolygonDispenceCommand::dispenceLine(SerialPort &sp, MachinePolygonP
 		// Set normal speed
 		MachineSetDispenceSpeedCommand(m_state.dispenceState.speed).DoCommand(sp);
 		length = abs(to.x - from.x);
-		length = (int)floor(length/STEP_PRECISION_X + 0.5);
+		length = ROUND(length/STEP_PRECISION_X);
 		sprintf_s(cmdStr, sizeof(cmdStr), "WR DM213 %d", length); 
 		ExecCommand(sp, cmdStr, M_ANS_OK); // Set dispence-length	
 		ExecCommand(sp, "WR DM215 0",	M_ANS_OK); // Set y-length of dispence to 0

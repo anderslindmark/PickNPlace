@@ -30,7 +30,6 @@ bool MachineSetDispenceSpeedCommand::DoCommand(SerialPort &sp)
 {
 	char speedStr[20];
 	sprintf_s(speedStr, sizeof(speedStr), "WR DM211 %d", CONVERT_TO_MACHINE_SPEED(m_speed));
-	cout << "Machine Speed: " << speedStr << endl;
 	// Set speed: x=256*val+1 WR DM210 57346 WR DM211 (x)
 	ExecCommand(sp, "WR DM210 57346", M_ANS_OK);
 	ExecCommand(sp, M_READY_1515, M_ANS_1);
