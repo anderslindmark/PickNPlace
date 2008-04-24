@@ -118,7 +118,7 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM70 320", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "WR DM300 57410", M_ANS_OK);
-	ExecCommand(sp, "WR DM301 12802", M_ANS_OK);
+	ExecCommand(sp, "WR DM301 12802", M_ANS_OK);	// Set X min/max speed TODO: Comment better.
 	ExecCommand(sp, "WR DM51 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM50 300", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
@@ -132,7 +132,7 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM71 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM70 320", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-	ExecCommand(sp, "WR DM330 57460", M_ANS_OK);	// Settings for Z (speed perhaps?)
+	ExecCommand(sp, "WR DM330 57460", M_ANS_OK);	// Settings for Z 
 	ExecCommand(sp, "WR DM331 2561", M_ANS_OK);
 	ExecCommand(sp, "WR DM81 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM80 330", M_ANS_OK);
