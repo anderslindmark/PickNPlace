@@ -54,7 +54,7 @@ public:
 	/// \brief Destructor
 	virtual ~MachineCommand() = 0 {};
 
-	/// \brief Get the state after (a step of) this command would have been executed
+	/// \brief Get the state after (a step of) this command has been executed
 	///
 	/// \param current the current state that the Pick n Place machine is in
 	/// \return the state after this command has been executed
