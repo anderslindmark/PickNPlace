@@ -28,6 +28,7 @@ using namespace std;
 ///
 typedef void (*Handler)(MachineEvent*);
 
+// TODO: What is new zMax value now that we do things correctly?
 struct MachineSettings
 {
 	int xMin;
