@@ -282,7 +282,7 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\debug\moc_CameraWidget.cpp"
+				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
 			</File>
 			<File
@@ -298,7 +298,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\release\moc_CameraWidgetPlugin.cpp"
+				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
