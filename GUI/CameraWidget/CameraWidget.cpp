@@ -394,9 +394,11 @@ void CameraWidget::setDrawEdges(bool enabled)
 
 camera::Image *CameraWidget::getImage()
 {
+	return NULL;
 }
 
 QImage *CameraWidget::getQImage()
 {
+	return NULL;
 }
 

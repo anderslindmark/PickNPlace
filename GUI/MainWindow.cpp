@@ -29,8 +29,13 @@ namespace PicknPlaceGui
 		this->ConnectSlots();
 
 		// Make sure something is selected in the command list.
-		this->m_ui.m_pCommandsListWidget->setCurrentRow(0);
+		//this->m_ui.m_pCommandsListWidget->setCurrentRow(0);
 		
+		this->InitCameraManager();
+	}
+
+	void MainWindow::InitCameraManager()
+	{
 		// Create the machine controller and associate a callback function with it.
 		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
 		this->m_pMC->AddEventHandler(&on_machine_event);
@@ -58,6 +63,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ConnectSlots()
 	{
+		/*
 		// Connect the currently selected list item to what arguments are shown.
 		QMainWindow::connect(
 				this->m_ui.m_pCommandsListWidget, 
@@ -84,6 +90,7 @@ namespace PicknPlaceGui
 				SIGNAL(clicked()),
 				this,
 				SLOT(ExecuteCommand()));
+		*/
 	}
 
 	///
@@ -94,6 +101,7 @@ namespace PicknPlaceGui
 		delete this->m_pMC;
 	}
 
+	/*
 	///
 	/// \brief	Slot for when the selected item in the command listwidget changes.
 	///			Changes the current argument controls to show based on the selected command.
@@ -238,6 +246,7 @@ namespace PicknPlaceGui
 			this->m_pMC->RunCommand(mc);
 		}
 	}
+	*/
 
 	///
 	/// \brief Callback function for any MachineController events.
@@ -245,14 +254,14 @@ namespace PicknPlaceGui
 	void MainWindow::OnMachineEvent(MachineEvent *e)
 	{
 		MachineEventType type = e->GetEventType();
-		
+		/*
 		if ((type == EVENT_CMD_DONE) || (type == EVENT_MACHINE_INITIALIZED))
 		{
 			this->m_ui.m_pExecuteButton->setEnabled(true);
 		}
 		
 		// TODO: Handle all event types and show error dialogs and such.
-
+		*/
 		delete e;
 	}
 }

@@ -26,12 +26,15 @@ namespace PicknPlaceGui
 		void OnMachineEvent(MachineEvent *e);
 
 	private slots:
+		/*
 		void SetArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem);
 		void CheckIfExecutable(int notused);
 		void ExecuteCommand(void);
+		*/
 
 	private:
 		void ConnectSlots();
+		void InitCameraManager();
 
 		Ui::MainWindow m_ui;					///< Generated User Interface.
 		MachineController *m_pMC;				///< Machine controler.
