@@ -22,11 +22,17 @@ class MachineMoveAllCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Create a new MachineMoveAllCommand. If one of the axis should not be moved, set the value
+	/// of that axis to -1
+	/// 
+	/// \param x X-coordinate
+	/// \param y Y-coordinate
+	/// \param z Z-coordinate
 	MachineMoveAllCommand(int x, int y, int z);
 	~MachineMoveAllCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
+	bool IsValid()	// TODO: Remove: Implemented in parent?
 	{
 		return true;
 	}
@@ -34,6 +40,7 @@ public:
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineMoveAllCommand* Copy();
+
 	int m_x;
 	int m_y;
 	int m_z;

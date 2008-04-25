@@ -1,9 +1,20 @@
+/**
+ 	\file MachineSetDispenceOffsetCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineSetDispenceOffsetCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #ifndef __MachineSetDispenceOffsetCommand_H__
 #define __MachineSetDispenceOffsetCommand_H__
 
 #include "MachineCommand.h"
 #include "MachineState.h"
 
+// The offsets are documented in MachineState.h
 enum OffsetAxis
 {
 	OFFSET_X,
@@ -13,6 +24,8 @@ enum OffsetAxis
 	OFFSET_TURN
 };
 
+/// \class MachineSetDispenceOffsetCommand
+/// \brief Settings for the different offsets needed when dispencing
 class MachineSetDispenceOffsetCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;

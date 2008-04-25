@@ -1,7 +1,7 @@
 #include "MachineSetDispenceSpeedCommand.h"
 #include <iostream>
 
-#define SET_SPEED_COMMAND_STRING "Machine Set Speed Command"
+#define COMMAND_STRING "Machine Set Speed Command"
 #define CONVERT_TO_MACHINE_SPEED(x)	256*x+1
 
 MachineSetDispenceSpeedCommand::MachineSetDispenceSpeedCommand(int speed)
@@ -15,7 +15,7 @@ MachineSetDispenceSpeedCommand::~MachineSetDispenceSpeedCommand(void)
 
 string MachineSetDispenceSpeedCommand::ToString()
 {
-	return string(SET_SPEED_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineSetDispenceSpeedCommand::GetAfterState(MachineState &oldms)

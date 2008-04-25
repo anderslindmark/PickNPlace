@@ -1,3 +1,12 @@
+/**
+ 	\file MachineSetDispenceTimeCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineSetDispenceTimeCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
 #ifndef __MachineSetDispenceTimeCommand_H__
 #define __MachineSetDispenceTimeCommand_H__
 
@@ -11,6 +20,8 @@ enum DispenceTimeType
 	DISPENCETIME_SUCKBACK
 };
 
+/// \class MachineSetDispenceTimeCommand
+/// \brief Sets the different times related to dispencing (Before/after/suckback)
 class MachineSetDispenceTimeCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;

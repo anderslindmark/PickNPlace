@@ -2,7 +2,7 @@
 #include "MachineCommands.h"
 #include "Axis.h"
 
-#define MOVE_POLYGON_COMMAND_STRING	"Machine Move Polygon Command"
+#define COMMAND_STRING	"Machine Move Polygon Command"
 
 MachineMovePolygonCommand::MachineMovePolygonCommand(MachinePolygon polygon) : m_polygon(polygon)
 {
@@ -22,7 +22,7 @@ MachineMovePolygonCommand::~MachineMovePolygonCommand(void)
 
 string MachineMovePolygonCommand::ToString()
 {
-	return string(MOVE_POLYGON_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineMovePolygonCommand::GetAfterState(MachineState &oldms)

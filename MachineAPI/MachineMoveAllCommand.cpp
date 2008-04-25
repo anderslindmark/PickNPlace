@@ -14,7 +14,7 @@
 #include <iostream>
 #include <sstream>
 
-#define MOVE_ABSOLUTE_COMMAND_STRING "Machine move all axis simultaneously command"
+#define COMMAND_STRING "Machine move all axis simultaneously command"
 
 MachineMoveAllCommand::MachineMoveAllCommand(int x, int y, int z)
 {
@@ -29,7 +29,7 @@ MachineMoveAllCommand::~MachineMoveAllCommand(void)
 
 string MachineMoveAllCommand::ToString(void)
 {
-	return string(MOVE_ABSOLUTE_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineMoveAllCommand::GetAfterState(MachineState &oldms)

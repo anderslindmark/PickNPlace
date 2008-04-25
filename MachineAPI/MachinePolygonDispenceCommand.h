@@ -49,8 +49,9 @@ private:
 	bool ValidatePolygon();
 	/// \brief Dispence a line from a point to the next
 	void dispenceLine(SerialPort &sp, MachinePolygonPoint from, MachinePolygonPoint to);
-	/// \brief Moves the needle to an offset, to avoid "blobs" of paste at corners in the polygon
+	/// \brief Moves the needle to an offset, used to avoid "blobs" of paste at corners in the polygon
 	void moveOffset(SerialPort &sp, MachinePolygonPoint oldPp, MachinePolygonPoint pp);
+
 	MachinePolygon m_polygon;
 	int m_vectorIndex;
 	bool m_valid;

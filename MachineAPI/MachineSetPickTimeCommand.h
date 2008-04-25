@@ -14,22 +14,22 @@
 #include "MachinePolygon.h"
 
 enum PickTimeType {
-	PICKTIME_AFTER_PICK,	// Wait after pick (* 0.1s)
-	PICKTIME_PRESS_PICK,	// Press-Down time during pick (* 0.1s)
-	PICKTIME_PRESS_PLACE, // Press-Down time during place (* 0.1s)
-	PICKTIME_AFTER_PLACE	// Wait after place (* 0.1s)
+	PICKTIME_AFTER_PICK,	///< Wait after pick
+	PICKTIME_PRESS_PICK,	///< Press-Down time during pick
+	PICKTIME_PRESS_PLACE, 	///< Press-Down time during place
+	PICKTIME_AFTER_PLACE	///< Wait after place
 };
 
 /// \class MachineSetPickTimeCommand
-/// \brief Used to dispence paste along a set of points.
-///
+/// \brief Set pick/place related times
 class MachineSetPickTimeCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
 	/// \brief Constructor for MachineSetPickTimeCommand
 	///
-	/// \param polygon	Initial polygon
+	/// \param type	Which time should be set
+	/// \param time The time (*0.1s)
 	MachineSetPickTimeCommand(PickTimeType type, int time);
 	
 	/// \brief Destructor for the MachineSetPickTimeCommand
@@ -40,11 +40,11 @@ public:
 	bool HasNextState();
 
 private:
-	PickTimeType m_type;
-	int m_time;
-
 	bool DoCommand(SerialPort &sp);
 	MachineSetPickTimeCommand *Copy();
+
+	PickTimeType m_type;
+	int m_time;
 };
 
 

@@ -1,3 +1,13 @@
+/**
+ 	\file MachineSetPickOffsetCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineSetPickOffsetCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #ifndef __MachineSetPickOffsetCommand_H__
 #define __MachineSetPickOffsetCommand_H__
 
@@ -13,6 +23,8 @@ enum PickOffset
 	PICKOFFSET_PLACEHEIGHT
 };
 
+/// \class MachineSetPickOffsetCommand
+/// \brief Set pick/place related offsets
 class MachineSetPickOffsetCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;

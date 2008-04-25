@@ -10,7 +10,7 @@
 
 #include "MachineParkCommand.h"
 
-#define MOVE_ABSOLUTE_COMMAND_STRING "Machine park command"
+#define COMMAND_STRING "Machine park command"
 
 MachineParkCommand::MachineParkCommand(void)
 {
@@ -22,7 +22,7 @@ MachineParkCommand::~MachineParkCommand(void)
 
 string MachineParkCommand::ToString(void)
 {
-	return string(MOVE_ABSOLUTE_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineParkCommand::GetAfterState(MachineState &oldms)

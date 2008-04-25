@@ -4,7 +4,6 @@
  	\brief
  	Source file for the MachineCommand
  
-
  	\author	Henrik Mäkitaavola & Anders Lindmark
 **/
 
@@ -30,7 +29,7 @@ bool MachineCommand::ExecCommand(SerialPort &sp, const char *cmd, const char *re
 			sp.ReadLine(ans, sizeof(ans));
 			if (strcmp(ans, M_ANS_CC) != 0)
 			{
-				// TODO: Set errormsg somewhere
+				// TODO: Set errormsg somewhere (??)
 				throw MachineEvent(EVENT_MACHINE_ERROR, "Expected 'CC', recieved " + string(ans));
 				return false;
 			}
@@ -55,8 +54,6 @@ int MachineCommand::ExecCommandInt(SerialPort &sp, const char *cmd)
 	{
 		return -1;
 	}
-
-	
 	
 	return i;
 }

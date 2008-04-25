@@ -15,7 +15,7 @@
 #include <vector>
 
 /// \class MachineWrapperCommand
-/// \brief Move the Pick n Place machine to an absolue position
+/// \brief A wrapper that takes a series of commands, executes them in sequence, and then returns to where it was before this execution began.
 class MachineWrapperCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
@@ -29,14 +29,12 @@ public:
 	void Add(MachineCommand &cmd);
 
 private:
-	int m_current;
-	MachineStateStruct m_state;
-	vector<MachineCommand*> m_commands;
-
 	bool DoCommand(SerialPort &sp);
 	MachineWrapperCommand* Copy();
 	
-	
+	int m_current;
+	MachineStateStruct m_state;
+	vector<MachineCommand*> m_commands;
 };
 
 #endif //__MachineWrapperCommand_H__

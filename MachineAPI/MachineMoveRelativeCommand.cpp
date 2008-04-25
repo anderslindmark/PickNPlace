@@ -1,6 +1,6 @@
 #include "MachineMoveRelativeCommand.h"
 
-#define MOVE_RELATIVE_COMMAND_STRING "Machine move relative command"
+#define COMMAND_STRING "Machine move relative command"
 
 MachineMoveRelativeCommand::MachineMoveRelativeCommand(Axis axis, int distance)
 {
@@ -15,7 +15,7 @@ MachineMoveRelativeCommand::~MachineMoveRelativeCommand(void)
 
 string MachineMoveRelativeCommand::ToString()
 {
-	return string(MOVE_RELATIVE_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineMoveRelativeCommand::GetAfterState(MachineState &oldms)

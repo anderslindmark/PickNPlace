@@ -20,20 +20,19 @@ enum PickCommandType {
 };
 
 /// \class MachinePickCommand
-/// \brief Used to dispence paste along a set of points.
+/// \brief Command to pick/place/drop a component at a specified coordinate
 ///
 class MachinePickCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
-	/// \brief Constructor for MachinePickCommand
+	/// \brief Create a new MachinePickCommand
 	///
-	/// \param polygon	Initial polygon
+	/// \param cmd What action to do; pick, place or drop
+	/// \param componentX X-coordinate of the component
+	/// \param componentY Y-coordinate of the component
 	MachinePickCommand(PickCommandType cmd, int componentX, int componentY);
-	
-	/// \brief Destructor for the MachinePickCommand
 	~MachinePickCommand(void);
-
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
 	bool HasNextState();

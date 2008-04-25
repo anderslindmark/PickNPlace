@@ -1,3 +1,13 @@
+/**
+ 	\file MachineMoveNeedleCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineMoveAbsoluteCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #ifndef __MACHINEMOVENEEDLECOMMAND_H__
 #define __MACHINEMOVENEEDLECOMMAND_H__
 #include "MachineCommand.h"
@@ -8,6 +18,8 @@ enum MachineNeedleMovement
 	NEEDLEMOVEMENT_UP
 };
 
+/// \class MachineMoveNeedleCommand
+/// \brief Command to raise and lower the needle
 class MachineMoveNeedleCommand :
 	public MachineCommand
 {
@@ -22,7 +34,7 @@ public:
 		return false;
 	}
 
-	bool IsValid()
+	bool IsValid()	// TODO: Remove: Implemented in parent?
 	{
 		return true;
 	}

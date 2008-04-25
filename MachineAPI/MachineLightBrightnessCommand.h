@@ -1,3 +1,14 @@
+/**
+ 	\file MachineLightBrightnessCommand.h
+ 
+ 	\brief
+ 	Header file for the MachineLightBrightnessCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #ifndef __MachineLightBrightnessCommand_H__
 #define __MachineLightBrightnessCommand_H__
 
@@ -10,10 +21,16 @@ enum Lamp
 	LAMP_LOOKUP
 };
 
+/// \class MachineLightBrightnessCommand
+/// \brief Control the lightlevel of the lamps.
 class MachineLightBrightnessCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Create a new MachineLightBrightnessCommand command
+	///
+	/// \param lamp Which lamp to set the brightness of
+	/// \param brightness The brightness of the lamp [0..15]
 	MachineLightBrightnessCommand(Lamp lamp, int brightness); // 0..15
 	~MachineLightBrightnessCommand(void);
 	string ToString();

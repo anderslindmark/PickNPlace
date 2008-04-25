@@ -11,7 +11,7 @@
 #include "MachineInitCommand.h"
 #include "MachineCommands.h"
 
-#define INIT_COMMAND_STRING "Machine init command"
+#define COMMAND_STRING "Machine init command"
 
 MachineInitCommand::MachineInitCommand(void)
 {
@@ -30,7 +30,7 @@ MachineState MachineInitCommand::GetAfterState(MachineState &current)
 
 string MachineInitCommand::ToString()
 {
-	return INIT_COMMAND_STRING; 
+	return COMMAND_STRING; 
 }
 
 MachineCommand* MachineInitCommand::Copy()

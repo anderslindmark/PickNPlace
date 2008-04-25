@@ -33,15 +33,16 @@ struct PickStateStruct
 		headHeight(43000), pickHeight(1100), placeHeight(1100) {};
 };
 
+// TODO: Add more comments about the offsets
 struct DispenceStateStruct
 {
 	int offsetX;
 	int offsetY;
 	int offsetZ;
 	int offsetZs;
-	int offsetTurn; // The offset that the machine moves to avoid creating a blob when dispensing and making a turn.
+	int offsetTurn; ///< The offset that the machine moves to avoid creating a blob when dispensing and making a turn.
 	int speed;
-	int beforeTime; // Time multipliers ( *0.1s)
+	int beforeTime; // multipliers ( *0.1s)
 	int afterTime;
 	int suckBackTime;
 	bool needleDown;

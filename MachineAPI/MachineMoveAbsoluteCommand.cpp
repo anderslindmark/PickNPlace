@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 
-#define MOVE_ABSOLUTE_COMMAND_STRING "Machine move absolute command"
+#define COMMAND_STRING "Machine move absolute command"
 
 MachineMoveAbsoluteCommand::MachineMoveAbsoluteCommand(Axis axis, int position)
 {
@@ -35,7 +35,7 @@ MachineMoveAbsoluteCommand::~MachineMoveAbsoluteCommand(void)
 
 string MachineMoveAbsoluteCommand::ToString(void)
 {
-	return string(MOVE_ABSOLUTE_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineState MachineMoveAbsoluteCommand::GetAfterState(MachineState &oldms)

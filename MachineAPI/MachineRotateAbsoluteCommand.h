@@ -29,9 +29,10 @@ public:
 	}
 
 private:
-	float m_angle; ///< The angle the head should be rotated to
 	MachineRotateAbsoluteCommand* Copy();
 	bool DoCommand(SerialPort &sp);
+
+	float m_angle; ///< The angle the head should be rotated to
 };
 
 #endif //__MACHINEROTATEABSOLUTECOMMAND_H__

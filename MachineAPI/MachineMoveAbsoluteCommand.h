@@ -15,11 +15,15 @@
 #include "Axis.h"
 
 /// \class MachineMoveAbsoluteCommand
-/// \brief Move the Pick n Place machine to an absolue position
+/// \brief Move the machine to an absolue position
 class MachineMoveAbsoluteCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Create a new MachineMoveAbsoluteCommand
+	///
+	/// \param axis Which axis to move along
+	/// \param position The absolute position in the specified axis to move to
 	MachineMoveAbsoluteCommand(Axis axis, int position);
 	~MachineMoveAbsoluteCommand(void);
 	string ToString();

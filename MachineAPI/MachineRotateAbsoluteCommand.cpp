@@ -11,7 +11,7 @@
 #include "MachineRotateAbsoluteCommand.h"
 #include <sstream>
 
-#define ROTATE_ABSOLUTE_COMMAND_STRING "Rotate absolute command"
+#define COMMAND_STRING "Rotate absolute command"
 
 MachineRotateAbsoluteCommand::MachineRotateAbsoluteCommand(float angle)
 {
@@ -31,7 +31,7 @@ MachineState MachineRotateAbsoluteCommand::GetAfterState(MachineState &oldms)
 
 string MachineRotateAbsoluteCommand::ToString(void)
 {
-	return string(ROTATE_ABSOLUTE_COMMAND_STRING);
+	return string(COMMAND_STRING);
 }
 
 MachineRotateAbsoluteCommand* MachineRotateAbsoluteCommand::Copy()

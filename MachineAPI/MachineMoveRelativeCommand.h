@@ -15,6 +15,8 @@
 #include "MachineMoveAbsoluteCommand.h"
 #include "MachineEvent.h"
 
+/// \class MachineMoveRelativeCommand
+/// \brief Move the Pick n Place machine relative to the current position
 class MachineMoveRelativeCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
@@ -23,7 +25,7 @@ public:
 	~MachineMoveRelativeCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
+	bool IsValid()	// TODO: Remove: Implemented in parent?
 	{
 		return true;
 	}
