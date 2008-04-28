@@ -1,3 +1,13 @@
+/**
+ 	\file MachineLightBrightnessCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineLightBrightnessCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineLightBrightnessCommand.h"
 #include <iostream>
 

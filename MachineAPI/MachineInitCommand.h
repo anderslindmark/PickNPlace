@@ -24,16 +24,12 @@ public:
 	~MachineInitCommand(void);
 	MachineState GetAfterState(MachineState &current);
 	string ToString();
-	bool IsValid()
-	{
-		return true;
-	}
 
 private:
 	MachineCommand* Copy();
 	bool DoCommand(SerialPort &sp);
 
-	MachineStateStruct m_state;
+	MachineStateStruct m_state; ///< Copy of the state the machine will be put to for usage in the DoCommand function.
 };
 
 #endif //__MACHINEINITCOMMAND_H__

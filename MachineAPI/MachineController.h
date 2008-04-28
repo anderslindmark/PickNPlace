@@ -28,17 +28,24 @@ using namespace std;
 ///
 typedef void (*Handler)(MachineEvent*);
 
+
+/// \struct MachineSettings
+/// \brief A data structure that contains settings for the Pick and Place Machine.
 // TODO: What is new zMax value now that we do things correctly?
 struct MachineSettings
 {
-	int xMin;
-	int xMax;
-	int yMin;
-	int yMax;
-	int zMin;
-	int zMax;
-	float rotMin;
-	float rotMax;
+	int xMin; ///< Minimum allowed x coordinate
+	int xMax; ///< Maximum allowed x coordinate
+	int yMin; ///< Minimum allowed y coordinate
+	int yMax; ///< Maximum allowed y coordinate
+	int zMin; ///< Minimum allowed z coordinate
+	int zMax; ///< Maximum allowed z coordinate
+	float rotMin; ///< Minimum allowed rotation
+	float rotMax; ///< Maximum allowed rotation
+
+	/// \brief Default constructor for the Machine Settings struct.
+	///
+	/// See code for default settings.
 	MachineSettings():	xMin(0), xMax(470000), yMin(0), yMax(193000),
 						zMin(0), zMax(10000), rotMin(0.0f), rotMax(2.0f*M_PI) {};
 };

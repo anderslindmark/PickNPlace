@@ -1,3 +1,13 @@
+/**
+ 	\file MachineGotoStateCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineGotoStateCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineGotoStateCommand.h"
 #include <iostream>
 

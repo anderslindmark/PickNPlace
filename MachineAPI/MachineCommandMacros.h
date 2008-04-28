@@ -1,3 +1,12 @@
+/**
+ 	\file MachineCommandMacros.h
+ 
+ 	\brief
+ 	Contains various macros and parameters for the machine commands
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #ifndef __MACHINECOMMANDMACROS_H__
 #define __MACHINECOMMANDMACROS_H__
 

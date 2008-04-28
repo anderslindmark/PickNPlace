@@ -15,10 +15,12 @@
 #include "MachineCommand.h"
 #include "MachineState.h"
 
+/// \enum Lamp
+/// \brief The different lamps on the machine
 enum Lamp
 {
-	LAMP_CAMERA,
-	LAMP_LOOKUP
+	LAMP_CAMERA, ///< Lamp placed at the camera
+	LAMP_LOOKUP ///< The lamp pointing up
 };
 
 /// \class MachineLightBrightnessCommand
@@ -31,21 +33,18 @@ public:
 	///
 	/// \param lamp Which lamp to set the brightness of
 	/// \param brightness The brightness of the lamp [0..15]
-	MachineLightBrightnessCommand(Lamp lamp, int brightness); // 0..15
+	MachineLightBrightnessCommand(Lamp lamp, int brightness);
+
 	~MachineLightBrightnessCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
-	{
-		return true;
-	}
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineLightBrightnessCommand* Copy();
 
-	Lamp m_lamp;
-	int m_brightness;
+	Lamp m_lamp; ///< Lamp to set the brightness to
+	int m_brightness; ///< Brightness level
 };
 
 #endif // __MachineLightBrightnessCommand_H__

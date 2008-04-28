@@ -69,7 +69,9 @@ public:
 	/// \return string representation of the command
 	virtual string ToString() = 0;
 
-	/// \brief If the command has specific internal errors that ValidateCommand() doesn't check, it is reported here
+	/// \brief If the command has specific internal errors that MachineController::ValidateCommand() doesn't check, it is reported here
+	///
+	/// \return true if the command is valid else false
 	virtual bool IsValid() { return true; };
 
 protected:

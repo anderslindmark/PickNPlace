@@ -1,3 +1,13 @@
+/**
+ 	\file MachineMoveNeedleCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineMoveNeedleCommand class
+ 
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #include "MachineMoveNeedleCommand.h"
 
 #define COMMAND_STRING "Machine Move Needle Command"

@@ -14,7 +14,10 @@
 #include "MachineCommand.h"
 #include "MachineState.h"
 
-// The offsets are documented in MachineState.h
+/// \enum OffsetAxis
+/// \brief The type of offset that should be set.
+///
+/// The offsets are documented in MachineState.h
 enum OffsetAxis
 {
 	OFFSET_X,
@@ -30,21 +33,21 @@ class MachineSetDispenceOffsetCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Constructor.
+	///
+	/// \param axis The axis the offset should be applied to
+	/// \param offset The offset length
 	MachineSetDispenceOffsetCommand(OffsetAxis axis, int offset);
 	~MachineSetDispenceOffsetCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
-	{
-		return true;
-	}
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineSetDispenceOffsetCommand* Copy();
 	
-	OffsetAxis m_axis;
-	int m_offset;
+	OffsetAxis m_axis; ///< The axis
+	int m_offset; ///< The offset length
 };
 
 #endif // __MachineSetDispenceOffsetCommand_H__

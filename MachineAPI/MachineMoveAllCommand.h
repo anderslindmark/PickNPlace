@@ -29,21 +29,18 @@ public:
 	/// \param y Y-coordinate
 	/// \param z Z-coordinate
 	MachineMoveAllCommand(int x, int y, int z);
+
 	~MachineMoveAllCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()	// TODO: Remove: Implemented in parent?
-	{
-		return true;
-	}
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineMoveAllCommand* Copy();
 
-	int m_x;
-	int m_y;
-	int m_z;
+	int m_x; ///< X Coordinate
+	int m_y; ///< Y Coordinate
+	int m_z; ///< Z Coordinate
 };
 
 #endif //__MachineMoveAllCommand_H__

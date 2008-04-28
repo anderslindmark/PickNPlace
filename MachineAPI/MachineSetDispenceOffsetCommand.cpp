@@ -1,3 +1,14 @@
+/**
+ 	\file MachineSetDispenceOffsetCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineSetDispenceOffsetCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #include "MachineSetDispenceOffsetCommand.h"
 #include <iostream>
 

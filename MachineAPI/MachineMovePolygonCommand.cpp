@@ -1,3 +1,14 @@
+/**
+ 	\file MachineMovePolygonCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineMovePolygonCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #include "MachineMovePolygonCommand.h"
 #include "MachineCommands.h"
 #include "Axis.h"

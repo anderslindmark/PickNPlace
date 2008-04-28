@@ -21,22 +21,29 @@ class MachineGotoStateCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Constructor, used if the machine should not run a initialize command first.
+	///
+	/// \param state The state the machine should be set to.
 	MachineGotoStateCommand(MachineState state);
+
+	/// \brief Constructor.
+	///
+	/// \param state The state the machine should be set to.
+	/// \param initialize Indicates whether the machine should be initialized first.
 	MachineGotoStateCommand(MachineState state, bool initialize);
+
+	/// \brief Destructor.
 	~MachineGotoStateCommand(void);
+
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()	// TODO: Remove: Implemented in parent?
-	{
-		return true;
-	}
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineGotoStateCommand* Copy();
 	
-	MachineState m_state;
-	bool m_initialize;
+	MachineState m_state;  ///< The state the machine should move to
+	bool m_initialize;	///< Indicates whether the machine should initialize first
 };
 
 #endif // __MachineGotoStateCommand_H__

@@ -1,3 +1,13 @@
+/**
+ 	\file MachineCommands.h
+ 
+ 	\brief
+ 	Contains all the available commands
+ 
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #ifndef __MACHINECOMMANDS_H__
 #define __MACHINECOMMANDS_H__
 
