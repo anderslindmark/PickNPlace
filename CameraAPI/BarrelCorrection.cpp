@@ -25,6 +25,8 @@ BarrelCorrection::~BarrelCorrection()
 
 Image *BarrelCorrection::apply(Image *image)
 {
+	LOG_TRACE("BarrelCorrection::apply()");
+	
 	if(m_outputWidth <= 0 || m_outputHeight <= 0)
 	{
 		setOutputSize(image->getWidth(), image->getHeight());
@@ -32,6 +34,12 @@ Image *BarrelCorrection::apply(Image *image)
 	
 	if(m_correctedImage == NULL || m_pixelMapping == NULL)
 		return image;
+	
+	if(image->getFormat != Image::FORMAT_RGB32)
+	{
+		LOG_ERROR("");
+		return image;
+	}
 	
 	int numPixels                   = m_correctedImage->getWidth() * m_correctedImage->getHeight();
 	int *mapping                    = m_pixelMapping;
@@ -57,7 +65,9 @@ Image *BarrelCorrection::apply(Image *image)
 }
 
 void BarrelCorrection::setDistortedCoordinates(int distortedX[8], int distordetY[8])
-{
+{	
+	LOG_TRACE("BarrelCorrection::setDistortedCoordinates()");
+	
 	for(int i = 0; i < 8; i++)
 	{
 		m_distortedX[i] = distortedX[i];
@@ -69,6 +79,7 @@ void BarrelCorrection::setDistortedCoordinates(int distortedX[8], int distordetY
 
 void BarrelCorrection::setOutputSize(int width, int height)
 {
+	LOG_TRACE("BarrelCorrection::setOutputSize()");
 	// TODO: Need mutex lock so the corrected image or pixel mapping array isn't used in another thread when they are reallocated
 	
 	if(m_outputWidth == width && m_outputHeight == height)
@@ -102,6 +113,8 @@ void BarrelCorrection::setOutputSize(int width, int height)
 
 void BarrelCorrection::calculatePixelMapping()
 {
+	LOG_TRACE("BarrelCorrection::calculatePixelMapping()");
+	
 	if(m_outputWidth <= 0 || m_outputHeight <= 0)
 		return;
 	
@@ -182,6 +195,8 @@ void BarrelCorrection::calculatePixelMapping()
 
 void BarrelCorrection::solveLinearEquation(float M[8][9])
 {
+	LOG_TRACE("BarrelCorrection::solveLinearEquation()");
+	
 	int rowCount = 8;
 	int columnCount = 9;
 	int r, c, r2, c2;

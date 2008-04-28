@@ -36,10 +36,8 @@ namespace PicknPlaceGui
 		void ConnectSlots();
 		void InitCameraManager();
 
-		Ui::MainWindow m_ui;					///< Generated User Interface.
-		MachineController *m_pMC;				///< Machine controler.
-		camera::CameraManager m_cameraManager;	///< Camera Manager.
-		std::vector<camera::Camera *> m_cams;	///< A list of cameras.
+		Ui::MainWindow m_ui;					    ///< Generated User Interface.
+		MachineController *m_pMC;				    ///< Machine controler.
 	};
 }
 

@@ -5,14 +5,24 @@
 namespace camera 
 {
 
+CameraManager *CameraManager::m_instance = NULL;
+
 CameraManager::CameraManager()
 {
 	LOG_TRACE("CameraManger::CameraManager()");
 }
 
-CameraManager::~CameraManager()
+CameraManager *CameraManager::getInstance()
 {
-	LOG_TRACE("CameraManger::~CameraManager()");
+	LOG_TRACE("CameraManger::getInstance()");
+	
+	// Not thread safe!
+	if(m_instance == NULL)
+	{
+		m_instance = new CameraManager();
+	}
+	
+	return m_instance;
 }
 
 void CameraManager::addDriver(Driver *driver)
@@ -31,7 +41,10 @@ void CameraManager::addDriver(Driver *driver)
 	LOG_DEBUG("Added driver " << driver->getVersionString());
 }
 
-void CameraManager::removeDriver(camera::Driver *driver) {
+void CameraManager::removeDriver(camera::Driver *driver)
+{
+	LOG_TRACE("CameraManager::removeDriver()");
+	
 	for(DriverList::const_iterator iter = m_drivers.begin(); iter != m_drivers.end(); iter++)
 	{
 		if((*iter) == driver)

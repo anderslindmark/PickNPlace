@@ -36,24 +36,24 @@ int main()
 {
 	std::cout << "Hello!" << std::endl;
 	
-	camera::CameraManager cm;
+	camera::CameraManager *cm = camera::CameraManager::getInstance();
 	
 	camera::DummyDriver dd;
 	dd.setImageSize(500, 500);
-	cm.addDriver(&dd);
+	cm->addDriver(&dd);
 	
 	camera::EuresysDriver *ed;
 	try
 	{
 		ed = new camera::EuresysDriver();
-		cm.addDriver(ed);
+		cm->addDriver(ed);
 	}
 	catch(camera::CameraException &e)
 	{
 		LOG_ERROR("Failed to add Euresys driver (" << e.what() << ")");
 	}
 	
-	camera::CameraIdentifierList identifiers = cm.getCameraIdentifiers();
+	camera::CameraIdentifierList identifiers = cm->getCameraIdentifiers();
 	camera::Camera *c = NULL;
 	MyListener cameraListener;
 	std::string command;
@@ -98,7 +98,7 @@ int main()
 				ss << command.substr(6);
 				ss >> id;
 				std::cout << "Creating camera #" << id <<"..." << std::endl;
-				c = cm.createCamera(identifiers.at(id));
+				c = cm->createCamera(identifiers.at(id));
 				c->setListener(&cameraListener);
 			}
 			catch(camera::CameraException &e)
@@ -151,7 +151,7 @@ int main()
 			std::cout << "Unknown command. Try 'help'" << std::endl;
 		}
 	}
-
+	
 	delete ed;
 	delete c;
 }

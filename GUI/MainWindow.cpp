@@ -40,22 +40,23 @@ namespace PicknPlaceGui
 		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
 		this->m_pMC->AddEventHandler(&on_machine_event);
 		
+		
+		camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 		//camera::DummyDriver *dd = new camera::DummyDriver();
 		//dd->setImageSize(400, 400);
-		//this->m_cameraManager.addDriver(dd);
+		//cameraManager->addDriver(dd);
 
-		// TODO: Clean up all created objects in destructor
 		camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
-		this->m_cameraManager.addDriver(euresysDriver);
+		cameraManager->addDriver(euresysDriver);
 
-		camera::CameraIdentifierList identifiers = this->m_cameraManager.getCameraIdentifiers();
-		camera::Camera *c = NULL;
+		camera::CameraIdentifierList identifiers = cameraManager->getCameraIdentifiers();
 		
-		c = this->m_cameraManager.createCamera(identifiers.at(1));
-		c->setListener(this->m_ui.m_pMainCameraWidget);
-		this->m_cams.push_back(c);
-
-		c->start();
+		m_pMainCameraWidget->setCamera(identifiers.at(1));
+		m_pMainCameraWidget->start();
+		
+		int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
+		int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
+		m_pMainCameraWidget.setImageCorrectionParameters(distortedX, distortedY);
 	}
 
 	///

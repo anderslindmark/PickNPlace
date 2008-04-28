@@ -42,12 +42,11 @@
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
 #include "CameraManager.h"
-#include "DummyDriver.h"
-#include "EuresysDriver.h"
 #include "Camera.h"
 #include "CameraListener.h"
 #include "CameraException.h"
 #include "Image.h"
+#include "BarrelCorrection.h"
 
 #ifdef USE_OPENGL_WIDGET
 class QDESIGNER_WIDGET_EXPORT CameraWidget : public QGLWidget, public camera::CameraListener
@@ -60,7 +59,8 @@ class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::Came
 
 public:
     CameraWidget(QWidget *parent = 0);
-
+    ~CameraWidget();
+	
 	void cameraNewImage(camera::Camera *camera);
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
@@ -85,16 +85,22 @@ protected:
 	void resizeEvent(QResizeEvent * event);
     
 private:
-	void solveLinearEquation(float M[8][9]);
-	void correctDistortion(camera::Image *distortedImage);
-	void calculatePixelMapping(int width, int height);
-	
-	int *m_pixelMapping;
-	float m_xd[8];
-	float m_yd[8];
-	
-	camera::Image *m_correctedImage;
+	camera::Camera *m_camera;
+	camera::BarrelCorrection barrelCorrection;
 	QImage m_image;
+	
+	int m_machineX;
+	int m_machineY;
+	int m_machineZ;
+	
+	int m_leftOffset;
+	float m_leftZDiff, 
+	int m_rightOffset;
+	float m_rightZDiff, 					  
+	int m_topOffset;
+	float m_topZDiff, 
+	int m_bottomOffset;
+	float m_bottomZDiff
 };
 
 #endif // __CAMERAWIDGET_H__

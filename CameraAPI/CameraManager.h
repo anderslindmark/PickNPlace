@@ -9,12 +9,10 @@
 namespace camera 
 {
 
-// TODO: Make class singleton?
 class CameraManager
 {
 	public:
-		CameraManager();
-		~CameraManager();
+		static CameraManager *getInstance();
 		
 		void addDriver(Driver *driver);
 		void removeDriver(Driver *driver);
@@ -22,7 +20,12 @@ class CameraManager
 		const CameraIdentifierList& getCameraIdentifiers();
 		Camera *createCamera(CameraIdentifier identifier);
 		
+	protected:
+		CameraManager();
+		
 	private:
+		static CameraManager *m_instance;
+		
 		DriverList m_drivers;
 		CameraIdentifierList m_identifiers;
 };
