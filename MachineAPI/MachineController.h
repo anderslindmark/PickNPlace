@@ -110,7 +110,7 @@ public:
 	/// \brief Add a event subscriber. 
 	/// NOTE!: The event listener needs to delete the event object it recieves when it's done using it.
 	///
-	/// \param handler the subscribers handler function that should be called
+	/// \param h the subscribers handler function that should be called
 	void AddEventHandler(Handler h);
 
 	/// \brief Get the current position of the machine
@@ -144,7 +144,7 @@ private:
 
 	/// \brief Validate if current command that is being processed is legal
 	///
-	/// \param state current state
+	/// \param cmd the command that is to be validated
 	/// \param validateEvent a pointer to an event if command is not legal
 	/// \return true if command is legal else false
 	bool ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent);

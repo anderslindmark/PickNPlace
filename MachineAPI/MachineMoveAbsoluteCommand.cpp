@@ -1,8 +1,8 @@
 /**
- 	\file MachineMoveAvsoluteCommand.cpp
+ 	\file MachineMoveAbsoluteCommand.cpp
  
  	\brief
- 	Source file for the MachineMoveAvsoluteCommand class
+ 	Source file for the MachineMoveAbsoluteCommand class
  
 
  	\author	Henrik Mäkitaavola & Anders Lindmark
