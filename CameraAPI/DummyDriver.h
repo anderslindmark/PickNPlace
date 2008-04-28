@@ -18,13 +18,13 @@ class DummyDriver : public Driver
 		std::string getIdentifier() { return "dummy"; }
 		
 		CameraIdentifierList getCameraIdentifiers();
-		Camera *createCamera(CameraIdentifier identifier);
+		Camera *createCamera(const std::string &identifier);
 		
 		void setImageSize(int width, int height);
 		
 	private:
-		int _width;
-		int _height;
+		int m_width;
+		int m_height;
 };
 
 } // namespace camera

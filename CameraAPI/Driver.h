@@ -47,7 +47,7 @@ class Driver
 		///
 		/// \brief Create a Camera
 		///
-		virtual Camera *createCamera(CameraIdentifier identifier) = 0;
+		virtual Camera *createCamera(const std::string &identifier) = 0;
 };
 
 typedef std::vector<Driver *> DriverList;

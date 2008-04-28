@@ -9,13 +9,12 @@ namespace camera {
 
 class EuresysCamera : public Camera {
 	public:
-		EuresysCamera(const std::string &identifier, int width = -1, int height = -1, Image::Format format = Image::FORMAT_RGB32, int numSurfaces = 3);
+		EuresysCamera(const std::string &identifier, int width = -1, int height = -1, Image::Format format = Image::FORMAT_RGB32, int numSurfaces = 1);
 		~EuresysCamera();
 		
 		void start();
 		void stop();
 		bool isRunning();
-		Image* getLastImage();
 		
 		void surfaceAvailableCallback(PECEVENTINFO eventInfo);
 		void errorCallback(PECEVENTINFO eventInfo);
@@ -27,10 +26,9 @@ class EuresysCamera : public Camera {
 		void registerCallbacks();
 		void startAcquisition();
 		
-		bool _running;
-		ECHANDLE _channel;
-		std::vector<Image *> images;
-		Image *lastImage;
+		bool m_running;
+		ECHANDLE m_channel;
+		std::vector<Image *> m_images;
 };
 
 } // namespace camera

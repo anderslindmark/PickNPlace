@@ -17,13 +17,14 @@ class CameraManager
 		~CameraManager();
 		
 		void addDriver(Driver *driver);
+		void removeDriver(Driver *driver);
 		void updateCameraIdentifiers();
 		const CameraIdentifierList& getCameraIdentifiers();
 		Camera *createCamera(CameraIdentifier identifier);
 		
 	private:
-		DriverList drivers;
-		CameraIdentifierList identifiers;
+		DriverList m_drivers;
+		CameraIdentifierList m_identifiers;
 };
 
 } // namespace camera

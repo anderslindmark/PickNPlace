@@ -8,41 +8,35 @@ DummyCamera::DummyCamera(int width, int height)
 {
 	LOG_TRACE("DummyCamera::DummyCamera()");
 	
-	_image = new Image(width, height, Image::FORMAT_RGB32);
+	m_image = new Image(width, height, Image::FORMAT_RGB32);
 	// Set whole buffer to zero
-	int bufferSize = _image->getBufferSize();
-	unsigned char *p = _image->getBufferAddress();
+	int bufferSize = m_image->getBufferSize();
+	unsigned char *p = m_image->getBufferAddress();
 	for(int i = 0; i < bufferSize; i++) 
 	{
 		*p = 0;
 		p++;
 	}
 	
-	_running = false;
+	m_running = false;
 }
 
 DummyCamera::~DummyCamera() 
 {
 	LOG_TRACE("DummyCamera::~DummyCamera()");
 	
-	delete _image;
-}
-
-Image *DummyCamera::getLastImage()
-{
-	LOG_TRACE("DummyCamera::getLastImage()");
-	return _image;
+	delete m_image;
 }
 
 void DummyCamera::start() 
 {
 	LOG_TRACE("DummyCamera::start()");
-	_running = true;
+	m_running = true;
 	
 	// Just draw something
-	ImageBuffer *buffer = _image->getBufferAddress();
-	int height = _image->getHeight();
-	int width = _image->getWidth();
+	ImageBuffer *buffer = m_image->getBufferAddress();
+	int height = m_image->getHeight();
+	int width = m_image->getWidth();
 	ImageBuffer c;
 	for(int y = 0; y < height; y++)
 	{
@@ -60,19 +54,19 @@ void DummyCamera::start()
 		}
 	}
 
-	doNewImageCallback();
+	doNewImageCallback(m_image);
 }
 
 void DummyCamera::stop()
 {
 	LOG_TRACE("DummyCamera::stop()");
-	_running = false;
+	m_running = false;
 }
 
 bool DummyCamera::isRunning()
 {
 	LOG_TRACE("DummyCamera::isRunning()");
-	return _running;
+	return m_running;
 }
 
 } // namespace camera

@@ -149,6 +149,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\BarrelCorrection.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BMP.cpp"
 				>
 			</File>
@@ -185,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Filter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Image.cpp"
 				>
 			</File>
@@ -198,6 +206,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\BarrelCorrection.h"
+				>
+			</File>
 			<File
 				RelativePath=".\BMP.h"
 				>
@@ -240,6 +252,10 @@
 			</File>
 			<File
 				RelativePath=".\EuresysDriver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Filter.h"
 				>
 			</File>
 			<File

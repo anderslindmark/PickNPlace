@@ -8,6 +8,7 @@ namespace camera
 
 #include "CameraListener.h"
 #include "Image.h"
+#include "Filter.h"
 
 namespace camera 
 {
@@ -21,23 +22,22 @@ class Camera
 		virtual void start() = 0;
 		virtual void stop() = 0;
 		virtual bool isRunning() = 0;
-		virtual Image* getLastImage() = 0;
+		Image* getLastImage();
 		
-		//void setBufferAvailableCallback(void *context, CameraCallbackFunction callbackFunction);
-		//void setErrorCallback(void *context, CameraCallbackFunction callbackFunction);
 		void setListener(CameraListener *listener);
 		
+		void addFilter(Filter *filter);
+		void removeFilter(Filter *filter);
+		Image *applyFilters(Image *image);
+		
 	protected:
-		void doNewImageCallback();
+		void doNewImageCallback(Image *image);
 		void doErrorCallback(int errorCode, const std::string &errorMessage);
 		
 	private:
-		//CameraCallbackFunction _bufferAvailableCallbackFunc;
-		//void *_bufferAvailableCallbackContext;
-		//CameraCallbackFunction _errorCallbackFunc;
-		//void *_errorCallbackContext;
-		
-		CameraListener *_listener;
+		Image *m_lastImage;
+		CameraListener *m_listener;
+		FilterList m_filters;
 };
 
 } // namespace camera

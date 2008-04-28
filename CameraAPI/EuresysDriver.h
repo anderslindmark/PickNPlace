@@ -21,12 +21,12 @@ class EuresysDriver : public Driver
 		std::string getIdentifier() { return "multicamforpicolo"; }
 		
 		CameraIdentifierList getCameraIdentifiers();
-		Camera *createCamera(CameraIdentifier identifier);
+		Camera *createCamera(const std::string &identifier);
 		
 		static Image::Format fromEuresysFormat(int format);
 		static int toEuresysFormat(Image::Format format);
 	private:
-		std::vector<CameraIdentifier> identifiers;
+		std::vector<CameraIdentifier> m_identifiers;
 };
 
 } // namespace camera

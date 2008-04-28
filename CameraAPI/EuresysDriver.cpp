@@ -48,7 +48,7 @@ EuresysDriver::EuresysDriver()
 			identifier.cameraIdentifier = ss.str();
 			identifier.driverIdentifier = getIdentifier();
 			
-			identifiers.push_back(identifier);
+			m_identifiers.push_back(identifier);
 			LOG_TRACE("EuresysDriver::EuresysDriver():    Added  identifier " << identifier.encode());
 		}
 	}
@@ -62,13 +62,13 @@ EuresysDriver::~EuresysDriver()
 CameraIdentifierList EuresysDriver::getCameraIdentifiers()
 {
 	LOG_TRACE("EuresysDriver::getIdentifiers()");
-	return identifiers;
+	return m_identifiers;
 }
 
-Camera *EuresysDriver::createCamera(CameraIdentifier identifier)
+Camera *EuresysDriver::createCamera(const std::string &identifier)
 {
 	LOG_TRACE("EuresysDriver::createCamera()");
-	return new EuresysCamera(identifier.cameraIdentifier);
+	return new EuresysCamera(identifier);
 }
 
 Image::Format EuresysDriver::fromEuresysFormat(int format)

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#define LOGGING
+//#define LOGGING
 
 #ifdef LOGGING
 	//#define LOG_TRACE(message) std::clog << "[TRACE] " << __FILE__ << ":" << __LINE__ << " >> " << message << std::endl;

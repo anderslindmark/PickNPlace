@@ -10,8 +10,8 @@ DummyDriver::DummyDriver()
 {
 	LOG_TRACE("DummyDriver::DummyDriver()");
 	
-	_width = 256;
-	_height = 256;
+	m_width = 256;
+	m_height = 256;
 }
 
 DummyDriver::~DummyDriver()
@@ -41,17 +41,17 @@ CameraIdentifierList DummyDriver::getCameraIdentifiers()
 	return identifiers;
 }
 
-Camera *DummyDriver::createCamera(CameraIdentifier identifier) 
+Camera *DummyDriver::createCamera(const std::string &identifier) 
 {
 	LOG_TRACE("DummyDriver::createCamera()");
-	LOG_DEBUG("DummyDriver::createCamera(): Creating camera " << identifier.encode());
-	return new DummyCamera(_width, _height);
+	LOG_DEBUG("DummyDriver::createCamera(): Creating camera " << identifier);
+	return new DummyCamera(m_width, m_height);
 }
 
 void DummyDriver::setImageSize(int width, int height)
 {
-	_width = width;
-	_height = height;
+	m_width = width;
+	m_height = height;
 }
 
 } // namespace camera
