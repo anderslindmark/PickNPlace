@@ -94,13 +94,13 @@ private:
 	int m_machineZ;
 	
 	int m_leftOffset;
-	float m_leftZDiff, 
+	float m_leftZDiff;
 	int m_rightOffset;
-	float m_rightZDiff, 					  
+	float m_rightZDiff; 					  
 	int m_topOffset;
-	float m_topZDiff, 
+	float m_topZDiff;
 	int m_bottomOffset;
-	float m_bottomZDiff
+	float m_bottomZDiff;
 };
 
 #endif // __CAMERAWIDGET_H__

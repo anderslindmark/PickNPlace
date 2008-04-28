@@ -6,7 +6,7 @@
 namespace camera 
 {
 
-BarrelCorrection::BarrelCorrection(int distortedX[8], int distordetY[8])
+BarrelCorrection::BarrelCorrection(float distortedX[8], float distortedY[8])
 {
 	LOG_TRACE("BarrelCorrection::BarrelCorrection()");
 	
@@ -15,7 +15,7 @@ BarrelCorrection::BarrelCorrection(int distortedX[8], int distordetY[8])
 	m_pixelMapping = NULL;
 	m_correctedImage = NULL;
 	
-	setDistortedCoordinates(distortedX, distordetY);
+	setDistortedCoordinates(distortedX, distortedY);
 }
 
 BarrelCorrection::~BarrelCorrection()
@@ -35,7 +35,7 @@ Image *BarrelCorrection::apply(Image *image)
 	if(m_correctedImage == NULL || m_pixelMapping == NULL)
 		return image;
 	
-	if(image->getFormat != Image::FORMAT_RGB32)
+	if(image->getFormat() != Image::FORMAT_RGB32)
 	{
 		LOG_ERROR("");
 		return image;
@@ -64,15 +64,17 @@ Image *BarrelCorrection::apply(Image *image)
 	return m_correctedImage;
 }
 
-void BarrelCorrection::setDistortedCoordinates(int distortedX[8], int distordetY[8])
+void BarrelCorrection::setDistortedCoordinates(float distortedX[8], float distortedY[8])
 {	
 	LOG_TRACE("BarrelCorrection::setDistortedCoordinates()");
 	
-	for(int i = 0; i < 8; i++)
+	memcpy(m_distortedX, distortedX, sizeof(float) * 8);
+	memcpy(m_distortedY, distortedY, sizeof(float) * 8);
+	/*for(int i = 0; i < 8; i++)
 	{
 		m_distortedX[i] = distortedX[i];
 		m_distortedY[i] = distordetY[i];
-	}
+	}*/
 	
 	calculatePixelMapping();
 }
