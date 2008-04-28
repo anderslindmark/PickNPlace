@@ -65,7 +65,7 @@ public:
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
 	void setCamera(const camera::CameraIdentifier &cameraid);
-	void setImageCorrectionParameters(float distortedX[8], float distortedY[8]);
+	void setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8]);
 	void setCoordinateMapping(int leftOffset, float leftZDiff, 
 							  int rightOffset, float rightZDiff, 					  
 							  int topOffset, float topZDiff, 
@@ -86,7 +86,7 @@ protected:
     
 private:
 	camera::Camera *m_camera;
-	camera::BarrelCorrection barrelCorrection;
+	camera::BarrelCorrection *m_barrelCorrection;
 	QImage m_image;
 	
 	int m_machineX;

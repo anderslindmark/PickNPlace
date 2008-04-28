@@ -1,12 +1,12 @@
 #include "BarrelCorrection.h"
 #include "log.h"
 
-#define ABS(x) (x < 0 ? -x : x)
+#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 namespace camera 
 {
 
-BarrelCorrection::BarrelCorrection(float distortedX[8], float distortedY[8])
+BarrelCorrection::BarrelCorrection(unsigned int distortedX[8], unsigned int distortedY[8])
 {
 	LOG_TRACE("BarrelCorrection::BarrelCorrection()");
 	
@@ -14,20 +14,30 @@ BarrelCorrection::BarrelCorrection(float distortedX[8], float distortedY[8])
 	m_outputHeight = 0;
 	m_pixelMapping = NULL;
 	m_correctedImage = NULL;
-	
+
 	setDistortedCoordinates(distortedX, distortedY);
 }
 
 BarrelCorrection::~BarrelCorrection()
 {
 	LOG_TRACE("BarrelCorrection::~BarrelCorrection()");
+
+	if(m_correctedImage != NULL)
+	{
+		delete m_correctedImage;
+	}
+
+	if(m_pixelMapping != NULL)
+	{
+		delete m_pixelMapping;
+	}
 }
 
 Image *BarrelCorrection::apply(Image *image)
 {
 	LOG_TRACE("BarrelCorrection::apply()");
 	
-	if(m_outputWidth <= 0 || m_outputHeight <= 0)
+	if(m_outputWidth == 0 || m_outputHeight == 0)
 	{
 		setOutputSize(image->getWidth(), image->getHeight());
 	}
@@ -37,12 +47,12 @@ Image *BarrelCorrection::apply(Image *image)
 	
 	if(image->getFormat() != Image::FORMAT_RGB32)
 	{
-		LOG_ERROR("");
+		LOG_ERROR("BarrelCorrection::apply(): Input image is not in RGB32 format");
 		return image;
 	}
 	
 	int numPixels                   = m_correctedImage->getWidth() * m_correctedImage->getHeight();
-	int *mapping                    = m_pixelMapping;
+	unsigned int *mapping                    = m_pixelMapping;
 	ImageBuffer *cBufferAddr		= m_correctedImage->getBufferAddress();
 	ImageBuffer *dBufferBaseAddr	= image->getBufferAddress();
 	ImageBuffer *dBufferAddr		= NULL;
@@ -64,12 +74,12 @@ Image *BarrelCorrection::apply(Image *image)
 	return m_correctedImage;
 }
 
-void BarrelCorrection::setDistortedCoordinates(float distortedX[8], float distortedY[8])
+void BarrelCorrection::setDistortedCoordinates(unsigned int distortedX[8], unsigned int distortedY[8])
 {	
 	LOG_TRACE("BarrelCorrection::setDistortedCoordinates()");
 	
-	memcpy(m_distortedX, distortedX, sizeof(float) * 8);
-	memcpy(m_distortedY, distortedY, sizeof(float) * 8);
+	memcpy(m_distortedX, distortedX, sizeof(int) * 8);
+	memcpy(m_distortedY, distortedY, sizeof(int) * 8);
 	/*for(int i = 0; i < 8; i++)
 	{
 		m_distortedX[i] = distortedX[i];
@@ -79,7 +89,7 @@ void BarrelCorrection::setDistortedCoordinates(float distortedX[8], float distor
 	calculatePixelMapping();
 }
 
-void BarrelCorrection::setOutputSize(int width, int height)
+void BarrelCorrection::setOutputSize(unsigned int width, unsigned int height)
 {
 	LOG_TRACE("BarrelCorrection::setOutputSize()");
 	// TODO: Need mutex lock so the corrected image or pixel mapping array isn't used in another thread when they are reallocated
@@ -90,7 +100,7 @@ void BarrelCorrection::setOutputSize(int width, int height)
 	m_outputWidth = width;
 	m_outputHeight = height;
 	
-	if(m_outputWidth <= 0 || m_outputHeight <= 0)
+	if(m_outputWidth == 0 || m_outputHeight == 0)
 		return;
 	
 	// TODO: Check if reallocateing corrected image and pixel mapping array takes to much time.
@@ -107,7 +117,7 @@ void BarrelCorrection::setOutputSize(int width, int height)
 	{
 		delete m_pixelMapping;
 	}
-	m_pixelMapping = new int[m_outputWidth * m_outputHeight];
+	m_pixelMapping = new unsigned int[m_outputWidth * m_outputHeight];
 	
 	calculatePixelMapping();
 }
@@ -166,10 +176,10 @@ void BarrelCorrection::calculatePixelMapping()
 	
 	// Calculate pixel mapping
 	int dx, dy;
-	int *mapping = m_pixelMapping;
-	for (int y = 0; y < m_outputHeight; y++)
+	unsigned int *mapping = m_pixelMapping;
+	for (unsigned int y = 0; y < m_outputHeight; y++)
 	{
-		for (int x = 0; x < m_outputWidth; x++)
+		for (unsigned int x = 0; x < m_outputWidth; x++)
 		{
 			dy = (int) (correctionVectorA[0]*x*y*y +
 				correctionVectorA[1]*x*x*y +

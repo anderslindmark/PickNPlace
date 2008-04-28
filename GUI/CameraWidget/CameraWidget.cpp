@@ -50,6 +50,7 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 #endif // USE_OPENGL_WIDGET
 	
 	m_camera = NULL;
+	m_barrelCorrection = NULL;
 }
 
 CameraWidget::~CameraWidget()
@@ -57,6 +58,11 @@ CameraWidget::~CameraWidget()
 	if(m_camera != NULL)
 	{
 		delete m_camera;
+	}
+
+	if(m_barrelCorrection != NULL)
+	{
+		delete m_barrelCorrection;
 	}
 }
 
@@ -101,13 +107,18 @@ void CameraWidget::setCamera(const camera::CameraIdentifier &cameraid)
 	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 	m_camera = cameraManager->createCamera(cameraid);
 	m_camera->setListener(this);
-	
-	m_camera->addFilter(&barrelCorrection);
 }
 
-void CameraWidget::setImageCorrectionParameters(float distortedX[8], float distortedY[8])
+void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8])
 {
-	barrelCorrection.setDistortedCoordinates(distortedX, distortedY);
+	if(m_barrelCorrection != NULL) {
+		m_barrelCorrection->setDistortedCoordinates(distortedX, distortedY);
+	}
+	else
+	{
+		m_barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
+		m_camera->addFilter(m_barrelCorrection);
+	}
 }
 
 void CameraWidget::setCoordinateMapping(int leftOffset, float leftZDiff, 
@@ -170,16 +181,16 @@ void CameraWidget::setDrawEdges(bool enabled)
 
 camera::Image *CameraWidget::getImage()
 {
-	return m_image;
-}
-
-QImage *CameraWidget::getQImage()
-{
 	if(m_camera != NULL)
 	{
 		return m_camera->getLastImage();
 	}
 	
 	return NULL;
+}
+
+QImage *CameraWidget::getQImage()
+{
+	return &m_image;
 }
 

@@ -9,13 +9,13 @@ namespace camera
 class BarrelCorrection : public Filter
 {
 	public:
-		BarrelCorrection(float distortedX[8], float distordetY[8]);
+		BarrelCorrection(unsigned int distortedX[8], unsigned int distordetY[8]);
 		virtual ~BarrelCorrection();
 		
 		virtual Image *apply(Image *image);
 		
-		void setDistortedCoordinates(float distortedX[8], float distordetY[8]);
-		void setOutputSize(int width, int height);
+		void setDistortedCoordinates(unsigned int distortedX[8], unsigned int distordetY[8]);
+		void setOutputSize(unsigned int width, unsigned int height);
 		
 	private:
 		void calculatePixelMapping();
@@ -23,9 +23,9 @@ class BarrelCorrection : public Filter
 		
 		float m_distortedX[8];
 		float m_distortedY[8];
-		int m_outputWidth;
-		int m_outputHeight;
-		int *m_pixelMapping;
+		unsigned int m_outputWidth;
+		unsigned int m_outputHeight;
+		unsigned int *m_pixelMapping;
 		Image *m_correctedImage;
 };
 
