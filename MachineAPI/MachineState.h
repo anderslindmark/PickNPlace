@@ -107,7 +107,7 @@ public:
 	string ToString();
 
 private:
-	MachineStateStruct m_mss ///< The state of the MachineState
+	MachineStateStruct m_mss; ///< The state of the MachineState
 	
 };
 

@@ -40,7 +40,7 @@ MachineState MachineDotDispenceCommand::GetAfterState(MachineState &oldms)
 
 MachineDotDispenceCommand *MachineDotDispenceCommand::Copy()
 {
-	return new MachineDotDispenceCommand();
+	return new MachineDotDispenceCommand(m_x, m_y);
 }
 
 bool MachineDotDispenceCommand::DoCommand(SerialPort &sp)
