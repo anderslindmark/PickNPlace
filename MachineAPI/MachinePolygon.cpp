@@ -13,14 +13,22 @@ MachinePolygon::~MachinePolygon(void)
 {
 }
 
-void MachinePolygon::AddPoint(MachinePolygonPoint pp)
+bool MachinePolygon::AddPoint(MachinePolygonPoint pp)
 {
-	m_points.push_back(pp);
+	return AddPoint(Size(), pp);
 }
 
-void MachinePolygon::AddPoint(int index, MachinePolygonPoint pp)
+bool MachinePolygon::AddPoint(int index, MachinePolygonPoint pp)
 {
-	m_points.insert(m_points.begin()+index, pp);
+	if (index > Size() || index < 0)
+	{
+		return false;
+	}
+	else
+	{
+		m_points.insert(m_points.begin()+index, pp);
+		return true;
+	}
 }
 
 void MachinePolygon::DelPoint(int index)

@@ -1,3 +1,13 @@
+/**
+ 	\file MachineSetDispenceSpeedCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineSetDispenceSpeedCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineSetDispenceSpeedCommand.h"
 #include <iostream>
 
@@ -41,4 +51,16 @@ bool MachineSetDispenceSpeedCommand::DoCommand(SerialPort &sp)
 MachineSetDispenceSpeedCommand* MachineSetDispenceSpeedCommand::Copy()
 {
 	return new MachineSetDispenceSpeedCommand(m_speed);
+}
+
+bool MachineSetDispenceSpeedCommand::IsValid()
+{
+	if (m_speed < 1 || m_speed > 12)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }

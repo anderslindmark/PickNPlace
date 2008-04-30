@@ -1,3 +1,14 @@
+/**
+ 	\file MachinePickCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachinePickCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
+
 #include "MachinePickCommand.h"
 #include "MachineCommands.h"
 #include "Axis.h"

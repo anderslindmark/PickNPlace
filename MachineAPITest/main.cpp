@@ -29,20 +29,17 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
-	mc.RunCommand(MachineSetPickOffsetCommand(PICKOFFSET_X, 5000)); mc.Wait();
-	mc.RunCommand(MachineSetPickOffsetCommand(PICKOFFSET_Y, 5000)); mc.Wait();
-	
-	MachineWrapperCommand pickplace;
-	pickplace.Add(MachineMoveAllCommand(100000, 100000, 0));
-	pickplace.Add(MachinePickCommand(PICKCMD_PICK, 55000, 55000));
-	pickplace.Add(MachinePickCommand(PICKCMD_PLACE, 10000, 55000));
-	pickplace.Add(MachinePickCommand(PICKCMD_PICK, 10000, 55000));
-	pickplace.Add(MachinePickCommand(PICKCMD_DROP, 100000, 10000));
-	
-	mc.RunCommand(pickplace); mc.Wait();
-	
+	mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, 100000))); mc.Wait();
 	cin >> tmp;
-	
+	mc.RunCommand(*(new MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, 100))); mc.Wait();
+	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PICK))); mc.Wait();
+	cin >> tmp;
+	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PLACE))); mc.Wait();
+	cin >> tmp;
+	mc.RunCommand(*(new MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, 100))); mc.Wait();
+	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PICK))); mc.Wait();
+	cin >> tmp;
+	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PLACE))); mc.Wait();
 /*
 	mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, 3))); mc.Wait();
 
@@ -82,8 +79,8 @@ int main(void)
 	//mc.RunCommand(*(new MachineMoveNeedleCommand(NEEDLEMOVEMENT_DOWN))); mc.Wait();
 
 
-	/*
-
+	
+/*
 	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_AFTER, 1))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_BEFORE, 1))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceTimeCommand(DISPENCETIME_SUCKBACK, 1))); mc.Wait();
@@ -91,8 +88,8 @@ int main(void)
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_Z, 8000))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_ZS, 200))); mc.Wait();
 	mc.RunCommand(*(new MachineSetDispenceOffsetCommand(OFFSET_TURN, 2000))); mc.Wait();
-
-	*/
+*/
+	
 	/*
 	MachinePolygon mp;
 	mp.AddPoint(MachinePolygonPoint(10000, 10000));

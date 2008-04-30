@@ -20,19 +20,19 @@ class MachineSetDispenceSpeedCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
+	/// \brief Constructor.
+	///
+	/// \param speed	The speed [1..12]
 	MachineSetDispenceSpeedCommand(int speed);
 	~MachineSetDispenceSpeedCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
-	{
-		return true;
-	}
+	bool IsValid();
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineSetDispenceSpeedCommand* Copy();
-	int m_speed;
+	int m_speed; ///< The speed the machine should be set to
 };
 
 #endif // __MachineSetDispenceSpeedCommand_H__

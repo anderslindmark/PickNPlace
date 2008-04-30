@@ -64,6 +64,18 @@ bool MachineLightBrightnessCommand::DoCommand(SerialPort &sp)
 	return true;
 }
 
+bool MachineLightBrightnessCommand::IsValid()
+{
+	if (m_brightness < 0 || m_brightness > 15)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 MachineLightBrightnessCommand* MachineLightBrightnessCommand::Copy()
 {
 	return new MachineLightBrightnessCommand(m_lamp, m_brightness);

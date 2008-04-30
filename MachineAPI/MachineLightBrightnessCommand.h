@@ -38,6 +38,7 @@ public:
 	~MachineLightBrightnessCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
+	bool IsValid();
 
 private:
 	bool DoCommand(SerialPort &sp);

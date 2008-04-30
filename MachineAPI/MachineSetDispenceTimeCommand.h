@@ -13,11 +13,13 @@
 #include "MachineCommand.h"
 #include "MachineState.h"
 
+/// \enum DispenceTimeType
+/// \brief The different dispence times that can be set.
 enum DispenceTimeType
 {
-	DISPENCETIME_BEFORE,
-	DISPENCETIME_AFTER,
-	DISPENCETIME_SUCKBACK
+	DISPENCETIME_BEFORE, ///< The time the solder should be applied before the first movment
+	DISPENCETIME_AFTER, ///< The time the solder should be applied after the last movment
+	DISPENCETIME_SUCKBACK ///< The time the solder should be sucked back after the last movment
 };
 
 /// \class MachineSetDispenceTimeCommand
@@ -26,21 +28,21 @@ class MachineSetDispenceTimeCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
-	MachineSetDispenceTimeCommand(DispenceTimeType tt, int multiplier);
+	/// \brief Create a new MachinePickCommand
+	///
+	/// \param tt The time that should be set
+	/// \param multiplier What the time should be set to, multiple of 0.1s
+	MachineSetDispenceTimeCommand(DispenceTimeType tt, unsigned int multiplier);
 	~MachineSetDispenceTimeCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
-	bool IsValid()
-	{
-		return true;
-	}
 
 private:
 	bool DoCommand(SerialPort &sp);
 	MachineSetDispenceTimeCommand* Copy();
 
-	DispenceTimeType m_tt;
-	int m_multiplier;
+	DispenceTimeType m_tt; ///< The time that should be set
+	unsigned int m_multiplier;	 ///< What the time should be set to, multiple of 0.1s
 };
 
 #endif // __MachineSetDispenceTimeCommand_H__

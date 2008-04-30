@@ -47,7 +47,7 @@ struct MachineSettings
 	///
 	/// See code for default settings.
 	MachineSettings():	xMin(0), xMax(470000), yMin(0), yMax(193000),
-						zMin(0), zMax(10000), rotMin(0.0f), rotMax(2.0f*M_PI) {};
+						zMin(0), zMax(47000), rotMin(0.0f), rotMax(2.0f*M_PI) {};
 };
 
 
@@ -115,16 +115,33 @@ public:
 
 	/// \brief Get the current position of the machine
 	MachineState GetCurrentState();
-	void SetCurrentState(MachineState ms)
-	{
-		m_currentState = ms;
-	}
 
 	/// \brief Get the initialized flag, which specifies if the machine is ready for commands other than the init command.
 	bool IsInitialized();
 
 	/// \brief Check whether the machine is busy executing a command
 	bool IsBusy();
+	
+	/// \brief Check whether a command is valid and if it will be accepted when executed.
+	///
+	/// The state that is sent as indata to the function will be altered and contains the
+	/// state that the machine will be in after the execution of the command.
+	///
+	/// \param cmd The command that should be checked
+	/// \param ms The state the machine is in before the command will be executed
+	/// \param errorMsg If the command is not valid an error message will be supplied
+	/// \return true if the command is OK else false.
+	bool ValidateCommand(MachineCommand &cmd, MachineState &ms, string &errorMsg);
+
+	/// \brief Get the current settings for the machine
+	///
+	/// \return The machine settings
+	MachineSettings GetSettings();
+
+	/// \brief Set the machine settings
+	///
+	/// \param settings the settings to use
+	void SetSettings(MachineSettings settings);
 
 private:
 	SerialPort *sp; ///< The serial communication object
@@ -145,9 +162,10 @@ private:
 	/// \brief Validate if current command that is being processed is legal
 	///
 	/// \param cmd the command that is to be validated
+	/// \param ms The state the machine is in before the command will be executed
 	/// \param validateEvent a pointer to an event if command is not legal
 	/// \return true if command is legal else false
-	bool ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent);
+	bool ValidateCommand(MachineCommand &cmd, MachineState &ms, MachineEvent *&validateEvent);
 
 	//Thread stuff
 	HANDLE thread; ///< Handler for the command Thread

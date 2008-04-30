@@ -1,9 +1,19 @@
+/**
+ 	\file MachineSetDispenceTimeCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachineSetDispenceTimeCommand class
+ 
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachineSetDispenceTimeCommand.h"
 #include <iostream>
 
 #define COMMAND_STRING "Machine Set Time Command"
 
-MachineSetDispenceTimeCommand::MachineSetDispenceTimeCommand(DispenceTimeType tt, int multiplier)
+MachineSetDispenceTimeCommand::MachineSetDispenceTimeCommand(DispenceTimeType tt, unsigned int multiplier)
 {
 	m_tt = tt;
 	m_multiplier = multiplier;

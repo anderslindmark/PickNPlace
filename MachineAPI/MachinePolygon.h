@@ -49,13 +49,15 @@ public:
 	/// \brief Add a point connected to the last point in the polygon.
 	///
 	/// \param pp	The point to be added
-	void AddPoint(MachinePolygonPoint pp);
+	/// \return true if the insertion succeeded, false otherwise
+	bool AddPoint(MachinePolygonPoint pp);
 
 	/// \brief Add a point on a specific index in the polygon.
 	///
 	/// \param pp		The point to be added
 	/// \param index	The index of the point
-	void AddPoint(int index, MachinePolygonPoint pp);
+	/// \return true if the insertion succeeded, false otherwise
+	bool AddPoint(int index, MachinePolygonPoint pp);
 
 	/// \brief Delete a point on a specific index in the polygon.
 	///

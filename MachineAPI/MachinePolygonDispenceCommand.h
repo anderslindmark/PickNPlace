@@ -35,7 +35,9 @@ public:
 	MachineState GetAfterState(MachineState &oldms);
 	bool HasNextState();
 
-	/// \brief Returns the polygon
+	/// \brief Get the polygon that the command should make
+	///
+	/// \return A MachinePolygon representing the solder polygon
 	MachinePolygon GetPolygon();
 
 	/// \brief Set the polygon
@@ -46,17 +48,21 @@ private:
 	bool DoCommand(SerialPort &sp);
 	MachinePolygonDispenceCommand *Copy();
 	/// \brief Check if this is a valid polygon. I.e if there are only right-angles
+	///
+	/// \return true if its valid else false
 	bool ValidatePolygon();
+
 	/// \brief Dispence a line from a point to the next
 	void dispenceLine(SerialPort &sp, MachinePolygonPoint from, MachinePolygonPoint to);
+
 	/// \brief Moves the needle to an offset, used to avoid "blobs" of paste at corners in the polygon
 	void moveOffset(SerialPort &sp, MachinePolygonPoint oldPp, MachinePolygonPoint pp);
 
-	MachinePolygon m_polygon;
-	int m_vectorIndex;
-	bool m_valid;
-	MachineStateStruct m_state;
-	MachineStateStruct m_tempState;
+	MachinePolygon m_polygon; ///< The polygon
+	int m_vectorIndex;		 ///< Index of the next state
+	bool m_valid;			///< Indicates whether the command is vaild
+	MachineStateStruct m_state; ///< Machine state
+	MachineStateStruct m_tempState; ///< Temp variable for a state
 };
 
 

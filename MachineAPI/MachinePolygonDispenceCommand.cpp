@@ -1,3 +1,12 @@
+/**
+ 	\file MachinePolygonDispenceCommand.cpp
+ 
+ 	\brief
+ 	Source file for the MachinePolygonDispenceCommand class.
+
+ 	\author	Henrik Mäkitaavola & Anders Lindmark
+**/
+
 #include "MachinePolygonDispenceCommand.h"
 #include "MachineCommands.h"
 #include "Axis.h"

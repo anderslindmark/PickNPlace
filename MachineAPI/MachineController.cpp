@@ -57,7 +57,7 @@ bool MachineController::InitializeSerial()
 		sp->ConfigurePort();
 		serialInitialized = true;
 		//sp->SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
-		sp->SetCommunicationTimeouts(0, 0, 0, 2, 5000);
+		sp->SetCommunicationTimeouts(0, 0, 5000, 0, 5000);
 		return true;
 	}
 	else
@@ -146,26 +146,25 @@ void MachineController::DoCommand()
 	MachineEvent *validateEvent;
 
 	// Validate command
-	if (!ValidateCommand(*m_cmd, validateEvent))
+	if (!ValidateCommand(*m_cmd, m_currentState, validateEvent))
 	{
 		SendEvent(*validateEvent);
 		delete validateEvent;
 	}
 	else
 	{
-		//do
-		//{
-			try
-			{
-				m_cmd->DoCommand(*sp);
-			}
-			catch (MachineEvent e)
-			{
-				// DEBUG:
-				cout << "Failed to execute command:" << endl;
-				cout << e.GetEventMsg() << e.GetEventType() << endl;
-				// TODO: clean up, maybe try a park command? exit?.
-			}
+		try
+		{
+			m_cmd->DoCommand(*sp);
+		}
+		catch (MachineEvent e)
+		{
+			SendEvent(MachineEvent(e.GetEventType(), "(" + m_cmd->ToString() + ") " + e.GetEventMsg()));
+			initialized = false;
+			initiating = false;
+			working = false;
+			return;
+		}
 
 		if (initiating)
 		{
@@ -227,9 +226,9 @@ bool MachineController::IsBusy()
 }
 
 // TODO: Check MachineSetDispenceOffset so that Z isn't out of bounds.....
-bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&validateEvent)
+bool MachineController::ValidateCommand(MachineCommand &cmd, MachineState &ms, MachineEvent *&validateEvent)
 {
-	MachineState currentState = m_currentState;
+	MachineState currentState = ms;
 	if (!cmd.IsValid())
 	{
 		validateEvent = new MachineEvent(EVENT_CMD_INVALID, "Invalid command");
@@ -242,16 +241,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 		MachineStateStruct mss = state.GetState();
 
 		// DEBUG:
-		cout << endl << state.ToString() << endl;
-
-		if (mss.x > 350000)
-		{
-			m_settings.zMax = 0;	// TODO: Find max Z
-		}
-		else
-		{
-			m_settings.zMax = 10000;
-		}
+		// cout << endl << state.ToString() << endl;
 
 		if (!(mss.x >= m_settings.xMin && mss.x <= m_settings.xMax))
 		{
@@ -263,9 +253,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Y-axis");
 			return false;
 		}
-		else if ( !(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax)
-			|| ((mss.dispenceState.offsetZ+mss.dispenceState.offsetZs) >= m_settings.zMax && (mss.dispenceState.offsetZ+mss.dispenceState.offsetZs) <= m_settings.zMin)
-			)
+		else if ( !(mss.z >= m_settings.zMin && mss.z <= m_settings.zMax) )
 		{
 			validateEvent = new MachineEvent(EVENT_CMD_OUT_OF_BOUNDS, "Out of bounds in Z-axis");
 			return false;
@@ -278,6 +266,30 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineEvent *&vali
 		currentState = state;
 	}
 	while (cmd.HasNextState());
-	m_currentState = currentState;
+	ms = currentState;
 	return true;
+}
+
+bool MachineController::ValidateCommand(MachineCommand &cmd, MachineState &ms, string &errorMsg)
+{
+	MachineCommand *tmpCmd = cmd.Copy();
+	MachineEvent *tmp = NULL;
+	bool commandValid = ValidateCommand(*tmpCmd, ms, tmp);
+	if (tmp != NULL)
+	{
+		errorMsg = tmp->GetEventMsg();
+	}
+	delete tmp;
+	delete tmpCmd;
+	return commandValid;
+}
+
+MachineSettings MachineController::GetSettings()
+{
+	return m_settings;
+}
+
+void MachineController::SetSettings(MachineSettings settings)
+{
+	m_settings = settings;
 }

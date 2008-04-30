@@ -7,10 +7,10 @@ using namespace std;
 
 #define COMMAND_STRING	"Machine Pick Time Command"
 
-MachineSetPickTimeCommand::MachineSetPickTimeCommand(PickTimeType type, int time)
+MachineSetPickTimeCommand::MachineSetPickTimeCommand(PickTimeType type, unsigned int mult)
 {
 	m_type = type;
-	m_time = time;
+	m_time = mult;
 }
 
 MachineSetPickTimeCommand::~MachineSetPickTimeCommand(void)

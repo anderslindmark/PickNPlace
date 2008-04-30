@@ -60,7 +60,10 @@ public:
 	/// \return the state after this command has been executed
 	virtual MachineState GetAfterState(MachineState &current) = 0;
 
-	/// \brief Checks whether the command has more states, i.e multiple steps of execution
+	/// \brief Checks whether the command has more states
+	///
+	/// A command can be composed of many steps, for example 2 distinct movements.
+	/// Both movements have to be validated by the MachineController.
 	/// \return true if the command has more states
 	virtual bool HasNextState() { return false; };
 

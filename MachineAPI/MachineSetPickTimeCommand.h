@@ -29,8 +29,8 @@ public:
 	/// \brief Constructor for MachineSetPickTimeCommand
 	///
 	/// \param type	Which time should be set
-	/// \param time The time (*0.1s)
-	MachineSetPickTimeCommand(PickTimeType type, int time);
+	/// \param mult The time multiplier (*0.1s)
+	MachineSetPickTimeCommand(PickTimeType type, unsigned int mult);
 	
 	/// \brief Destructor for the MachineSetPickTimeCommand
 	~MachineSetPickTimeCommand(void);
@@ -44,7 +44,7 @@ private:
 	MachineSetPickTimeCommand *Copy();
 
 	PickTimeType m_type;
-	int m_time;
+	unsigned int m_time;
 };
 
 
