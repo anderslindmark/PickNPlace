@@ -44,7 +44,7 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	// Set lamps to medium brightness
 	MachineLightBrightnessCommand(LAMP_CAMERA, m_state.lampCameraBrightness).DoCommand(sp);
 	MachineLightBrightnessCommand(LAMP_LOOKUP, m_state.lampLookupBrightness).DoCommand(sp);
-/*
+
 	ExecCommand(sp, "RD 1915", M_ANS_1);
 	ExecCommand(sp, "ST 1900", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
@@ -147,7 +147,7 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	ExecCommand(sp, "WR DM81 2", M_ANS_OK);
 	ExecCommand(sp, "WR DM80 330", M_ANS_OK);
 	ExecCommand(sp, "RD 1915", M_ANS_1);
-*/
+
 	// Set the dispence offsets to 0 for safety reasons
 	MachineSetDispenceOffsetCommand(OFFSET_Z, m_state.dispenceState.offsetZ).DoCommand(sp);
 	MachineSetDispenceOffsetCommand(OFFSET_ZS, m_state.dispenceState.offsetZs).DoCommand(sp);
