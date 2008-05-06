@@ -170,10 +170,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Axis.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MachineCommands.h"
 				>
 			</File>
@@ -211,6 +207,10 @@
 		<Filter
 			Name="Commands"
 			>
+			<File
+				RelativePath=".\Axis.h"
+				>
+			</File>
 			<File
 				RelativePath=".\MachineCommand.cpp"
 				>

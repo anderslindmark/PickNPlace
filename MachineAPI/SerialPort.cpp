@@ -18,7 +18,7 @@ using namespace std;
 
 SerialPort::SerialPort(string portName)
 {
-	_portName = portName;
+	m_portName = portName;
 }
 
 SerialPort::~SerialPort(void)
@@ -26,16 +26,16 @@ SerialPort::~SerialPort(void)
 }
 
 bool SerialPort::Initialize() {
-	string portName = "//./" + _portName;
+	string portName = "//./" + m_portName;
 
-	port = CreateFile(portName.c_str(),
+	m_port = CreateFile(m_portName.c_str(),
 						  GENERIC_READ | GENERIC_WRITE,
 						  0,
 						  NULL,
 						  OPEN_EXISTING,
 						  0,
 						  NULL);
-	if(port==INVALID_HANDLE_VALUE)
+	if(m_port==INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -50,9 +50,9 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 {
 	SecureZeroMemory(&m_dcb, sizeof(DCB));
     m_dcb.DCBlength = sizeof(DCB);
-	if((m_bPortReady = GetCommState(port, &m_dcb))==0)
+	if((m_bPortReady = GetCommState(m_port, &m_dcb))==0)
 	{
-		CloseHandle(port);
+		CloseHandle(m_port);
 		return false;
 	}
 
@@ -83,10 +83,10 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 	m_dcb.XonLim = 80;
 	m_dcb.XoffLim = 80;
 
-	m_bPortReady = SetCommState(port, &m_dcb);
+	m_bPortReady = SetCommState(m_port, &m_dcb);
 	if(m_bPortReady ==0)
 	{
-		CloseHandle(port);
+		CloseHandle(m_port);
 		return false;
 	}
 	return true;
@@ -98,7 +98,7 @@ bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD WriteTotalTimeoutMultiplier,
 										  DWORD WriteTotalTimeoutConstant)
 {
-	if((m_bPortReady = GetCommTimeouts (port, &m_CommTimeouts))==0)
+	if((m_bPortReady = GetCommTimeouts (m_port, &m_CommTimeouts))==0)
 	{
 		return false;
 	}
@@ -111,11 +111,11 @@ bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 		= WriteTotalTimeoutConstant;
 	m_CommTimeouts.WriteTotalTimeoutMultiplier
 		=WriteTotalTimeoutMultiplier;
-	m_bPortReady = SetCommTimeouts (port, &m_CommTimeouts);
+	m_bPortReady = SetCommTimeouts (m_port, &m_CommTimeouts);
 
 	if(m_bPortReady ==0)
 	{
-		CloseHandle(port);
+		CloseHandle(m_port);
 		return false;
 	}
 	return true;
@@ -124,7 +124,7 @@ bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 bool SerialPort::WriteByte(BYTE bybyte)
 {
 	iBytesWritten=0;
-	if(WriteFile(port,&bybyte,1,&iBytesWritten,NULL)==0)
+	if(WriteFile(m_port,&bybyte,1,&iBytesWritten,NULL)==0)
 	{
 		throw MachineEvent(EVENT_SERIAL_WRITEERROR, "Serial port write error!");
 		//return false;
@@ -155,7 +155,7 @@ bool SerialPort::ReadByte(BYTE &resp)
 
 	DWORD dwBytesTransferred=0;
 
-	if (ReadFile (port, &rx, 1, &dwBytesTransferred, 0))
+	if (ReadFile (m_port, &rx, 1, &dwBytesTransferred, 0))
 	{
 		if (dwBytesTransferred == 1)
 		{
@@ -194,6 +194,6 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 
 void SerialPort::ClosePort()
 {
-	CloseHandle(port);
+	CloseHandle(m_port);
 	return;
 }

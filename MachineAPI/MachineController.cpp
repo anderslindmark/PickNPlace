@@ -23,17 +23,17 @@ struct ThreadArg
 
 MachineController::MachineController(string serialPort)
 {
-	sp = NULL;
-	comPort = serialPort;
-	working = false;
-	serialInitialized = false;
-	initialized = false;
-	initiating = false;
-	thread = NULL;
+	m_sp = NULL;
+	m_comPort = serialPort;
+	m_working = false;
+	m_serialInitialized = false;
+	m_initialized = false;
+	m_initiating = false;
+	m_thread = NULL;
 	m_cmd = NULL;
 	m_settings = MachineSettings();
 	m_currentState = MachineState();
-	runCmdMutex = CreateMutex( 
+	m_runCmdMutex = CreateMutex( 
         NULL,   // default security attributes
         FALSE,  // initially not owned
         NULL);	// unnamed mutex
@@ -41,50 +41,50 @@ MachineController::MachineController(string serialPort)
 
 MachineController::~MachineController(void)
 {
-	if (sp != NULL)
+	if (m_sp != NULL)
 	{
-		sp->ClosePort();
+		m_sp->ClosePort();
 	}
-	delete sp;
+	delete m_sp;
 	delete m_cmd;
 }
 
 bool MachineController::InitializeSerial()
 {
-	sp = new SerialPort(comPort);
-	if(sp->Initialize())
+	m_sp = new SerialPort(m_comPort);
+	if(m_sp->Initialize())
 	{
-		sp->ConfigurePort();
-		serialInitialized = true;
-		//sp->SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
-		sp->SetCommunicationTimeouts(0, 0, 5000, 0, 5000);
+		m_sp->ConfigurePort();
+		m_serialInitialized = true;
+		//m_sp->SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
+		m_sp->SetCommunicationTimeouts(0, 0, 5000, 0, 5000);
 		return true;
 	}
 	else
 	{
-		delete sp;
-		sp = NULL;
+		delete m_sp;
+		m_sp = NULL;
 		return false;
 	}
 }
 
 bool MachineController::InitializeMachine()
 {
-	if (!serialInitialized)
+	if (!m_serialInitialized)
 	{
 		if (!InitializeSerial())
 		{
 			return false;
 		}
 	}
-	initiating = true;
+	m_initiating = true;
 	RunCommand(*(new MachineInitCommand()));
 	return true;
 }
 
 bool MachineController::RunCommand(MachineCommand &cmd)
 {
-	if (!initialized && !initiating)
+	if (!m_initialized && !m_initiating)
 	{
 		return false;
 	}
@@ -94,7 +94,7 @@ bool MachineController::RunCommand(MachineCommand &cmd)
 
 	//Grab mutex
 	dwWaitResult = WaitForSingleObject( 
-		runCmdMutex,    // handle to mutex
+		m_runCmdMutex,    // handle to mutex
 		INFINITE);  // no time-out interval
 
 	//Check result from mutex grab
@@ -102,21 +102,21 @@ bool MachineController::RunCommand(MachineCommand &cmd)
 	{
 		// The thread got ownership of the mutex
 		case WAIT_OBJECT_0: 
-			if (!working) {
-				working = true;
+			if (!m_working) {
+				m_working = true;
 				delete m_cmd;
 				m_cmd = cmd.Copy();
-				WaitForSingleObject(thread, INFINITE);
+				WaitForSingleObject(m_thread, INFINITE);
 				threadArg = new ThreadArg(this); //Thread argument
 
 				//Create a new thread to handle the command
-				thread = CreateThread( 
+				m_thread = CreateThread( 
 					NULL,				// default security attributes
 					0,					// use default stack size  
 					(LPTHREAD_START_ROUTINE) this->RunThread,   // thread function 
 					threadArg,			// argument to thread function 
 					0,					// use default creation flags 
-					&threadId);			// returns the thread identifier 
+					&m_threadId);			// returns the thread identifier 
 				returnVal = true;
 			}
 			break;
@@ -127,7 +127,7 @@ bool MachineController::RunCommand(MachineCommand &cmd)
 	}
 
 	//Release mutex
-	if (! ReleaseMutex(runCmdMutex)) 
+	if (! ReleaseMutex(m_runCmdMutex)) 
 	{ 
 					// Deal with error.
 	} 
@@ -137,7 +137,7 @@ bool MachineController::RunCommand(MachineCommand &cmd)
 
 void MachineController::Wait(void) 
 {
-	WaitForSingleObject(thread, INFINITE);
+	WaitForSingleObject(m_thread, INFINITE);
 }
 
 
@@ -155,27 +155,27 @@ void MachineController::DoCommand()
 	{
 		try
 		{
-			m_cmd->DoCommand(*sp);
+			m_cmd->DoCommand(*m_sp);
 		}
 		catch (MachineEvent e)
 		{
 			SendEvent(MachineEvent(e.GetEventType(), "(" + m_cmd->ToString() + ") " + e.GetEventMsg()));
-			initialized = false;
-			initiating = false;
-			working = false;
+			m_initialized = false;
+			m_initiating = false;
+			m_working = false;
 			return;
 		}
 
-		if (initiating)
+		if (m_initiating)
 		{
-			initialized = true;
-			initiating = false;
+			m_initialized = true;
+			m_initiating = false;
 			SendEvent(MachineEvent(EVENT_MACHINE_INITIALIZED, m_cmd->ToString()));
 		}
 		
 		SendEvent(MachineEvent(EVENT_CMD_DONE, m_cmd->ToString()));
 	}
-	working = false;
+	m_working = false;
 }
 
 DWORD WINAPI MachineController::RunThread( LPVOID lpParam )
@@ -217,12 +217,12 @@ MachineState MachineController::GetCurrentState()
 
 bool MachineController::IsInitialized()
 {
-	return initialized;
+	return m_initialized;
 }
 
 bool MachineController::IsBusy()
 {
-	return working;
+	return m_working;
 }
 
 // TODO: Check MachineSetDispenceOffset so that Z isn't out of bounds.....

@@ -86,8 +86,8 @@ public:
 	void ClosePort();
 
 private:
-	string _portName; ///<The name of the serial port
-	HANDLE port; ///<Handler for the serial port
+	string m_portName; ///<The name of the serial port
+	HANDLE m_port; ///<Handler for the serial port
 	DCB      m_dcb;
 	COMMTIMEOUTS m_CommTimeouts;
 	BOOL     m_bPortReady;

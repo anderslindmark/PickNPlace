@@ -144,12 +144,12 @@ public:
 	void SetSettings(MachineSettings settings);
 
 private:
-	SerialPort *sp; ///< The serial communication object
-	string comPort; ///< What serial port should be used
-	bool working; ///< Indication wheter a command is beeing processed
-	bool serialInitialized; ///< Indication wheter the serial port has been initialized
-	bool initialized; ///< Indication wheter the machine has been initialized
-	bool initiating; ///< Indication wheter the Machine Controller is being initialized
+	SerialPort *m_sp; ///< The serial communication object
+	string m_comPort; ///< What serial port should be used
+	bool m_working; ///< Indication wheter a command is beeing processed
+	bool m_serialInitialized; ///< Indication wheter the serial port has been initialized
+	bool m_initialized; ///< Indication wheter the machine has been initialized
+	bool m_initiating; ///< Indication wheter the Machine Controller is being initialized
 	vector<Handler> m_handlers; ///< Vector of event subscribers
 	MachineCommand *m_cmd;	///< Current command beeing processed
 	MachineState m_currentState; ///< Current state of the Pick n Place machine.
@@ -168,9 +168,9 @@ private:
 	bool ValidateCommand(MachineCommand &cmd, MachineState &ms, MachineEvent *&validateEvent);
 
 	//Thread stuff
-	HANDLE thread; ///< Handler for the command Thread
-	DWORD threadId;	///< Command threads ID
-	HANDLE runCmdMutex; ///< Mutex for the RunCommand function
+	HANDLE m_thread; ///< Handler for the command Thread
+	DWORD m_threadId;	///< Command threads ID
+	HANDLE m_runCmdMutex; ///< Mutex for the RunCommand function
 	
 	/// \brief Method that is passed to the thread creator.
 	///
