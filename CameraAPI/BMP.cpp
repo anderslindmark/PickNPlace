@@ -72,10 +72,10 @@ void saveBMP(const char *filename, const Image *image)
 		LOG_ERROR("saveBMP: image is NULL ");
 		throw std::runtime_error("image is NULL");
 	}
-	if(image->getFormat() != Image::FORMAT_RGB24)
+	if(image->getFormat() != Image::FORMAT_RGB32)
 	{
 		LOG_ERROR("saveBMP: Trying to save ImageBuffer with format " << image->getFormat());
-		throw std::runtime_error("The only supported format is RGB24");
+		throw std::runtime_error("The only supported format is RGB32");
 	}
 	
 	int width = image->getWidth();
@@ -109,16 +109,16 @@ void saveBMP(const char *filename, const Image *image)
 	int linePadding = width % 4;
 	
 	// Start with the bottom left pixel (WHY MICROSOFT? WHY?!)
-	buffer += 3 * (width * height - width);
+	buffer += 4 * (width * height - width);
 	for(int y = 0; y < height; y++) 
 	{
 		for(int x = 0; x < width; x++) 
 		{
-			file.put(*(buffer + 2)); // B
+			file.put(*(buffer)); // B
 			file.put(*(buffer + 1)); // G
-			file.put(*(buffer)); // R
+			file.put(*(buffer + 2)); // R
 			// Move to next pixel
-			buffer += 3;
+			buffer += 4;
 		}
 
 		// Every line must be n * 4 bytes
@@ -128,7 +128,7 @@ void saveBMP(const char *filename, const Image *image)
 		}
 
 		// Move up one line
-		buffer -= 3 * 2 * width;
+		buffer -= 4 * 2 * width;
 	}
 		
 	file.close();

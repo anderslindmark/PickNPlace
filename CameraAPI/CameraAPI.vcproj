@@ -192,10 +192,6 @@
 				RelativePath=".\Image.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

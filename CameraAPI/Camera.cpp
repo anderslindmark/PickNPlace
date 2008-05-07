@@ -16,7 +16,6 @@ Camera::Camera()
 Camera::~Camera()
 {
 	LOG_TRACE("Camera::~Camera()");
-	stop();
 }
 
 Image *Camera::getLastImage()

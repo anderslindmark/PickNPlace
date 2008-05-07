@@ -19,6 +19,11 @@ DummyDriver::~DummyDriver()
 	LOG_TRACE("DummyDriver::~DummyDriver()");
 }
 
+void DummyDriver::updateCameraIdentifiers()
+{
+	LOG_TRACE("DummyDriver::updateCameraIdentifiers()");
+}
+
 int DummyDriver::getCameraIdentifierCount()
 {
 	LOG_TRACE("DummyDriver::getCameraIdentifierCount()");

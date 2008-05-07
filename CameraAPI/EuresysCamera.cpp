@@ -40,6 +40,9 @@ EuresysCamera::EuresysCamera(const std::string &identifier, int width, int heigh
 EuresysCamera::~EuresysCamera()
 {
 	LOG_TRACE("EuresysCamera::~EuresysCamera()");
+
+	stop();
+
 	while(!m_images.empty())
 	{
 		delete m_images.back();
