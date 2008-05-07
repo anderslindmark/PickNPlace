@@ -1,13 +1,16 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-namespace camera {
+namespace camera
+{
 
 typedef unsigned char ImageBuffer;
 
-class Image {
+class Image
+{
 	public:
-		static enum Format {
+		static enum Format
+		{
 			FORMAT_Y8,
 			FORMAT_RGB32,
 			FORMAT_RGB24,
@@ -15,10 +18,15 @@ class Image {
 			FORMAT_RGB15,
 			FORMAT_UNKNOWN = 1000
 		};
+		static int formatBytesPerPixel(Format format);
 		
 		Image(int width, int height, Format format);
 		Image(int width, int height, int bytesPerPixel);
 		~Image();
+		
+		void reallocate(int width, int height);
+		void reallocate(int width, int height, Format format);
+		void reallocate(int width, int height, int bytesPerPixel);
 		
 		ImageBuffer *getBufferAddress() const;
 		int getBufferSize() const;
@@ -26,18 +34,16 @@ class Image {
 		int getWidth() const;
 		int getHeight() const;
 		int getBytesPerPixel() const;
-		static int formatBytesPerPixel(Format format);
-
+		
 		void *userData;
 		
 	private:
-		void init(int width, int height, Format format, int bytesPerPixel);
-		int _width;
-		int _height;
-		int _bytesPerPixel;
-		Format _format;
-		int _bufferSize;
-		ImageBuffer *_buffer;
+		int m_width;
+		int m_height;
+		int m_bytesPerPixel;
+		Format m_format;
+		int m_bufferSize;
+		ImageBuffer *m_buffer;
 };
 
 } // namespace camera

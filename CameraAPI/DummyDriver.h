@@ -17,7 +17,9 @@ class DummyDriver : public Driver
 		int getVersionMinor() { return 0; }
 		std::string getIdentifier() { return "dummy"; }
 		
-		CameraIdentifierList getCameraIdentifiers();
+		void updateCameraIdentifiers();
+		int getCameraIdentifierCount();
+		std::string getCameraIdentifier(int index);
 		Camera *createCamera(const std::string &identifier);
 		
 		void setImageSize(int width, int height);

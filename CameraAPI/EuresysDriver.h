@@ -17,16 +17,18 @@ class EuresysDriver : public Driver
 		
 		std::string getName() { return "Euresys MultiCam for Picolo"; }
 		int getVersionMajor() { return 0; }
-		int getVersionMinor() { return 1; }
+		int getVersionMinor() { return 2; }
 		std::string getIdentifier() { return "multicamforpicolo"; }
 		
-		CameraIdentifierList getCameraIdentifiers();
+		void updateCameraIdentifiers();
+		int getCameraIdentifierCount();
+		std::string getCameraIdentifier(int index);
 		Camera *createCamera(const std::string &identifier);
 		
 		static Image::Format fromEuresysFormat(int format);
 		static int toEuresysFormat(Image::Format format);
 	private:
-		std::vector<CameraIdentifier> m_identifiers;
+		std::vector<std::string> m_identifiers;
 };
 
 } // namespace camera

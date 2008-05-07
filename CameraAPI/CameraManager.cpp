@@ -29,14 +29,8 @@ void CameraManager::addDriver(Driver *driver)
 {
 	LOG_TRACE("CameraManager::addDriver");
 	
-	// Add the driver to our list of drivers
+	// Add the driver to the private list of drivers
 	m_drivers.push_back(driver);
-	
-	// Get the list of camera identifiers
-	CameraIdentifierList ids = driver->getCameraIdentifiers();
-	
-	// ... and copy it to the local list
-	m_identifiers.insert(m_identifiers.end(), ids.begin(), ids.end());
 	
 	LOG_DEBUG("Added driver " << driver->getVersionString());
 }
@@ -45,51 +39,44 @@ void CameraManager::removeDriver(camera::Driver *driver)
 {
 	LOG_TRACE("CameraManager::removeDriver()");
 	
-	for(DriverList::const_iterator iter = m_drivers.begin(); iter != m_drivers.end(); iter++)
-	{
-		if((*iter) == driver)
-			m_drivers.erase(iter);
-	}
-	
-	updateCameraIdentifiers();
-}
-
-void CameraManager::updateCameraIdentifiers()
-{
-	LOG_TRACE("CameraManager::updateCameraIdentifiers()");
-	// Clear the list of identifiers
-	m_identifiers.clear();
-	
-	// Loop through all drivers
-	DriverList::const_iterator iter;
+	std::vector<Driver*>::const_iterator iter;
 	for(iter = m_drivers.begin(); iter != m_drivers.end(); iter++)
 	{
-		// Get a list of camera identifiers...
-		CameraIdentifierList ids = (*iter)->getCameraIdentifiers();
-		
-		// ... and copy it to the local list
-		m_identifiers.insert(m_identifiers.end(), ids.begin(), ids.end());
+		if((*iter) == driver) {
+			m_drivers.erase(iter);
+			LOG_DEBUG("Removed driver " << driver->getVersionString());
+		}
 	}
 }
 
-const CameraIdentifierList& CameraManager::getCameraIdentifiers()
+int CameraManager::getDriverCount()
 {
-	LOG_TRACE("CameraManger::getCameraIdentifiers()");
-	return m_identifiers;
+	LOG_TRACE("CameraManger::getDriverCount()");
+	return m_drivers.size();
 }
 
-Camera *CameraManager::createCamera(CameraIdentifier identifier)
+Driver *CameraManager::getDriver(int index)
+{
+	LOG_TRACE("CameraManger::getDriver()");
+	return m_drivers.at(index);
+}
+
+Camera *CameraManager::createCamera(const std::string &driverIdentifier, const std::string &cameraIdentifier)
 {
 	LOG_TRACE("CameraManger::createCamera()");
-	DriverList::const_iterator iter;
+	
+	std::vector<Driver *>::const_iterator iter;
 	for(iter = m_drivers.begin(); iter != m_drivers.end(); iter++)
 	{
-		if(identifier.driverIdentifier == (*iter)->getIdentifier())
+		// Search for a driver with a maching driver identifier
+		if(driverIdentifier == (*iter)->getIdentifier())
 		{
-			return (*iter)->createCamera(identifier.cameraIdentifier);
+			// Create the camera
+			return (*iter)->createCamera(cameraIdentifier);
 		}
 	}
 	
+	LOG_WARNING("No matching driver found (" << driverIdentifier << ")");
 	throw CameraException("No matching driver found");
 }
 

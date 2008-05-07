@@ -1,7 +1,6 @@
 #ifndef __DRIVER_H__
 #define __DRIVER_H__
 
-#include "CameraIdentifier.h"
 #include "Camera.h"
 #include <vector>
 
@@ -15,7 +14,7 @@ class Driver
 		virtual ~Driver();
 		
 		///
-		/// \brief Returns an identifier string for this driver. For example "MyDriver".
+		/// \brief Returns an identifier string for this driver. For example "MyDriver". This string must not contain dotts (.)
 		///
 		virtual std::string getIdentifier() = 0;
 		
@@ -40,17 +39,25 @@ class Driver
 		std::string getVersionString();
 		
 		///
-		/// \brief Returns a list of camera identifiers
+		/// \brief Updates the drivers internal list of cameras. This method is typicaly called before listing cameras
 		///
-		virtual CameraIdentifierList getCameraIdentifiers() = 0;
+		virtual void updateCameraIdentifiers() = 0;
+		
+		///
+		/// \brief Returns the number of cameras this driver have found
+		///
+		virtual int getCameraIdentifierCount() = 0;
+		
+		///
+		/// \brief Returns a identifier string for camera with index index
+		///
+		virtual std::string getCameraIdentifier(int index) = 0;
 		
 		///
 		/// \brief Create a Camera
 		///
 		virtual Camera *createCamera(const std::string &identifier) = 0;
 };
-
-typedef std::vector<Driver *> DriverList;
 
 } // namespace camera
 

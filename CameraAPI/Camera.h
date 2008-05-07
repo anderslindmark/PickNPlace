@@ -28,7 +28,6 @@ class Camera
 		
 		void addFilter(Filter *filter);
 		void removeFilter(Filter *filter);
-		Image *applyFilters(Image *image);
 		
 	protected:
 		void doNewImageCallback(Image *image);

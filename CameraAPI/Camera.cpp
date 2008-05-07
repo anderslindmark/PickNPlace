@@ -38,21 +38,6 @@ void Camera::removeFilter(camera::Filter *filter)
 	}
 }
 
-Image *Camera::applyFilters(camera::Image *image)
-{
-	Image *tmpImage = image;
-	
-	for(FilterList::const_iterator iter = m_filters.begin(); iter != m_filters.end(); iter++)
-	{
-		if((*iter)->enabled)
-		{
-			tmpImage = (*iter)->apply(tmpImage);
-		}
-	}
-	
-	return tmpImage;
-}
-
 void Camera::setListener(CameraListener *listener) 
 {
 	LOG_TRACE("Camera::setCallbackClass()");
@@ -63,11 +48,19 @@ void Camera::doNewImageCallback(Image *image)
 {
 	LOG_TRACE("Camera::doNewImageCallback()");
 	
-	m_lastImage = applyFilters(image);
+	// Apply all filters
+	for(FilterList::const_iterator iter = m_filters.begin(); iter != m_filters.end(); iter++)
+	{
+		if((*iter)->getEnabled())
+		{
+			image = (*iter)->apply(image);
+		}
+	}
 	
+	m_lastImage = image;
 	if(m_listener != NULL) 
 	{
-		m_listener->cameraNewImage(this);
+		m_listener->cameraNewImage(this, image);
 	}
 }
 

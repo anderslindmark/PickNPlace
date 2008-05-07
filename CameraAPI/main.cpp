@@ -16,11 +16,10 @@ class MyListener : public camera::CameraListener
 	public:
 		MyListener() : image(NULL) {}
 
-		void cameraNewImage(camera::Camera *camera)
+		void cameraNewImage(camera::Camera *camera, camera::Image *image)
 		{
 			std::cout << "New image!" << std::endl;
-			image = camera->getLastImage();
-
+			this->image = image;
 		}
 
 		void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage)
@@ -50,10 +49,9 @@ int main()
 	}
 	catch(camera::CameraException &e)
 	{
-		LOG_ERROR("Failed to add Euresys driver (" << e.what() << ")");
+		std::cout << "Failed to add Euresys driver (" << e.what() << ")" << std::endl;
 	}
 	
-	camera::CameraIdentifierList identifiers = cm->getCameraIdentifiers();
 	camera::Camera *c = NULL;
 	MyListener cameraListener;
 	std::string command;
@@ -68,20 +66,24 @@ int main()
 		else if(command == "help")
 		{
 			std::cout << "Available commands:" << std::endl;
-			std::cout << "    exit:             Exit the program" << std::endl;
-			std::cout << "    help:             Show this help text" << std::endl;
-			std::cout << "    camera<nr>:       Change the active camera" << std::endl;
-			std::cout << "    start:            Start the active camera" << std::endl;
-			std::cout << "    stop:             Stop the active camera" << std::endl;
-			std::cout << "    save:             Save the last image from the active camera" << std::endl;
+			std::cout << "    exit:                       Exit the program" << std::endl;
+			std::cout << "    help:                       Show this help text" << std::endl;
+			std::cout << "    camera <driver> <camera>:   Change the active camera" << std::endl;
+			std::cout << "    start:                      Start the active camera" << std::endl;
+			std::cout << "    stop:                       Stop the active camera" << std::endl;
+			std::cout << "    save:                       Save the last image from the active camera" << std::endl;
 			std::cout << std::endl;
 			std::cout << "    Available cameras:" << std::endl;
 			
-			int i = 0;
-			for(camera::CameraIdentifierList::const_iterator iter = identifiers.begin(); iter != identifiers.end(); iter++)
+			int driverCount = cm->getDriverCount();
+			for(int i = 0; i < driverCount; i++)
 			{
-				std::cout << "        #" << i << ": " << (*iter).encode() << std::endl;
-				i++;
+				camera::Driver *d = cm->getDriver(i);
+				int identifierCount = d->getCameraIdentifierCount();
+				for(int j = 0; j < identifierCount; j++)
+				{
+					std::cout << "        " << d->getIdentifier() << " " << d->getCameraIdentifier(j) << std::endl;
+				}
 			}
 		}
 		else if(command.substr(0, 6) == "camera")
@@ -93,12 +95,12 @@ int main()
 
 			try
 			{
-				int id;
+				std::string driverIdentifier, cameraIdentifier;
 				std::stringstream ss;
 				ss << command.substr(6);
-				ss >> id;
-				std::cout << "Creating camera #" << id <<"..." << std::endl;
-				c = cm->createCamera(identifiers.at(id));
+				ss >> driverIdentifier;
+				ss >> cameraIdentifier;
+				c = cm->createCamera(driverIdentifier, cameraIdentifier);
 				c->setListener(&cameraListener);
 			}
 			catch(camera::CameraException &e)

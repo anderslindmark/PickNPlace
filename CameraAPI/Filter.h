@@ -13,8 +13,13 @@ class Filter
 		Filter();
 		virtual ~Filter();
 		
-		bool enabled;
+		void setEnabled(bool enabled);
+		bool getEnabled();
+		
 		virtual Image *apply(Image *image) = 0;
+		
+	private:
+		bool m_enabled;
 };
 
 

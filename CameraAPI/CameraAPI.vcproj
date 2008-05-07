@@ -161,10 +161,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CameraIdentifier.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CameraManager.cpp"
 				>
 			</File>
@@ -220,10 +216,6 @@
 			</File>
 			<File
 				RelativePath=".\CameraException.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CameraIdentifier.h"
 				>
 			</File>
 			<File

@@ -3,7 +3,6 @@
 
 #include "Camera.h"
 #include "euresys/Include/MultiCam32.h"
-#include "CameraIdentifier.h"
 
 namespace camera {
 

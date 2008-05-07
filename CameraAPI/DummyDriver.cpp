@@ -19,26 +19,19 @@ DummyDriver::~DummyDriver()
 	LOG_TRACE("DummyDriver::~DummyDriver()");
 }
 
-CameraIdentifierList DummyDriver::getCameraIdentifiers()
+int DummyDriver::getCameraIdentifierCount()
 {
-	LOG_TRACE("DummyDriver::getCameraIdentifiers()");
-	
-	// Clear the list of identifiers
-	CameraIdentifierList identifiers;
-	
-	CameraIdentifier ci;
-	ci.driverIdentifier = getIdentifier();
-	std::stringstream ss;
-	for(int i = 0; i < 3; i++)
-	{
-		ss.str("");
-		ss << "camera" << i;
-		ci.cameraIdentifier = ss.str();
+	LOG_TRACE("DummyDriver::getCameraIdentifierCount()");
+	return 3;
+}
+
+std::string DummyDriver::getCameraIdentifier(int index)
+{
+		LOG_TRACE("DummyDriver::getCameraIdentifier()");
 		
-		identifiers.push_back(ci);
-		LOG_TRACE("DummyDriver::getCameraIdentifiers(): Added " << ci.encode());
-	}
-	return identifiers;
+		std::stringstream ss;
+		ss << "camera" << index;
+		return ss.str();
 }
 
 Camera *DummyDriver::createCamera(const std::string &identifier) 

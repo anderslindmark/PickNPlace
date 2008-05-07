@@ -36,8 +36,6 @@ EuresysDriver::EuresysDriver()
 		LOG_TRACE("EuresysDriver::EuresysDriver():   #" << i << ": name = " << boardList[i].InternalName << ", sn = " << boardList[i].SerialNumber << ", pci = " << boardList[i].PciPosition << ", firmware = " << boardList[i].FirmwareRevision);
 		for(unsigned int j = 0; j < boardList[i].SourceCount; j++)
 		{
-			CameraIdentifier identifier;
-			
 			// Possible camera identifiers:
 			//   #<BoardID> (position in the boardList array), "#0"
 			//   @<BoardType>_<SerialNumber>, "@PICOLO_000731"
@@ -45,11 +43,9 @@ EuresysDriver::EuresysDriver()
 			//   %<PciPosition>, "%9"
 			std::stringstream ss;
 			ss << "#" << i << "." << j;
-			identifier.cameraIdentifier = ss.str();
-			identifier.driverIdentifier = getIdentifier();
+			m_identifiers.push_back(ss.str());
 			
-			m_identifiers.push_back(identifier);
-			LOG_TRACE("EuresysDriver::EuresysDriver():    Added  identifier " << identifier.encode());
+			LOG_TRACE("EuresysDriver::EuresysDriver():    Added  identifier " << ss.str());
 		}
 	}
 }
@@ -59,10 +55,21 @@ EuresysDriver::~EuresysDriver()
 	LOG_TRACE("EuresysDriver::~EuresysDriver()");
 }
 
-CameraIdentifierList EuresysDriver::getCameraIdentifiers()
+void EuresysDriver::updateCameraIdentifiers()
 {
-	LOG_TRACE("EuresysDriver::getIdentifiers()");
-	return m_identifiers;
+	LOG_TRACE("EuresysDriver::~updateCameraIdentifiers()");
+}
+
+int EuresysDriver::getCameraIdentifierCount()
+{
+	LOG_TRACE("EuresysDriver::getIdentifierCount()");
+	return m_identifiers.size();
+}
+
+std::string EuresysDriver::getCameraIdentifier(int index)
+{
+	LOG_TRACE("EuresysDriver::getIdentifier()");
+	return m_identifiers.at(index);
 }
 
 Camera *EuresysDriver::createCamera(const std::string &identifier)
