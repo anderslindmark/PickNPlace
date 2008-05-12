@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "CameraListener.h"
 #include "CameraException.h"
+#include "BarrelCorrection.h"
 #include "BMP.h"
 #include "Image.h"
 #include "log.h"
@@ -33,26 +34,30 @@ class MyListener : public camera::CameraListener
 
 int main()
 {
-	std::cout << "Hello!" << std::endl;
+	std::cout << "Welcome to the camera API test!" << std::endl;
 	
-	camera::CameraManager *cm = camera::CameraManager::getInstance();
+	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 	
-	camera::DummyDriver dd;
-	dd.setImageSize(500, 500);
-	cm->addDriver(&dd);
+	camera::DummyDriver dummyDriver;
+	dummyDriver.setImageSize(500, 500);
+	cameraManager->addDriver(&dummyDriver);
 	
-	camera::EuresysDriver *ed;
+	unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
+	unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
+	camera::BarrelCorrection *barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
+
+	camera::EuresysDriver *euresysDriver;
 	try
 	{
-		ed = new camera::EuresysDriver();
-		cm->addDriver(ed);
+		euresysDriver = new camera::EuresysDriver();
+		cameraManager->addDriver(euresysDriver);
 	}
 	catch(camera::CameraException &e)
 	{
 		std::cout << "Failed to add Euresys driver (" << e.what() << ")" << std::endl;
 	}
 	
-	camera::Camera *c = NULL;
+	camera::Camera *camera = NULL;
 	MyListener cameraListener;
 	std::string command;
 	while(1)
@@ -69,16 +74,17 @@ int main()
 			std::cout << "    exit:                       Exit the program" << std::endl;
 			std::cout << "    help:                       Show this help text" << std::endl;
 			std::cout << "    camera <driver> <camera>:   Change the active camera" << std::endl;
+			std::cout << "    barrel:                     Toggle barrel correction" << std::endl;
 			std::cout << "    start:                      Start the active camera" << std::endl;
 			std::cout << "    stop:                       Stop the active camera" << std::endl;
 			std::cout << "    save:                       Save the last image from the active camera" << std::endl;
 			std::cout << std::endl;
 			std::cout << "    Available cameras:" << std::endl;
 			
-			int driverCount = cm->getDriverCount();
+			int driverCount = cameraManager->getDriverCount();
 			for(int i = 0; i < driverCount; i++)
 			{
-				camera::Driver *d = cm->getDriver(i);
+				camera::Driver *d = cameraManager->getDriver(i);
 				int identifierCount = d->getCameraIdentifierCount();
 				for(int j = 0; j < identifierCount; j++)
 				{
@@ -86,12 +92,12 @@ int main()
 				}
 			}
 		}
-		else if(command.substr(0, 6) == "camera")
+		else if(command == "camera")
 		{
-			if(c != NULL)
+			if(camera != NULL)
 			{
-				delete c;
-				c = NULL;
+				delete camera;
+				camera = NULL;
 			}
 
 			try
@@ -99,8 +105,9 @@ int main()
 				std::string driverIdentifier, cameraIdentifier;
 				std::cin >> driverIdentifier;
 				std::cin >> cameraIdentifier;
-				c = cm->createCamera(driverIdentifier, cameraIdentifier);
-				c->setListener(&cameraListener);
+				camera = cameraManager->createCamera(driverIdentifier, cameraIdentifier);
+				camera->setListener(&cameraListener);
+				camera->addFilter(barrelCorrection);
 			}
 			catch(camera::CameraException &e)
 			{
@@ -111,26 +118,31 @@ int main()
 				std::cout << "Unknown exception" << std::endl;
 			}
 		}
+		else if(command == "barrel")
+		{
+			barrelCorrection->setEnabled(!barrelCorrection->getEnabled());
+			std::cout << "Barrel correction filter is " << (barrelCorrection->getEnabled() ? "enabled" : "disabled") << std::endl;
+		}
 		else if(command == "start")
 		{
-			if(c == NULL)
+			if(camera == NULL)
 			{
 				std::cout << "No camera active" << std::endl;
 			}
 			else
 			{
-				c->start();
+				camera->start();
 			}
 		}
 		else if(command == "stop")
 		{
-			if(c == NULL)
+			if(camera == NULL)
 			{
 				std::cout << "No camera active" << std::endl;
 			}
 			else
 			{
-				c->stop();
+				camera->stop();
 			}
 		}
 		else if(command == "save")
@@ -153,8 +165,9 @@ int main()
 		}
 	}
 	
-	delete ed;
-	delete c;
+	delete euresysDriver;
+	delete camera;
+	delete barrelCorrection;
 
 	return 0;
 }
