@@ -52,7 +52,7 @@ Image *BarrelCorrection::apply(Image *image)
 	}
 	
 	int numPixels                   = m_correctedImage->getWidth() * m_correctedImage->getHeight();
-	unsigned int *mapping                    = m_pixelMapping;
+	unsigned int *mapping           = m_pixelMapping;
 	ImageBuffer *cBufferAddr		= m_correctedImage->getBufferAddress();
 	ImageBuffer *dBufferBaseAddr	= image->getBufferAddress();
 	ImageBuffer *dBufferAddr		= NULL;
@@ -78,13 +78,11 @@ void BarrelCorrection::setDistortedCoordinates(unsigned int distortedX[8], unsig
 {	
 	LOG_TRACE("BarrelCorrection::setDistortedCoordinates()");
 	
-	memcpy(m_distortedX, distortedX, sizeof(int) * 8);
-	memcpy(m_distortedY, distortedY, sizeof(int) * 8);
-	/*for(int i = 0; i < 8; i++)
+	for(int i = 0; i < 8; i++)
 	{
 		m_distortedX[i] = distortedX[i];
-		m_distortedY[i] = distordetY[i];
-	}*/
+		m_distortedY[i] = distortedY[i];
+	}
 	
 	calculatePixelMapping();
 }
@@ -106,11 +104,14 @@ void BarrelCorrection::setOutputSize(unsigned int width, unsigned int height)
 	// TODO: Check if reallocateing corrected image and pixel mapping array takes to much time.
 	
 	// Reallocate the corrected image
-	if(m_correctedImage != NULL)
+	if(m_correctedImage == NULL)
 	{
-		delete m_correctedImage;
+		m_correctedImage = new Image(m_outputWidth, m_outputHeight, Image::FORMAT_RGB32);
 	}
-	m_correctedImage = new Image(m_outputWidth, m_outputHeight, Image::FORMAT_RGB32);
+	else
+	{
+		m_correctedImage->reallocate(m_outputWidth, m_outputHeight);
+	}
 	
 	// Reallocate pixel mapping array
 	if(m_pixelMapping != NULL)

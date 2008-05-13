@@ -3,7 +3,6 @@
 #include <sstream>
 #include "CameraManager.h"
 #include "DummyDriver.h"
-#include "EuresysDriver.h"
 #include "Camera.h"
 #include "CameraListener.h"
 #include "CameraException.h"
@@ -11,6 +10,10 @@
 #include "BMP.h"
 #include "Image.h"
 #include "log.h"
+
+#ifdef USE_EURESYS
+	#include "EuresysDriver.h"
+#endif
 
 class MyListener : public camera::CameraListener
 {
@@ -39,13 +42,15 @@ int main()
 	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 	
 	camera::DummyDriver dummyDriver;
-	dummyDriver.setImageSize(500, 500);
+	dummyDriver.setImageSize(768, 576);
 	cameraManager->addDriver(&dummyDriver);
 	
 	unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
 	unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
 	camera::BarrelCorrection *barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
-
+	//barrelCorrection->setOutputSize(500, 500);
+	
+#ifdef USE_EURESYS
 	camera::EuresysDriver *euresysDriver;
 	try
 	{
@@ -56,7 +61,7 @@ int main()
 	{
 		std::cout << "Failed to add Euresys driver (" << e.what() << ")" << std::endl;
 	}
-	
+#endif
 	camera::Camera *camera = NULL;
 	MyListener cameraListener;
 	std::string command;
@@ -165,7 +170,9 @@ int main()
 		}
 	}
 	
+#ifdef USE_EURESYS
 	delete euresysDriver;
+#endif
 	delete camera;
 	delete barrelCorrection;
 

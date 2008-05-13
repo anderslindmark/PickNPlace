@@ -21,8 +21,8 @@ class BarrelCorrection : public Filter
 		void calculatePixelMapping();
 		void solveLinearEquation(float M[8][9]);
 		
-		float m_distortedX[8];
-		float m_distortedY[8];
+		unsigned int m_distortedX[8];
+		unsigned int m_distortedY[8];
 		unsigned int m_outputWidth;
 		unsigned int m_outputHeight;
 		unsigned int *m_pixelMapping;
