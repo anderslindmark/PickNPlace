@@ -15,12 +15,14 @@
 #include <vector>
 
 /// \class MachineWrapperCommand
-/// \brief A wrapper that takes a series of commands, executes them in sequence, and then returns to where it was before this execution began.
+/// \brief A wrapper that takes a series of commands, executes them in sequence, 
+/// and then optionally returns to where it was before this execution began.
 class MachineWrapperCommand : public MachineCommand
 {
 	MACHINE_COMMAND_FRIENDS;
 public:
 	MachineWrapperCommand();
+	MachineWrapperCommand(bool returnToOrigin);
 	~MachineWrapperCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
@@ -32,6 +34,7 @@ private:
 	bool DoCommand(SerialPort &sp);
 	MachineWrapperCommand* Copy();
 	
+	bool m_returnToOrigin; //< Return to the position that the machine was in before the wrapper started executing.
 	int m_current;
 	MachineStateStruct m_state;
 	vector<MachineCommand*> m_commands;

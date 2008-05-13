@@ -6,7 +6,14 @@
 MachineWrapperCommand::MachineWrapperCommand()
 {
 	m_current = 0;
+	m_returnToOrigin = false;
 }
+
+MachineWrapperCommand::MachineWrapperCommand(bool returnToOrigin)
+{
+	m_returnToOrigin = returnToOrigin;
+}
+
 
 MachineWrapperCommand::~MachineWrapperCommand(void)
 {
@@ -64,7 +71,11 @@ bool MachineWrapperCommand::DoCommand(SerialPort &sp)
 	{
 		m_commands[i]->DoCommand(sp);
 	}
-	MachineMoveAllCommand(m_state.x, m_state.y, m_state.z).DoCommand(sp);
+
+	if (m_returnToOrigin)
+	{
+		MachineMoveAllCommand(m_state.x, m_state.y, m_state.z).DoCommand(sp);
+	}
 	
 	return true;
 }
