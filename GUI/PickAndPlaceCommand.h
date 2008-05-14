@@ -5,15 +5,6 @@
 #include "MachineCommands.h"
 namespace PicknPlaceGui
 {
-	struct PAPCTimes
-	{
-		int pressPick;
-		int pressPlace;
-		int afterPick;
-		int afterPlace;
-		PAPCTimes() : pressPick(0), pressPlace(0), afterPick(0), afterPlace(0) {};
-	};
-
 	class PickAndPlaceCommand
 	{
 	public:
@@ -23,62 +14,58 @@ namespace PicknPlaceGui
 		/// \param pickOrientTL (T)op (L)eft coordinate of pick component
 		/// \param pickOrientTR (T)op (R)ight coordinate of pick component
 		/// \param pickOrientBR (B)ottom (R)ight coordinate of pick component
-		/// \param pickZ		Z offset for pick
 		/// \param placeOrientTL (T)op (L)eft coordinate of place component
 		/// \param placeOrientTR (T)op (R)ight coordinate of place component
 		/// \param placeOrientBR (B)ottom (R)ight coordinate of place component
-		/// \param placeZ		Z offset for place
 		PickAndPlaceCommand(Coordinate2D pickOrientTL,
 							Coordinate2D pickOrientTR,
 							Coordinate2D pickOrientBR,
-							int pickZ,
 							Coordinate2D placeOrientTL,
 							Coordinate2D placeOrientTR,
 							Coordinate2D placeOrientBR,
-							int placeZ);
+							PickStateStruct settings);
 		
 		/// \brief Create a new PickAndPlace command by supplying the orientation
 		///			of the pick and place of the component to be picked and placed.
-		PickAndPlaceCommand(int pickX, int pickY, int pickZ, float pickAngle,
-							int placeX, int placeY, int placeZ, float placeAngle);
+		PickAndPlaceCommand(int pickX, int pickY, float pickAngle,
+							int placeX, int placeY, float placeAngle, PickStateStruct settings);
 		
 		~PickAndPlaceCommand(void);
 		
 		/// \brief Get a command that can be supplied to a MachineController of this 
 		///			PickAndPlaceCommand.
 		///
+		/// The command will be deleted by the object it was retrieved by when the
+		/// object gets destroyed or when a call to GetMachineCommand is called again.
+		///
 		/// \return A MachineWrapperCommand including all MachineController commands needed to do this command.
 		MachineWrapperCommand& GetMachineCommand();
 
 		/// \brief Set the different time parameters for the pick and place.
 		///	
+		/// Offset X and Y will be ignored, maybe change (?).
 		/// Se the MachineSetPickTimeCommand for more information.
-		void SetTimes(PAPCTimes times);
+		void SetSettings(PickStateStruct settings);
 		
 		/// \brief Get the different time parameters for the pick and place.
-		PAPCTimes GetTimes();
+		PickStateStruct GetSettings();
 
 		/// \brief Set pick coordinates and orientation.
-		void SetPickCoordinate(int x, int y, int z, float angle);
+		void SetPickCoordinate(int x, int y, float angle);
 
 		/// \brief Set pick coordinates and orientation using reference points and offset.
 		void SetPickCoordinate(Coordinate2D pickOrientTL,
 								Coordinate2D pickOrientTR,
-								Coordinate2D pickOrientBR,
-								int pickZ);
-
-		/// \brief Set pick coordinates and orientation using a Coordinate3D struct.
-		void SetPickCoordinate(Coordinate3D coordinate, float angle);
+								Coordinate2D pickOrientBR);
 
 		void SetPickX(int x);
 		void SetPickY(int y);
-		void SetPickZ(int z);
 		void SetPickAngle(float angle);
 
 		/// \brief Get pick coordinates.
 		///
 		/// \return A Coordinate3D struct containing the coordinate.
-		Coordinate3D GetPickCoordinate();
+		Coordinate2D GetPickCoordinate();
 
 		/// \brief Get pick orientation.
 		///
@@ -86,26 +73,21 @@ namespace PicknPlaceGui
 		float GetPickAngle();
 
 		/// \brief Set place coordinates and orientation.
-		void SetPlaceCoordinate(int x, int y, int z, float angle);
+		void SetPlaceCoordinate(int x, int y, float angle);
 
 		/// \brief Set palce coordinates and orientation using reference points and offset.
 		void SetPlaceCoordinate(Coordinate2D placeOrientTL,
 								Coordinate2D placeOrientTR,
-								Coordinate2D placeOrientBR,
-								int placeZ);
-
-		/// \brief Set place coordinates and orientation using a Coordinate3D struct.
-		void SetPlaceCoordinate(Coordinate3D coordinate, float angle);
+								Coordinate2D placeOrientBR);
 
 		void SetPlaceX(int x);
 		void SetPlaceY(int y);
-		void SetPlaceZ(int z);
 		void SetPlaceAngle(float angle);
 
 		/// \brief Get place coordinates.
 		///
-		/// \return A Coordinate3D struct containing the coordinate.
-		Coordinate3D GetPlaceCoordinate();
+		/// \return A Coordinate2D struct containing the coordinate.
+		Coordinate2D GetPlaceCoordinate();
 
 		/// \brief Get place orientation.
 		///
@@ -128,20 +110,20 @@ namespace PicknPlaceGui
 		
 
 	private:
-		Coordinate3D m_pick;
+		Coordinate2D m_pick;
 		float m_pickAngle;
 		
-		Coordinate3D m_place;
+		Coordinate2D m_place;
 		float m_placeAngle;
 
 		void Init();
 		void CalcCoordinate(Coordinate2D orientTL,
 									Coordinate2D orientTR,
 									Coordinate2D orientBR,
-									Coordinate3D &coordinate,
+									Coordinate2D &coordinate,
 									float &angle);
-		//Times
-		PAPCTimes m_times;
+		//Settings
+		PickStateStruct m_settings;
 
 		MachineWrapperCommand *m_cmd;
 		/*

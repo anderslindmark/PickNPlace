@@ -11,34 +11,33 @@ namespace PicknPlaceGui
 	PickAndPlaceCommand::PickAndPlaceCommand(Coordinate2D pickOrientTL,
 						Coordinate2D pickOrientTR,
 						Coordinate2D pickOrientBR,
-						int pickZ,
 						Coordinate2D placeOrientTL,
 						Coordinate2D placeOrientTR,
 						Coordinate2D placeOrientBR,
-						int placeZ)
+						PickStateStruct settings)
 	{
 		CalcCoordinate(	pickOrientTL,
 						pickOrientTR,
 						pickOrientBR,
 						m_pick,
 						m_pickAngle);
-		m_pick.z = pickZ;
 		CalcCoordinate(	placeOrientTL,
 						placeOrientTR,
 						placeOrientBR,
 						m_place,
 						m_placeAngle);
-		m_place.z = placeZ;
+		m_settings = settings;
 		Init();
 	}
 
-	PickAndPlaceCommand::PickAndPlaceCommand(int pickX, int pickY, int pickZ, float pickAngle,
-						int placeX, int placeY, int placeZ, float placeAngle)
+	PickAndPlaceCommand::PickAndPlaceCommand(int pickX, int pickY, float pickAngle,
+						int placeX, int placeY, float placeAngle, PickStateStruct settings)
 	{
-		m_pick = Coordinate3D(pickX, pickY, pickZ);
+		m_pick = Coordinate2D(pickX, pickY);
 		m_pickAngle = pickAngle;
-		m_place = Coordinate3D(placeX, placeY, placeZ);
+		m_place = Coordinate2D(placeX, placeY);
 		m_placeAngle = placeAngle;
+		m_settings = settings;
 		Init();
 	}
 
@@ -52,14 +51,14 @@ namespace PicknPlaceGui
 		m_cmd = NULL;
 	}
 	
-	void PickAndPlaceCommand::SetTimes(PAPCTimes times)
+	void PickAndPlaceCommand::SetSettings(PickStateStruct settings)
 	{
-		m_times = times;
+		m_settings = settings;
 	}
 
-	PAPCTimes PickAndPlaceCommand::GetTimes()
+	PickStateStruct PickAndPlaceCommand::GetSettings()
 	{
-		return m_times;
+		return m_settings;
 	}
 
 	MachineWrapperCommand& PickAndPlaceCommand::GetMachineCommand()
@@ -68,44 +67,37 @@ namespace PicknPlaceGui
 		m_cmd = new MachineWrapperCommand(false);
 
 		// Pick parameters
-		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, m_times.afterPick);
-		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PICK, m_times.pressPick);
-		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_pick.z);
-		m_cmd->Add(MachinePickCommand(PICKCMD_PICK, m_pick.x, m_pick.y);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, m_settings.afterPickTime);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PICK, m_settings.pickPressDownTime);
+		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_settings.headHeight);
+		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_PICKHEIGHT, m_settings.pickHeight);
+		m_cmd->Add(MachinePickCommand(PICKCMD_PICK, m_pick.x, m_pick.y, m_pickAngle);
 
 		// Place parameters
-		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, m_times.afterPlace);
-		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PLACE, m_times.pressPlace);
-		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_place.z);
-		m_cmd->Add(MachinePickCommand(PICKCMD_PLACE, m_place.x, m_place.y);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, m_settings.afterPlaceTime);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PLACE, m_settings.placePressDownTime);
+		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_PLACEHEIGHT, m_settings.placeHeight);
+		m_cmd->Add(MachinePickCommand(PICKCMD_PLACE, m_place.x, m_place.y, m_placeAngle);
 
 		return *m_cmd;
 	}
 
 
-	void PickAndPlaceCommand::SetPickCoordinate(int x, int y, int z, float angle)
+	void PickAndPlaceCommand::SetPickCoordinate(int x, int y, float angle)
 	{
-		m_pick = Coordinate3D(x, y , z);
+		m_pick = Coordinate2D(x, y);
 		m_pickAngle = angle;
 	}
 
 	void PickAndPlaceCommand::SetPickCoordinate(Coordinate2D pickOrientTL,
 								Coordinate2D pickOrientTR,
-								Coordinate2D pickOrientBR,
-								int pickZ)
+								Coordinate2D pickOrientBR)
 	{
 		CalcCoordinate(	pickOrientTL,
 						pickOrientTR,
 						pickOrientBR,
 						m_pick,
 						m_pickAngle);
-		m_pick.z = pickZ;
-	}
-
-	void PickAndPlaceCommand::SetPickCoordinate(Coordinate3D coordinate, float angle)
-	{
-		m_pick = coordinate;
-		m_pickAngle = angle;
 	}
 
 	void PickAndPlaceCommand::SetPickX(int x)
@@ -118,39 +110,26 @@ namespace PicknPlaceGui
 		m_pick.y = y;
 	}
 
-	void PickAndPlaceCommand::SetPickZ(int z)
-	{
-		m_pick.z = z;
-	}
-
 	void PickAndPlaceCommand::SetPickAngle(float angle)
 	{
 		m_pickAngle = angle;
 	}
 
-	void PickAndPlaceCommand::SetPlaceCoordinate(int x, int y, int z, float angle)
+	void PickAndPlaceCommand::SetPlaceCoordinate(int x, int y, float angle)
 	{
-		m_place = Coordinate3D(x, y , z);
+		m_place = Coordinate2D(x, y);
 		m_placeAngle = angle;
 	}
 
 	void PickAndPlaceCommand::SetPlaceCoordinate(Coordinate2D placeOrientTL,
 								Coordinate2D placeOrientTR,
-								Coordinate2D placeOrientBR,
-								int placeZ)
+								Coordinate2D placeOrientBR)
 	{
 		CalcCoordinate(	placeOrientTL,
 						placeOrientTR,
 						placeOrientBR,
 						m_place,
 						m_placeAngle);
-		m_place.z = placeZ;
-	}
-
-	void PickAndPlaceCommand::SetPlaceCoordinate(Coordinate3D coordinate, float angle)
-	{
-		m_place = coordinate;
-		m_placeAngle = angle;
 	}
 
 	void PickAndPlaceCommand::SetPlaceX(int x)
@@ -161,11 +140,6 @@ namespace PicknPlaceGui
 	void PickAndPlaceCommand::SetPlaceY(int y)
 	{
 		m_place.y = y;
-	}
-
-	void PickAndPlaceCommand::SetPlaceZ(int z)
-	{
-		m_place.z = z;
 	}
 
 	void PickAndPlaceCommand::SetPlaceAngle(float angle)
@@ -196,7 +170,7 @@ namespace PicknPlaceGui
 	void PickAndPlaceCommand::CalcCoordinate(Coordinate2D orientTL,
 									Coordinate2D orientTR,
 									Coordinate2D orientBR,
-									Coordinate3D &coordinate,
+									Coordinate2D &coordinate,
 									float &angle)
 	{
 		// calculate the centrum of the component

@@ -228,6 +228,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DotDispenceCommand.cpp"
+				>
+			</File>
+			<File
 				RelativePath="main.cpp"
 				>
 				<FileConfiguration
@@ -286,6 +290,10 @@
 			</File>
 			<File
 				RelativePath=".\DispencePolygonCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DotDispenceCommand.h"
 				>
 			</File>
 			<File
@@ -350,10 +358,10 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\release\moc_MainWindow.cpp"
+				RelativePath=".\Debug\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -362,10 +370,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Debug\moc_MainWindow.cpp"
+				RelativePath=".\release\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool

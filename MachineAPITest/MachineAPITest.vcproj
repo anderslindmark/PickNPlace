@@ -159,7 +159,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{289B07FC-C0F6-4C3B-9560-C8BC80800887}"
-			RelativePathToProject=".\MachineAPI\MachineAPI.vcproj"
+			RelativePathToProject=".\MachineAPI.vcproj"
 		/>
 	</References>
 	<Files>
@@ -168,6 +168,14 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\DispenceDotCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DispencePolygonCommand.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\main.cpp"
 				>
@@ -178,6 +186,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\DispenceDotCommand.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DispencePolygonCommand.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -6,28 +6,18 @@
 
 namespace PicknPlaceGui
 {
-	struct DPCTimes
-	{
-		int before;
-		int after;
-		int suckback;
-		DPCTimes() : before(0), after(0), suckback(0) {};
-	};
-
 	class DispencePolygonCommand : public MachinePolygon
 	{
 	public:
-		DispencePolygonCommand(void);
+		DispencePolygonCommand(DispenceStateStruct settings);
 		~DispencePolygonCommand(void);
 		MachineWrapperCommand& GetMachineCommand();
-		void SetSpeed(int speed);
 		int GetSpeed();
-		DPCTimes GetTimes();
-		void SetTimes(DPCTimes times);
+		DispenceStateStruct GetSettings();
+		void SetSettings(DispenceStateStruct settings);
 
 	private:
-		int m_speed;
-		DPCTimes m_times;
+		DispenceStateStruct m_settings;
 		MachineWrapperCommand *m_cmd;
 	};
 }
