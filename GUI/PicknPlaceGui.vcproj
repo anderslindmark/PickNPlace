@@ -267,11 +267,19 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\PickAndPlaceCommand.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\Coordinate.h"
+				>
+			</File>
 			<File
 				RelativePath="MainWindow.h"
 				>
@@ -295,6 +303,10 @@
 						Outputs="debug\moc_MainWindow.cpp"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\PickAndPlaceCommand.h"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -330,10 +342,10 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\release\moc_MainWindow.cpp"
+				RelativePath=".\Debug\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -342,10 +354,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Debug\moc_MainWindow.cpp"
+				RelativePath=".\release\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool

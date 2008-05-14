@@ -31,7 +31,8 @@ public:
 	/// \param cmd What action to do; pick, place or drop
 	/// \param componentX X-coordinate of the component
 	/// \param componentY Y-coordinate of the component
-	MachinePickCommand(PickCommandType cmd, int componentX, int componentY);
+	/// \param angle angle of the component
+	MachinePickCommand(PickCommandType cmd, int componentX, int componentY, float angle);
 	~MachinePickCommand(void);
 	string ToString();
 	MachineState GetAfterState(MachineState &oldms);
@@ -41,11 +42,12 @@ private:
 	PickCommandType m_cmd;
 	bool DoCommand(SerialPort &sp);
 	MachinePickCommand *Copy();
-
+	
 	MachineStateStruct m_state;
 	bool m_firstState;
 	int m_x;
 	int m_y;
+	float m_angle;
 };
 
 

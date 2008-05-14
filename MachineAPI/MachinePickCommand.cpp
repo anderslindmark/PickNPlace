@@ -18,12 +18,13 @@ using namespace std;
 
 #define COMMAND_STRING	"Machine Pick Command"
 
-MachinePickCommand::MachinePickCommand(PickCommandType cmd, int componentX, int componentY)
+MachinePickCommand::MachinePickCommand(PickCommandType cmd, int componentX, int componentY, float angle)
 {
 	m_x = componentX;
 	m_y = componentY;
 	m_cmd = cmd;
 	m_firstState = true;
+	m_angle = angle;
 }
 
 MachinePickCommand::~MachinePickCommand(void)
@@ -40,6 +41,7 @@ MachineState MachinePickCommand::GetAfterState(MachineState &oldms)
 	m_state = oldms.GetState();
 	m_state.x = m_x - m_state.pickState.offsetX;
 	m_state.y = m_y - m_state.pickState.offsetY;
+	m_state.rot = m_angle;
 	
 	return MachineState(m_state);
 }
@@ -61,6 +63,7 @@ bool MachinePickCommand::DoCommand(SerialPort &sp)
 			// Move the pick head over the component
 			MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 			MachineMoveAllCommand(m_state.x, m_state.y, -1).DoCommand(sp);
+			MachineRotateAbsoluteCommand(m_angle).DoCommand(sp);
 			// Set the height
 			height = ROUND( (TOOL_MOUNT_MAX_Z - pickState.headHeight - pickState.pickHeight)/STEP_PRECISION_Z );
 			sprintf_s(cmdStr, sizeof(cmdStr), "WR DM321 %d", height);
@@ -78,6 +81,7 @@ bool MachinePickCommand::DoCommand(SerialPort &sp)
 			// Set height
 			MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 			MachineMoveAllCommand(m_state.x, m_state.y, -1).DoCommand(sp);
+			MachineRotateAbsoluteCommand(m_angle).DoCommand(sp);
 			height = ROUND( (TOOL_MOUNT_MAX_Z - pickState.headHeight - pickState.placeHeight)/STEP_PRECISION_Z );
 			sprintf_s(cmdStr, sizeof(cmdStr), "WR DM321 %d", height);
 			ExecCommand(sp, "WR DM320 34048", M_ANS_OK);
@@ -95,6 +99,7 @@ bool MachinePickCommand::DoCommand(SerialPort &sp)
 		case (PICKCMD_DROP):
 			MachineMoveAbsoluteCommand(AXIS_Z, 0).DoCommand(sp);
 			MachineMoveAllCommand(m_state.x, m_state.y, -1).DoCommand(sp);
+			MachineRotateAbsoluteCommand(m_angle).DoCommand(sp);
 			ExecCommand(sp, "RS 1912", M_ANS_OK);
 			ExecCommand(sp, M_READY_1915, M_ANS_1);
 			ExecCommand(sp, "RS 702", M_ANS_OK);
