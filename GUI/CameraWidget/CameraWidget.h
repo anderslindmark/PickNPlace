@@ -64,7 +64,7 @@ public:
 	void cameraNewImage(camera::Camera *camera, camera::Image *image);
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
-	void setCamera(); //const camera::CameraIdentifier &cameraid);
+	void setCamera(const std::string &driverIdentifier, const std::string &cameraIdentifier);
 	void setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8]);
 	void setCoordinateMapping(int leftOffset, float leftZDiff, 
 							  int rightOffset, float rightZDiff, 					  

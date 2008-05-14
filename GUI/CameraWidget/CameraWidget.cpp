@@ -69,10 +69,11 @@ CameraWidget::~CameraWidget()
 ///
 /// \brief Event handler for when a new image arrives from the camera. 
 /// \param camera Pointer to the camera that produced the new image.
+/// \param image Pointer to the new image. Same as doing camera->getLastImage()
 ///
 void CameraWidget::cameraNewImage(camera::Camera *camera, camera::Image *image)
 {
-	m_image = QImage(camera->getLastImage()->getBufferAddress(), camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), QImage::Format_RGB32);
+	m_image = QImage(image->getBufferAddress(), image->getWidth(), image->getHeight(), QImage::Format_RGB32);
 	update();
 }
 
@@ -85,6 +86,9 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.drawImage(0, 0, m_image);
+	
+	// TODO: Draw the commands in the command queue
+	
 }
 
 ///
@@ -93,12 +97,11 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 ///
 void CameraWidget::resizeEvent(QResizeEvent * event)
 {
-	//barrelCorrection.setOutputSize(event->size().width(), event->size().height());
+	//barrelCorrection->setOutputSize(event->size().width(), event->size().height());
 }
 
-void CameraWidget::setCamera() //const camera::CameraIdentifier &cameraid)
+void CameraWidget::setCamera(const std::string &driverIdentifier, const std::string &cameraIdentifier)
 {
-	/*
 	if(m_camera != NULL)
 	{
 		delete m_camera;
@@ -106,9 +109,8 @@ void CameraWidget::setCamera() //const camera::CameraIdentifier &cameraid)
 	}
 	
 	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
-	m_camera = cameraManager->createCamera(cameraid);
+	m_camera = cameraManager->createCamera(driverIdentifier, cameraIdentifier);
 	m_camera->setListener(this);
-	*/
 }
 
 void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8])
