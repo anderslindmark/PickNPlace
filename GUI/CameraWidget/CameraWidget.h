@@ -60,11 +60,11 @@ class QDESIGNER_WIDGET_EXPORT CameraWidget : public QWidget, public camera::Came
 public:
     CameraWidget(QWidget *parent = 0);
     ~CameraWidget();
-	
-	void cameraNewImage(camera::Camera *camera);
+
+	void cameraNewImage(camera::Camera *camera, camera::Image *image);
 	void cameraError(camera::Camera *camera, int errorCode, const std::string &errorMessage);
 
-	void setCamera(const camera::CameraIdentifier &cameraid);
+	void setCamera(); //const camera::CameraIdentifier &cameraid);
 	void setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8]);
 	void setCoordinateMapping(int leftOffset, float leftZDiff, 
 							  int rightOffset, float rightZDiff, 					  

@@ -70,7 +70,7 @@ CameraWidget::~CameraWidget()
 /// \brief Event handler for when a new image arrives from the camera. 
 /// \param camera Pointer to the camera that produced the new image.
 ///
-void CameraWidget::cameraNewImage(camera::Camera *camera)
+void CameraWidget::cameraNewImage(camera::Camera *camera, camera::Image *image)
 {
 	m_image = QImage(camera->getLastImage()->getBufferAddress(), camera->getLastImage()->getWidth(), camera->getLastImage()->getHeight(), QImage::Format_RGB32);
 	update();
@@ -96,8 +96,9 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	//barrelCorrection.setOutputSize(event->size().width(), event->size().height());
 }
 
-void CameraWidget::setCamera(const camera::CameraIdentifier &cameraid)
+void CameraWidget::setCamera() //const camera::CameraIdentifier &cameraid)
 {
+	/*
 	if(m_camera != NULL)
 	{
 		delete m_camera;
@@ -107,6 +108,7 @@ void CameraWidget::setCamera(const camera::CameraIdentifier &cameraid)
 	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 	m_camera = cameraManager->createCamera(cameraid);
 	m_camera->setListener(this);
+	*/
 }
 
 void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8])
