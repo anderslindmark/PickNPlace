@@ -15,7 +15,7 @@ namespace PicknPlaceGui
 		MachineWrapperCommand& GetMachineCommand();
 		void SetX(int x);
 		void SetY(int y);
-		void SetCoordinate(Coordinate2D);
+		void SetCoordinate(Coordinate2D coord);
 		Coordinate2D GetCoordinate();
 		int GetSize();
 		DispenceStateStruct GetSettings();

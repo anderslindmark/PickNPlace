@@ -17,12 +17,12 @@ namespace PicknPlaceGui
 		/// \param placeOrientTL (T)op (L)eft coordinate of place component
 		/// \param placeOrientTR (T)op (R)ight coordinate of place component
 		/// \param placeOrientBR (B)ottom (R)ight coordinate of place component
-		PickAndPlaceCommand(Coordinate3D pickOrientTL,
-							Coordinate3D pickOrientTR,
-							Coordinate3D pickOrientBR,
-							Coordinate3D placeOrientTL,
-							Coordinate3D placeOrientTR,
-							Coordinate3D placeOrientBR,
+		PickAndPlaceCommand(Coordinate2D pickOrientTL,
+							Coordinate2D pickOrientTR,
+							Coordinate2D pickOrientBR,
+							Coordinate2D placeOrientTL,
+							Coordinate2D placeOrientTR,
+							Coordinate2D placeOrientBR,
 							PickStateStruct settings);
 		
 		/// \brief Create a new PickAndPlace command by supplying the orientation
@@ -54,9 +54,9 @@ namespace PicknPlaceGui
 		void SetPickCoordinate(int x, int y, float angle);
 
 		/// \brief Set pick coordinates and orientation using reference points and offset.
-		void SetPickCoordinate(Coordinate3D pickOrientTL,
-								Coordinate3D pickOrientTR,
-								Coordinate3D pickOrientBR);
+		void SetPickCoordinate(Coordinate2D pickOrientTL,
+								Coordinate2D pickOrientTR,
+								Coordinate2D pickOrientBR);
 
 		void SetPickX(int x);
 		void SetPickY(int y);
@@ -64,8 +64,8 @@ namespace PicknPlaceGui
 
 		/// \brief Get pick coordinates.
 		///
-		/// \return A Coordinate3D struct containing the coordinate.
-		Coordinate3D GetPickCoordinate();
+		/// \return A Coordinate2D struct containing the coordinate.
+		Coordinate2D GetPickCoordinate();
 
 		/// \brief Get pick orientation.
 		///
@@ -76,9 +76,9 @@ namespace PicknPlaceGui
 		void SetPlaceCoordinate(int x, int y, float angle);
 
 		/// \brief Set palce coordinates and orientation using reference points and offset.
-		void SetPlaceCoordinate(Coordinate3D placeOrientTL,
-								Coordinate3D placeOrientTR,
-								Coordinate3D placeOrientBR);
+		void SetPlaceCoordinate(Coordinate2D placeOrientTL,
+								Coordinate2D placeOrientTR,
+								Coordinate2D placeOrientBR);
 
 		void SetPlaceX(int x);
 		void SetPlaceY(int y);
@@ -86,8 +86,8 @@ namespace PicknPlaceGui
 
 		/// \brief Get place coordinates.
 		///
-		/// \return A Coordinate3D struct containing the coordinate.
-		Coordinate3D GetPlaceCoordinate();
+		/// \return A Coordinate2D struct containing the coordinate.
+		Coordinate2D GetPlaceCoordinate();
 
 		/// \brief Get place orientation.
 		///
@@ -110,17 +110,17 @@ namespace PicknPlaceGui
 		
 
 	private:
-		Coordinate3D m_pick;
+		Coordinate2D m_pick;
 		float m_pickAngle;
 		
-		Coordinate3D m_place;
+		Coordinate2D m_place;
 		float m_placeAngle;
 
 		void Init();
-		void CalcCoordinate(Coordinate3D orientTL,
-									Coordinate3D orientTR,
-									Coordinate3D orientBR,
-									Coordinate3D &coordinate,
+		void CalcCoordinate(Coordinate2D orientTL,
+									Coordinate2D orientTR,
+									Coordinate2D orientBR,
+									Coordinate2D &coordinate,
 									float &angle);
 		//Settings
 		PickStateStruct m_settings;

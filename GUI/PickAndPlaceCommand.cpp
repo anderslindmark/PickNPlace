@@ -8,12 +8,12 @@ using namespace std;
 
 namespace PicknPlaceGui
 {
-	PickAndPlaceCommand::PickAndPlaceCommand(Coordinate3D pickOrientTL,
-						Coordinate3D pickOrientTR,
-						Coordinate3D pickOrientBR,
-						Coordinate3D placeOrientTL,
-						Coordinate3D placeOrientTR,
-						Coordinate3D placeOrientBR,
+	PickAndPlaceCommand::PickAndPlaceCommand(Coordinate2D pickOrientTL,
+						Coordinate2D pickOrientTR,
+						Coordinate2D pickOrientBR,
+						Coordinate2D placeOrientTL,
+						Coordinate2D placeOrientTR,
+						Coordinate2D placeOrientBR,
 						PickStateStruct settings)
 	{
 		CalcCoordinate(	pickOrientTL,
@@ -33,9 +33,9 @@ namespace PicknPlaceGui
 	PickAndPlaceCommand::PickAndPlaceCommand(int pickX, int pickY, float pickAngle,
 						int placeX, int placeY, float placeAngle, PickStateStruct settings)
 	{
-		m_pick = Coordinate3D(pickX, pickY, 0); // TODO: Set Z
+		m_pick = Coordinate2D(pickX, pickY);
 		m_pickAngle = pickAngle;
-		m_place = Coordinate3D(placeX, placeY, 0); // TODO: Set z
+		m_place = Coordinate2D(placeX, placeY);
 		m_placeAngle = placeAngle;
 		m_settings = settings;
 		Init();
@@ -89,13 +89,13 @@ namespace PicknPlaceGui
 
 	void PickAndPlaceCommand::SetPickCoordinate(int x, int y, float angle)
 	{
-		m_pick = Coordinate3D(x, y, 0); // TODO: Set Z
+		m_pick = Coordinate2D(x, y);
 		m_pickAngle = angle;
 	}
 
-	void PickAndPlaceCommand::SetPickCoordinate(Coordinate3D pickOrientTL,
-								Coordinate3D pickOrientTR,
-								Coordinate3D pickOrientBR)
+	void PickAndPlaceCommand::SetPickCoordinate(Coordinate2D pickOrientTL,
+								Coordinate2D pickOrientTR,
+								Coordinate2D pickOrientBR)
 	{
 		CalcCoordinate(	pickOrientTL,
 						pickOrientTR,
@@ -121,13 +121,13 @@ namespace PicknPlaceGui
 
 	void PickAndPlaceCommand::SetPlaceCoordinate(int x, int y, float angle)
 	{
-		m_place = Coordinate3D(x, y, 0); // TODO: Set Z
+		m_place = Coordinate2D(x, y);
 		m_placeAngle = angle;
 	}
 
-	void PickAndPlaceCommand::SetPlaceCoordinate(Coordinate3D placeOrientTL,
-								Coordinate3D placeOrientTR,
-								Coordinate3D placeOrientBR)
+	void PickAndPlaceCommand::SetPlaceCoordinate(Coordinate2D placeOrientTL,
+								Coordinate2D placeOrientTR,
+								Coordinate2D placeOrientBR)
 	{
 		CalcCoordinate(	placeOrientTL,
 						placeOrientTR,
@@ -151,7 +151,7 @@ namespace PicknPlaceGui
 		m_placeAngle = angle;
 	}
 
-	Coordinate3D PickAndPlaceCommand::GetPickCoordinate()
+	Coordinate2D PickAndPlaceCommand::GetPickCoordinate()
 	{
 		return m_pick;
 	}
@@ -161,7 +161,7 @@ namespace PicknPlaceGui
 		return m_pickAngle;
 	}
 	
-	Coordinate3D PickAndPlaceCommand::GetPlaceCoordinate()
+	Coordinate2D PickAndPlaceCommand::GetPlaceCoordinate()
 	{
 		return m_place;
 	}
@@ -171,10 +171,10 @@ namespace PicknPlaceGui
 		return m_placeAngle;
 	}
 
-	void PickAndPlaceCommand::CalcCoordinate(Coordinate3D orientTL,
-									Coordinate3D orientTR,
-									Coordinate3D orientBR,
-									Coordinate3D &coordinate,
+	void PickAndPlaceCommand::CalcCoordinate(Coordinate2D orientTL,
+									Coordinate2D orientTR,
+									Coordinate2D orientBR,
+									Coordinate2D &coordinate,
 									float &angle)
 	{
 		// calculate the centrum of the component
