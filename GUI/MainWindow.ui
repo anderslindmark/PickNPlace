@@ -445,8 +445,30 @@
        </item>
        <item>
         <widget class="QStackedWidget" name="m_pCommandsStackedWidget" >
+         <property name="maximumSize" >
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="currentIndex" >
+          <number>1</number>
+         </property>
          <widget class="QWidget" name="page_3" />
-         <widget class="QWidget" name="page_4" />
+         <widget class="QWidget" name="page_4" >
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QPushButton" name="m_pRemoveCommandButton" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string>Remove</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>

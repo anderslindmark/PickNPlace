@@ -35,9 +35,16 @@ namespace PicknPlaceGui
 	private:
 		void ConnectSlots();
 		void InitCameraManager();
+		void CreateToolbarButtons();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
+
+		QAction *m_pPickNPlaceTool;
+		QAction *m_pDispenceTool;
+
+		QAction *m_pZoomTool;
+		QAction *m_pShowPolygonTool;
 	};
 }
 

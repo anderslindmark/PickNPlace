@@ -15,7 +15,7 @@ namespace PicknPlaceGui
 		delete m_cmd;
 	}
 
-	MachineWrapperCommand& GetMachineCommand()
+	MachineWrapperCommand& DispenceDotCommand::GetMachineCommand()
 	{
 		delete m_cmd;
 		m_cmd = new MachineWrapperCommand(false);

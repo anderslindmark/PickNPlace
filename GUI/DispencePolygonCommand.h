@@ -13,6 +13,7 @@ namespace PicknPlaceGui
 		~DispencePolygonCommand(void);
 		MachineWrapperCommand& GetMachineCommand();
 		int GetSpeed();
+		void SetSpeed(int speed);
 		DispenceStateStruct GetSettings();
 		void SetSettings(DispenceStateStruct settings);
 

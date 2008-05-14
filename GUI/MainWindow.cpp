@@ -32,31 +32,73 @@ namespace PicknPlaceGui
 		//this->m_ui.m_pCommandsListWidget->setCurrentRow(0);
 		
 		this->InitCameraManager();
+		this->CreateToolbarButtons();
 	}
 
 	void MainWindow::InitCameraManager()
 	{
+		/*
 		// Create the machine controller and associate a callback function with it.
 		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
 		this->m_pMC->AddEventHandler(&on_machine_event);
 		
 		
 		camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
-		//camera::DummyDriver *dd = new camera::DummyDriver();
-		//dd->setImageSize(400, 400);
-		//cameraManager->addDriver(dd);
+		camera::DummyDriver *dd = new camera::DummyDriver();
+		dd->setImageSize(400, 400);
+		cameraManager->addDriver(dd);
 
-		camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
-		cameraManager->addDriver(euresysDriver);
+		//camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
+		//cameraManager->addDriver(euresysDriver);
 
 		camera::CameraIdentifierList identifiers = cameraManager->getCameraIdentifiers();
-		
+
 		m_pMainCameraWidget->setCamera(identifiers.at(1));
 		m_pMainCameraWidget->start();
 		
 		int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
 		int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
 		m_pMainCameraWidget.setImageCorrectionParameters(distortedX, distortedY);
+		*/
+	}
+
+	void MainWindow::CreateToolbarButtons()
+	{
+		//
+		// Mode toolbar.
+		//
+		this->m_pPickNPlaceTool = new QAction(QIcon("images/pnp_icon.png"), tr("&Pick and Place"), this);
+		this->m_pPickNPlaceTool->setCheckable(true);
+		this->m_pPickNPlaceTool->setShortcut(tr("Ctrl+P"));
+		this->m_pPickNPlaceTool->setStatusTip(tr("Enter Pick and Place mode"));
+		// TODO : Connect action to a slot.
+
+		this->m_pDispenceTool = new QAction(QIcon("images/dispence_icon.png"), tr("&Dispence"), this);
+		this->m_pDispenceTool->setCheckable(true);
+		this->m_pDispenceTool->setShortcut(tr("Ctrl+D"));
+		this->m_pDispenceTool->setStatusTip(tr("Enter Dispence mode"));
+		// TODO : Connect action to a slot.
+
+		this->m_ui.m_pModeToolBar->addAction(this->m_pPickNPlaceTool);
+		this->m_ui.m_pModeToolBar->addAction(this->m_pDispenceTool);
+
+		//
+		// Tools toolbar.
+		//
+		this->m_pZoomTool = new QAction(QIcon("images/zoom_icon.png"), tr("&Zoom"), this);
+		this->m_pZoomTool->setCheckable(true);
+		this->m_pZoomTool->setShortcut(tr("Ctrl+Z"));
+		this->m_pZoomTool->setStatusTip(tr("Show the zoomed in camera view for fine positioning"));
+		// TODO : Connect action to a slot.
+
+		this->m_pShowPolygonTool = new QAction(QIcon("images/showpoly_icon.png"), tr("&Show polygons"), this);
+		this->m_pShowPolygonTool->setCheckable(true);
+		this->m_pShowPolygonTool->setShortcut(tr("Ctrl+S"));
+		this->m_pShowPolygonTool->setStatusTip(tr("Shows polygons on the camera image"));
+		// TODO : Connect action to a slot.
+
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pZoomTool);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pShowPolygonTool);
 	}
 
 	///
@@ -99,7 +141,10 @@ namespace PicknPlaceGui
 	///
 	MainWindow::~MainWindow()
 	{
-		delete this->m_pMC;
+		if (this->m_pMC)
+		{
+			delete this->m_pMC;
+		}
 	}
 
 	/*
