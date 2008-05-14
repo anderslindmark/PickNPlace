@@ -1,3 +1,4 @@
+
 /**
  	\file MachinePolygonDispenceCommand.cpp
  
@@ -16,7 +17,7 @@ using namespace std;
 
 #define COMMAND_STRING	"Machine Dispence Polygon Command"
 
-MachinePolygonDispenceCommand::MachinePolygonDispenceCommand(MachinePolygon &polygon) : m_polygon(polygon)
+MachinePolygonDispenceCommand::MachinePolygonDispenceCommand(MachinePolygon polygon) : m_polygon(polygon)
 {
 	m_vectorIndex = 0;
 	ValidatePolygon();
@@ -246,3 +247,5 @@ bool MachinePolygonDispenceCommand::ValidatePolygon()
 	m_valid = true;
 	return m_valid;
 }
+
+
