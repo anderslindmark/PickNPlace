@@ -44,44 +44,42 @@ namespace PicknPlaceGui
 
 	PickAndPlaceCommand::~PickAndPlaceCommand(void)
 	{
-		delete cmd;
+		delete m_cmd;
 	}
 
 	void PickAndPlaceCommand::Init()
 	{
-		m_pressPick = 0;
-		m_pressPlace = 0;
-		m_afterPick = 0;
-		m_afterPlace = 0;
-		cmd = null;
+		m_cmd = NULL;
 	}
 	
-	void SetTimes(int afterPick, int afterPlace, int pressPick, int pressPlace)
+	void PickAndPlaceCommand::SetTimes(PAPCTimes times)
 	{
-		m_pressPick = pressPick;
-		m_pressPlace = pressPlace;
-		m_afterPick = afterPick;
-		m_afterPlace = afterPlace;
+		m_times = times;
+	}
+
+	PAPCTimes PickAndPlaceCommand::GetTimes()
+	{
+		return m_times;
 	}
 
 	MachineWrapperCommand& PickAndPlaceCommand::GetMachineCommand()
 	{
-		delete cmd;
-		cmd = new MachineWrapperCommand(false);
+		delete m_cmd;
+		m_cmd = new MachineWrapperCommand(false);
 
 		// Pick parameters
-		cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, m_afterPick);
-		cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PICK, m_pressPick);
-		cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_pick.z);
-		cmd->Add(MachinePickCommand(PICKCMD_PICK, m_pick.x, m_pick.y);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, m_times.afterPick);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PICK, m_times.pressPick);
+		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_pick.z);
+		m_cmd->Add(MachinePickCommand(PICKCMD_PICK, m_pick.x, m_pick.y);
 
 		// Place parameters
-		cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, m_afterPlace);
-		cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PLACE, m_pressPlace);
-		cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_place.z);
-		cmd->Add(MachinePickCommand(PICKCMD_PLACE, m_place.x, m_place.y);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, m_times.afterPlace);
+		m_cmd->Add(MachineSetPickTimeCommand(PICKTIME_PRESS_PLACE, m_times.pressPlace);
+		m_cmd->Add(MachineSetPickOffsetCommand(PICKOFFSET_TOOLHEIGHT, m_place.z);
+		m_cmd->Add(MachinePickCommand(PICKCMD_PLACE, m_place.x, m_place.y);
 
-		return &cmd;
+		return *m_cmd;
 	}
 
 

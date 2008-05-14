@@ -76,7 +76,7 @@ public:
 	int Size(); // Returns size of point-list
 	//vector<MachinePolygonPoint> &GetPoints();
 
-private:
+protected:
 	vector<MachinePolygonPoint> m_points; ///< The vector that contains the points
 };
 

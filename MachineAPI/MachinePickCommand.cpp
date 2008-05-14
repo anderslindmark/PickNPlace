@@ -114,5 +114,5 @@ bool MachinePickCommand::DoCommand(SerialPort &sp)
 
 MachinePickCommand* MachinePickCommand::Copy()
 {
-	return new MachinePickCommand(m_cmd, m_x, m_y);
+	return new MachinePickCommand(m_cmd, m_x, m_y, m_angle);
 }

@@ -29,6 +29,7 @@ int main(void)
 		return FALSE;
 	}
 	mc.Wait();
+	/*
 	mc.RunCommand(*(new MachineMoveAbsoluteCommand(AXIS_Y, 100000))); mc.Wait();
 	cin >> tmp;
 	mc.RunCommand(*(new MachineSetPickTimeCommand(PICKTIME_AFTER_PICK, 100))); mc.Wait();
@@ -39,7 +40,7 @@ int main(void)
 	mc.RunCommand(*(new MachineSetPickTimeCommand(PICKTIME_AFTER_PLACE, 100))); mc.Wait();
 	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PICK))); mc.Wait();
 	cin >> tmp;
-	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PLACE))); mc.Wait();
+	mc.RunCommand(*(new MachinePickCommand(PICKCMD_PLACE))); mc.Wait(); */
 /*
 	mc.RunCommand(*(new MachineLightBrightnessCommand(LAMP_CAMERA, 3))); mc.Wait();
 

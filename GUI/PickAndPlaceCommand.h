@@ -5,6 +5,15 @@
 #include "MachineCommands.h"
 namespace PicknPlaceGui
 {
+	struct PAPCTimes
+	{
+		int pressPick;
+		int pressPlace;
+		int afterPick;
+		int afterPlace;
+		PAPCTimes() : pressPick(0), pressPlace(0), afterPick(0), afterPlace(0) {};
+	};
+
 	class PickAndPlaceCommand
 	{
 	public:
@@ -41,10 +50,13 @@ namespace PicknPlaceGui
 		/// \return A MachineWrapperCommand including all MachineController commands needed to do this command.
 		MachineWrapperCommand& GetMachineCommand();
 
-		/// \brief Set different time parameters for the pick and place.
+		/// \brief Set the different time parameters for the pick and place.
 		///	
 		/// Se the MachineSetPickTimeCommand for more information.
-		void SetTimes(int afterPick, int afterPlace, int pressPick, int pressPlace);
+		void SetTimes(PAPCTimes times);
+		
+		/// \brief Get the different time parameters for the pick and place.
+		PAPCTimes GetTimes();
 
 		/// \brief Set pick coordinates and orientation.
 		void SetPickCoordinate(int x, int y, int z, float angle);
@@ -129,12 +141,9 @@ namespace PicknPlaceGui
 									Coordinate3D &coordinate,
 									float &angle);
 		//Times
-		int m_pressPick;
-		int m_pressPlace;
-		int m_afterPick;
-		int m_afterPlace;
+		PAPCTimes m_times;
 
-		MachineWrapperCommand *cmd;
+		MachineWrapperCommand *m_cmd;
 		/*
 		Coordinate2D m_pickOrientationTL;
 		Coordinate2D m_pickOrientationTR;
