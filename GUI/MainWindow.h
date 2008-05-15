@@ -15,6 +15,14 @@
 
 namespace PicknPlaceGui
 {
+	/// \enum GuiMode
+	/// \brief The different modes the GUI can be in.
+	enum GuiMode
+	{
+		PickNPlaceMode,	///< Pick and place mode.
+		DispenceMode	///< Dispence mode.
+	};
+
 	class MainWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -32,6 +40,14 @@ namespace PicknPlaceGui
 		void ExecuteCommand(void);
 		*/
 
+		// Modes toolbar action triggers.
+		void PickNPlaceActionTriggered();
+		void DispenceActionTriggered();
+
+		// Tools toolbar action triggers.
+		void ShowPolygonActionTriggered();
+		void ZoomActionTriggered();
+
 	private:
 		void ConnectSlots();
 		void InitCameraManager();
@@ -40,11 +56,14 @@ namespace PicknPlaceGui
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
 
-		QAction *m_pPickNPlaceTool;
-		QAction *m_pDispenceTool;
+		// Modes toolbar actions.
+		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
+		QAction *m_pPickNPlaceToolAction;			///< Toolbar button for activating Pick and Place mode.
+		QAction *m_pDispenceToolAction;				///< Toolbar button for activating Dispence mode.
 
-		QAction *m_pZoomTool;
-		QAction *m_pShowPolygonTool;
+		// Tools toolbar actions.
+		QAction *m_pZoomToolAction;					///< Toolbar button for toggling the zoom camera on the camera widget.
+		QAction *m_pShowPolygonToolAction;			///< Toolbar button for toggling polygon drawing on the camera widget.
 	};
 }
 

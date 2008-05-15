@@ -62,43 +62,53 @@ namespace PicknPlaceGui
 		*/
 	}
 
+	///
+	/// \brief Creates the buttons for the toolbars and connects them to their slots. 
+	/// (This is only done here because the QT Designer doesn't allow you to do it in the GUI).
+	///
 	void MainWindow::CreateToolbarButtons()
 	{
 		//
 		// Mode toolbar.
 		//
-		this->m_pPickNPlaceTool = new QAction(QIcon("images/pnp_icon.png"), tr("&Pick and Place"), this);
-		this->m_pPickNPlaceTool->setCheckable(true);
-		this->m_pPickNPlaceTool->setShortcut(tr("Ctrl+P"));
-		this->m_pPickNPlaceTool->setStatusTip(tr("Enter Pick and Place mode"));
-		// TODO : Connect action to a slot.
+		this->m_pPickNPlaceToolAction = new QAction(QIcon("images/pnp_icon.png"), tr("&Pick and Place"), this);
+		this->m_pPickNPlaceToolAction->setCheckable(true);
+		this->m_pPickNPlaceToolAction->setShortcut(tr("Ctrl+P"));
+		this->m_pPickNPlaceToolAction->setStatusTip(tr("Enter Pick and Place mode"));
+		QMainWindow::connect(m_pPickNPlaceToolAction, SIGNAL(triggered()), this, SLOT(PickNPlaceActionTriggered()));
 
-		this->m_pDispenceTool = new QAction(QIcon("images/dispence_icon.png"), tr("&Dispence"), this);
-		this->m_pDispenceTool->setCheckable(true);
-		this->m_pDispenceTool->setShortcut(tr("Ctrl+D"));
-		this->m_pDispenceTool->setStatusTip(tr("Enter Dispence mode"));
-		// TODO : Connect action to a slot.
+		this->m_pDispenceToolAction = new QAction(QIcon("images/dispence_icon.png"), tr("&Dispence"), this);
+		this->m_pDispenceToolAction->setCheckable(true);
+		this->m_pDispenceToolAction->setShortcut(tr("Ctrl+D"));
+		this->m_pDispenceToolAction->setStatusTip(tr("Enter Dispence mode"));
+		QMainWindow::connect(m_pDispenceToolAction, SIGNAL(triggered()), this, SLOT(DispenceActionTriggered()));
 
-		this->m_ui.m_pModeToolBar->addAction(this->m_pPickNPlaceTool);
-		this->m_ui.m_pModeToolBar->addAction(this->m_pDispenceTool);
+		// Create an action group so that only one mode can be active at any given time.
+		this->m_pModesActionGroup = new QActionGroup(this);
+		this->m_pModesActionGroup->addAction(this->m_pPickNPlaceToolAction);
+		this->m_pModesActionGroup->addAction(this->m_pDispenceToolAction);
+		this->m_pPickNPlaceToolAction->setChecked(true);
+
+		this->m_ui.m_pModeToolBar->addAction(this->m_pPickNPlaceToolAction);
+		this->m_ui.m_pModeToolBar->addAction(this->m_pDispenceToolAction);
 
 		//
 		// Tools toolbar.
 		//
-		this->m_pZoomTool = new QAction(QIcon("images/zoom_icon.png"), tr("&Zoom"), this);
-		this->m_pZoomTool->setCheckable(true);
-		this->m_pZoomTool->setShortcut(tr("Ctrl+Z"));
-		this->m_pZoomTool->setStatusTip(tr("Show the zoomed in camera view for fine positioning"));
-		// TODO : Connect action to a slot.
+		this->m_pZoomToolAction = new QAction(QIcon("images/zoom_icon.png"), tr("&Zoom"), this);
+		this->m_pZoomToolAction->setCheckable(true);
+		this->m_pZoomToolAction->setShortcut(tr("Ctrl+Z"));
+		this->m_pZoomToolAction->setStatusTip(tr("Show the zoomed in camera view for fine positioning"));
+		QMainWindow::connect(m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
 
-		this->m_pShowPolygonTool = new QAction(QIcon("images/showpoly_icon.png"), tr("&Show polygons"), this);
-		this->m_pShowPolygonTool->setCheckable(true);
-		this->m_pShowPolygonTool->setShortcut(tr("Ctrl+S"));
-		this->m_pShowPolygonTool->setStatusTip(tr("Shows polygons on the camera image"));
-		// TODO : Connect action to a slot.
+		this->m_pShowPolygonToolAction = new QAction(QIcon("images/showpoly_icon.png"), tr("&Show polygons"), this);
+		this->m_pShowPolygonToolAction->setCheckable(true);
+		this->m_pShowPolygonToolAction->setShortcut(tr("Ctrl+S"));
+		this->m_pShowPolygonToolAction->setStatusTip(tr("Shows polygons on the camera image"));
+		QMainWindow::connect(m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
 
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pZoomTool);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pShowPolygonTool);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pZoomToolAction);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pShowPolygonToolAction);
 	}
 
 	///
@@ -309,6 +319,56 @@ namespace PicknPlaceGui
 		// TODO: Handle all event types and show error dialogs and such.
 		*/
 		delete e;
+	}
+
+	///
+	/// \brief Slot for when the "Pick and Place" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	///
+	void MainWindow::PickNPlaceActionTriggered()
+	{
+		if (this->m_pPickNPlaceToolAction->isChecked())
+		{
+			// TODO: Change to Pick and place mode.
+		}
+	}
+
+	///
+	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	///
+	void MainWindow::DispenceActionTriggered()
+	{
+		if (this->m_pDispenceToolAction->isChecked())
+		{
+			// TODO: Change to Dispence mode.
+		}
+	}
+
+	///
+	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	///
+	void MainWindow::ZoomActionTriggered()
+	{
+		if (this->m_pZoomToolAction->isChecked())
+		{
+			// TODO: Turn on the zoom camera on the camera widget.
+		}
+		else
+		{
+		}
+	}
+
+	///
+	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	///
+	void MainWindow::ShowPolygonActionTriggered()
+	{
+		if (this->m_pShowPolygonToolAction->isChecked())
+		{
+			// TODO: Toggle drawing polygons on the camera widget.
+		}
+		else
+		{
+		}
 	}
 }
 
