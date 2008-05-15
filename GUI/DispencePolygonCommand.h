@@ -3,10 +3,11 @@
 
 #include "MachinePolygon.h"
 #include "MachineCommands.h"
+#include "GuiMachineCommand.h"
 
 namespace PicknPlaceGui
 {
-	class DispencePolygonCommand : public MachinePolygon
+	class DispencePolygonCommand : public MachinePolygon, public GuiMachineCommand
 	{
 	public:
 		DispencePolygonCommand(DispenceStateStruct settings);

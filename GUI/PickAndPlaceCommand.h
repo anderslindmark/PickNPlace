@@ -3,9 +3,11 @@
 
 #include "Coordinate.h"
 #include "MachineCommands.h"
+#include "GuiMachineCommand.h"
+
 namespace PicknPlaceGui
 {
-	class PickAndPlaceCommand
+	class PickAndPlaceCommand : public GuiMachineCommand
 	{
 	public:
 		/// \brief Create a new PickAndPlace command by using 3 reference points
@@ -75,7 +77,7 @@ namespace PicknPlaceGui
 		/// \brief Set place coordinates and orientation.
 		void SetPlaceCoordinate(int x, int y, float angle);
 
-		/// \brief Set palce coordinates and orientation using reference points and offset.
+		/// \brief Set place coordinates and orientation using reference points and offset.
 		void SetPlaceCoordinate(Coordinate2D placeOrientTL,
 								Coordinate2D placeOrientTR,
 								Coordinate2D placeOrientBR);
@@ -122,7 +124,7 @@ namespace PicknPlaceGui
 									Coordinate2D orientBR,
 									Coordinate2D &coordinate,
 									float &angle);
-		//Settings
+		// Settings
 		PickStateStruct m_settings;
 
 		MachineWrapperCommand *m_cmd;

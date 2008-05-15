@@ -4,10 +4,11 @@
 #include "DispencePolygonCommand.h"
 #include "MachineCommands.h"
 #include "Coordinate.h"
+#include "GuiMachineCommand.h"
 
 namespace PicknPlaceGui
 {
-	class DispenceDotCommand
+	class DispenceDotCommand : public GuiMachineCommand
 	{
 	public:
 		DispenceDotCommand(int x, int y, DispenceStateStruct settings);
