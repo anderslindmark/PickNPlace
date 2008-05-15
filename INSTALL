@@ -21,6 +21,9 @@ To compile you'll need to follow these steps:
    c. Under "System variables" click "New"
    d. Variable name: QTDIR
    e. Variable value: c:\qt-win-opensource-src-4.3.3
+   f. Also add C:\qt-win-opensource-src-4.3.3\bin to the end of your PATH-variable
+      (this is so that the QT dll's will be found by your program when running it without having
+      to copy them to your build directory).
    
 5. a. Start -> Programs -> Microsoft Visual Studio 2008 -> Visual Studio Tools -> Visual Studio 2008 Command prompt
    b. cd %QTDIR%
