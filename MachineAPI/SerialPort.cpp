@@ -18,6 +18,7 @@ using namespace std;
 
 SerialPort::SerialPort(string portName)
 {
+	m_port = NULL;
 	m_portName = portName;
 }
 
