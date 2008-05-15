@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>Images/dispence_icon.png</file>
+        <file>Images/moon.png</file>
+        <file>Images/pnp_icon.png</file>
+        <file>Images/showpoly_icon.png</file>
+        <file>Images/sun.png</file>
+        <file>Images/zoom_icon.png</file>
+    </qresource>
+</RCC>

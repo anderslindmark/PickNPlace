@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "CameraListener.h"
 #include "CameraException.h"
+#include "GuiMachineCommand.h"
 
 namespace PicknPlaceGui
 {
@@ -69,6 +70,8 @@ namespace PicknPlaceGui
 		MachineController *m_pMC;				    ///< Machine controler.
 
 		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispence.
+
+		QList<GuiMachineCommand> m_commands;		///< The list of machine commands that are to be run.
 
 		// Modes toolbar actions.
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
