@@ -25,7 +25,8 @@ SerialPort::~SerialPort(void)
 {
 }
 
-bool SerialPort::Initialize() {
+bool SerialPort::Initialize() 
+{
 	string portName = "//./" + m_portName;
 
 	m_port = CreateFile(m_portName.c_str(),
@@ -35,7 +36,7 @@ bool SerialPort::Initialize() {
 						  OPEN_EXISTING,
 						  0,
 						  NULL);
-	if(m_port==INVALID_HANDLE_VALUE)
+	if(m_port == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -50,7 +51,7 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 {
 	SecureZeroMemory(&m_dcb, sizeof(DCB));
     m_dcb.DCBlength = sizeof(DCB);
-	if((m_bPortReady = GetCommState(m_port, &m_dcb))==0)
+	if((m_bPortReady = GetCommState(m_port, &m_dcb)) == 0)
 	{
 		CloseHandle(m_port);
 		return false;
@@ -66,20 +67,20 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 	m_dcb.fInX = false;
 	m_dcb.fOutX = false;
 
-	m_dcb.fDtrControl=DTR_CONTROL_ENABLE;
-	m_dcb.fRtsControl=RTS_CONTROL_ENABLE;
-	m_dcb.fDsrSensitivity=false;
+	m_dcb.fDtrControl = DTR_CONTROL_ENABLE;
+	m_dcb.fRtsControl = RTS_CONTROL_ENABLE;
+	m_dcb.fDsrSensitivity = false;
 
-	m_dcb.fBinary=true;
-	m_dcb.fDsrSensitivity=false;
-	m_dcb.fParity=true;
+	m_dcb.fBinary = true;
+	m_dcb.fDsrSensitivity = false;
+	m_dcb.fParity = true;
 
-	m_dcb.fNull=false;
-	m_dcb.fAbortOnError=TRUE;
-	m_dcb.fOutxCtsFlow=FALSE;
-	m_dcb.fOutxDsrFlow=false;
-	m_dcb.fOutxCtsFlow=false;
-	m_dcb.fOutxCtsFlow=false;
+	m_dcb.fNull = false;
+	m_dcb.fAbortOnError = true;
+	m_dcb.fOutxCtsFlow = false;
+	m_dcb.fOutxDsrFlow = false;
+	m_dcb.fOutxCtsFlow = false;
+	m_dcb.fOutxCtsFlow = false;
 	m_dcb.XonLim = 80;
 	m_dcb.XoffLim = 80;
 
@@ -91,6 +92,7 @@ bool SerialPort::ConfigurePort() //DWORD BaudRate, BYTE ByteSize,
 	}
 	return true;
 }
+
 // SetCommunicationTimeouts(0, 2, 5000, 2, 5000);
 bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 										  DWORD ReadTotalTimeoutMultiplier,
@@ -103,21 +105,20 @@ bool SerialPort::SetCommunicationTimeouts(DWORD ReadIntervalTimeout,
 		return false;
 	}
 
-	m_CommTimeouts.ReadIntervalTimeout =ReadIntervalTimeout;
-	m_CommTimeouts.ReadTotalTimeoutConstant =ReadTotalTimeoutConstant;
-	m_CommTimeouts.ReadTotalTimeoutMultiplier
-		=ReadTotalTimeoutMultiplier;
-	m_CommTimeouts.WriteTotalTimeoutConstant
-		= WriteTotalTimeoutConstant;
-	m_CommTimeouts.WriteTotalTimeoutMultiplier
-		=WriteTotalTimeoutMultiplier;
+	m_CommTimeouts.ReadIntervalTimeout			= ReadIntervalTimeout;
+	m_CommTimeouts.ReadTotalTimeoutConstant		= ReadTotalTimeoutConstant;
+	m_CommTimeouts.ReadTotalTimeoutMultiplier	= ReadTotalTimeoutMultiplier;
+	m_CommTimeouts.WriteTotalTimeoutConstant	= WriteTotalTimeoutConstant;
+	m_CommTimeouts.WriteTotalTimeoutMultiplier	= WriteTotalTimeoutMultiplier;
+	
 	m_bPortReady = SetCommTimeouts (m_port, &m_CommTimeouts);
 
-	if(m_bPortReady ==0)
+	if(m_bPortReady == 0)
 	{
 		CloseHandle(m_port);
 		return false;
 	}
+
 	return true;
 }
 
@@ -127,7 +128,6 @@ bool SerialPort::WriteByte(BYTE bybyte)
 	if(WriteFile(m_port,&bybyte,1,&iBytesWritten,NULL)==0)
 	{
 		throw MachineEvent(EVENT_SERIAL_WRITEERROR, "Serial port write error!");
-		//return false;
 	}
 	else 
 	{
@@ -163,8 +163,8 @@ bool SerialPort::ReadByte(BYTE &resp)
 			return true;
 		}
 	}
+
 	throw MachineEvent(EVENT_SERIAL_READERROR, "Serial port read error!");
-	//return false;
 }
 
 bool SerialPort::ReadLine(char *sin, int bufsize)
@@ -177,9 +177,11 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 	if (!sin)
 		return false;
 
-	while (prev != 13 && cur != 10) 
+	while (prev != '\n' && cur != '\r') 
 	{
 		prev = cur;
+
+		// TODO: This will never return false, it throws a MachineEvent exception instead.
 		if (!ReadByte(cur)) 
 		{
 			return false;
@@ -194,6 +196,11 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 
 void SerialPort::ClosePort()
 {
-	CloseHandle(m_port);
+	if (m_port)
+	{
+		CloseHandle(m_port);
+		m_port = NULL;
+	}
 	return;
 }
+
