@@ -15,8 +15,10 @@
 
 namespace PicknPlaceGui
 {
+	///
 	/// \enum GuiMode
 	/// \brief The different modes the GUI can be in.
+	///
 	enum GuiMode
 	{
 		PickNPlaceMode,	///< Pick and place mode.
@@ -48,13 +50,25 @@ namespace PicknPlaceGui
 		void ShowPolygonActionTriggered();
 		void ZoomActionTriggered();
 
+		void BrightnessSliderChanged(int value);
+		void ZLockButtonToggled(bool toggled);
+
+		void XValueChanged(int value);
+		void YValueChanged(int value);
+		void ZValueChanged(int value);
+		
+		void CommandListItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
 	private:
 		void ConnectSlots();
 		void InitCameraManager();
+		void InitMachineController();
 		void CreateToolbarButtons();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
+
+		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispence.
 
 		// Modes toolbar actions.
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.

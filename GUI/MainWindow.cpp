@@ -28,21 +28,43 @@ namespace PicknPlaceGui
 	
 		this->ConnectSlots();
 
-		// Make sure something is selected in the command list.
-		//this->m_ui.m_pCommandsListWidget->setCurrentRow(0);
-		
 		this->InitCameraManager();
 		this->CreateToolbarButtons();
+		this->InitMachineController();
 	}
 
-	void MainWindow::InitCameraManager()
+	///
+	/// \brief Initializes the Machine Controller and runs the machines init sequence.
+	///
+	void MainWindow::InitMachineController()
 	{
-		/*
+		// TODO: Add a checkbox "don't show this warning again" and save the state in the config file.
+		int ret = QMessageBox::warning(this, tr("Pick and Place"),
+                           tr("The Pick and Place machine is about to run its initialization sequence"
+								"\nplease make sure nothing is in its way."),
+							  QMessageBox::Ok | QMessageBox::Cancel,
+							  QMessageBox::Ok);
+
+		if (ret == QMessageBox::Cancel)
+		{
+			// TODO: Abort and shutdown.
+			return;
+		}
+
 		// Create the machine controller and associate a callback function with it.
 		this->m_pMC = new MachineController("com1"); // TODO: Let the user choose com port.
 		this->m_pMC->AddEventHandler(&on_machine_event);
 		
-		
+		// Init the machine controller.
+		if (!this->m_pMC->InitializeMachine())
+		{
+			// TODO: Fail and exit if the machine controler cannot be initialized?
+		}
+	}
+
+	void MainWindow::InitCameraManager()
+	{
+		/*		
 		camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 		camera::DummyDriver *dd = new camera::DummyDriver();
 		dd->setImageSize(400, 400);
@@ -64,7 +86,7 @@ namespace PicknPlaceGui
 
 	///
 	/// \brief Creates the buttons for the toolbars and connects them to their slots. 
-	/// (This is only done here because the QT Designer doesn't allow you to do it in the GUI).
+	/// (This is only done here because the QT Designer doesn't allow you to do this in the GUI.
 	///
 	void MainWindow::CreateToolbarButtons()
 	{
@@ -116,34 +138,18 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ConnectSlots()
 	{
-		/*
-		// Connect the currently selected list item to what arguments are shown.
-		QMainWindow::connect(
-				this->m_ui.m_pCommandsListWidget, 
-				SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
-				this, 
-				SLOT(SetArgumentWidget(QListWidgetItem *, QListWidgetItem *)));
 
-		// Angle spin box changed.
-		QMainWindow::connect(
-				this->m_ui.m_pAngleSpinBox,
-				SIGNAL(valueChanged(int)),
-				this,
-				SLOT(CheckIfExecutable(int)));
+		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(valueChanged(int)), this, SLOT(BrightnessSliderChanged(int)));
 
-		// Position spin box changed.
-		QMainWindow::connect(
-				this->m_ui.m_pPositionSpinBox,
-				SIGNAL(valueChanged(int)),
-				this,
-				SLOT(CheckIfExecutable(int)));
+		QMainWindow::connect(this->m_ui.m_pLockZPushButton, SIGNAL(toggled(bool)), this, SLOT(ZLockButtonToggled(bool)));
 
-		QMainWindow::connect(
-				this->m_ui.m_pExecuteButton,
-				SIGNAL(clicked()),
-				this,
-				SLOT(ExecuteCommand()));
-		*/
+		QMainWindow::connect(this->m_ui.m_pXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(XValueChanged(int)));
+		QMainWindow::connect(this->m_ui.m_pYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(YValueChanged(int)));
+		QMainWindow::connect(this->m_ui.m_pZSpinBox, SIGNAL(valueChanged(int)), this, SLOT(ZValueChanged(int)));
+		
+		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
+
 	}
 
 	///
@@ -301,23 +307,35 @@ namespace PicknPlaceGui
 			MachineRotateAbsoluteCommand mc(radians);
 			this->m_pMC->RunCommand(mc);
 		}
-	}
-	*/
+	}*/
 
 	///
 	/// \brief Callback function for any MachineController events.
 	///
-	void MainWindow::OnMachineEvent(MachineEvent *e)
+	void MainWindow::OnMachineEvent(MachineEvent *e) // TODO: This should not be passed as a pointer, but by value, so that we don't have to care about deleting this here!
 	{
 		MachineEventType type = e->GetEventType();
-		/*
-		if ((type == EVENT_CMD_DONE) || (type == EVENT_MACHINE_INITIALIZED))
+
+		if (type == EVENT_MACHINE_INITIALIZED)
 		{
-			this->m_ui.m_pExecuteButton->setEnabled(true);
+			// TODO: Do something here?
+			mainwindow->statusBar()->showMessage("Machine initialized successfully");
+		}
+		else if (type == EVENT_CMD_DONE)
+		{
+		}
+		else if (type == EVENT_CMD_FAILED)
+		{
+		}
+		else if (type == EVENT_CMD_ILLEGAL)
+		{
+		}
+		else if (type == EVENT_CMD_OUT_OF_BOUNDS)
+		{
 		}
 		
 		// TODO: Handle all event types and show error dialogs and such.
-		*/
+
 		delete e;
 	}
 
@@ -329,6 +347,7 @@ namespace PicknPlaceGui
 		if (this->m_pPickNPlaceToolAction->isChecked())
 		{
 			// TODO: Change to Pick and place mode.
+			this->m_guimode = GuiMode::PickNPlaceMode;
 		}
 	}
 
@@ -340,11 +359,12 @@ namespace PicknPlaceGui
 		if (this->m_pDispenceToolAction->isChecked())
 		{
 			// TODO: Change to Dispence mode.
+			this->m_guimode = GuiMode::DispenceMode;
 		}
 	}
 
 	///
-	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	/// \brief Slot for when the "Zoom" action is triggered.
 	///
 	void MainWindow::ZoomActionTriggered()
 	{
@@ -356,20 +376,74 @@ namespace PicknPlaceGui
 		{
 		}
 	}
-
+	
 	///
-	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	/// \brief Slot for when the "Show polygon" action is triggered.
 	///
 	void MainWindow::ShowPolygonActionTriggered()
 	{
 		if (this->m_pShowPolygonToolAction->isChecked())
 		{
 			// TODO: Toggle drawing polygons on the camera widget.
+
 		}
 		else
 		{
 		}
 	}
+
+	///
+	/// \brief Slot for when the brightness slider changes.
+	///
+	void MainWindow::BrightnessSliderChanged(int value)
+	{
+		// TODO: Set the brightness for the machine.
+		this->m_ui.m_pYSpinBox->setValue(value);
+	}
+
+	///
+	/// \brief The Z lock button was toggled.
+	///
+	void MainWindow::ZLockButtonToggled(bool toggled)
+	{
+		// Toggle the Z spinbox and slider (If the button is pressed they should be locked).
+		this->m_ui.m_pZSpinBox->setEnabled(!toggled);
+		this->m_ui.m_pZVerticalSlider->setEnabled(!toggled);
+	}
+
+	///
+	/// \brief The Z value changed in the GUI.
+	///
+	void MainWindow::ZValueChanged(int value)
+	{
+		// TODO: Change the Z-Level for the machine head.
+	}
+
+	///
+	/// \brief The Y value changed in the GUI.
+	///
+	void MainWindow::YValueChanged(int value)
+	{
+		// TODO: Change the Y-value for the machine head.
+	}
+
+	///
+	/// \brief The X value changed in the GUI.
+	///
+	void MainWindow::XValueChanged(int value)
+	{
+		// TODO: Change the X-value for the machine head.
+	}
+
+	///
+	/// \brief Slot for when a new item in the command list is selected.
+	///
+	void MainWindow::CommandListItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+	{
+		this->m_ui.m_pRemoveCommandButton->setEnabled(current != NULL);		
+	}
+
+	// TODO: Add an event for when the camera widget has been clicked.
 }
 
 
