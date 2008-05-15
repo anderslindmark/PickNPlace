@@ -198,6 +198,7 @@ void SerialPort::ClosePort()
 {
 	if (m_port)
 	{
+		// TODO: Crashes here on program exit sometimes.
 		CloseHandle(m_port);
 		m_port = NULL;
 	}
