@@ -297,6 +297,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GuiMachineCommand.h"
+				>
+			</File>
+			<File
 				RelativePath="MainWindow.h"
 				>
 				<FileConfiguration
@@ -382,8 +386,41 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\qrc_pnp.cpp"
+				>
+			</File>
+			<File
 				RelativePath="ui_MainWindow.h"
 				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc"
+			>
+			<File
+				RelativePath=".\pnp.qrc"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Compiling QT Resources..."
+						CommandLine="$(QTDIR)\bin\rcc.exe -o qrc_pnp.cpp"
+						Outputs=".\qrc_pnp.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Compiling QT Resources..."
+						CommandLine="$(QTDIR)\bin\rcc.exe -o qrc_pnp.cpp pnp.qrc"
+						Outputs=".\qrc_pnp.cpp"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>
