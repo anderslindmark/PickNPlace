@@ -2,6 +2,7 @@
 
 #include "MainWindow.h"	// GUI.
 #include <QString>		// Qt.
+#include <QMessageBox>
 
 PicknPlaceGui::MainWindow *mainwindow;
 
@@ -25,6 +26,8 @@ namespace PicknPlaceGui
 
 		// Runs the generated code that setups the initial UI.
 		this->m_ui.setupUi(this);
+
+		this->m_ui.m_pInformationFrame->setVisible(false);
 	
 		this->ConnectSlots();
 
@@ -125,14 +128,94 @@ namespace PicknPlaceGui
 		this->m_pZoomToolAction->setStatusTip(tr("Show the zoomed in camera view for fine positioning"));
 		QMainWindow::connect(m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
 
-		this->m_pShowPolygonToolAction = new QAction(QIcon(":/Images/showpoly_icon.png"), tr("&Show polygons"), this);
+		this->m_pShowPolygonToolAction = new QAction(QIcon(":/Images/showpoly_icon.png"), tr("Show &Polygons"), this);
 		this->m_pShowPolygonToolAction->setCheckable(true);
-		this->m_pShowPolygonToolAction->setShortcut(tr("Ctrl+S"));
+		this->m_pShowPolygonToolAction->setShortcut(tr("Ctrl+P"));
 		this->m_pShowPolygonToolAction->setStatusTip(tr("Shows polygons on the camera image"));
 		QMainWindow::connect(m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
 
 		this->m_ui.m_pToolsToolBar->addAction(this->m_pZoomToolAction);
 		this->m_ui.m_pToolsToolBar->addAction(this->m_pShowPolygonToolAction);
+		this->m_ui.m_pToolsToolBar->addSeparator();
+
+		// Interaction tools.
+		this->m_pMoveToolAction = new QAction(QIcon(":/Images/move_icon.png"), tr("Move"), this);
+		this->m_pMoveToolAction->setCheckable(true);
+		
+		this->m_pDispenseDotToolAction = new QAction(QIcon(":/Images/dispensedot_icon.png"), tr("Dispense dot"), this);
+		this->m_pDispenseDotToolAction->setCheckable(true);
+		this->m_pDispenseDotToolAction->setVisible(false);
+		this->m_pDispensePolygonToolAction = new QAction(QIcon(":/Images/dispensepoly_icon.png"), tr("Dispense polygon"), this);
+		this->m_pDispensePolygonToolAction->setCheckable(true);
+		this->m_pDispensePolygonToolAction->setVisible(false);
+		
+		this->m_pPickToolAction = new QAction(QIcon(":/Images/pick_icon.png"), tr("Pick"), this);
+		this->m_pPickToolAction->setCheckable(true);
+		this->m_pPlaceToolAction = new QAction(QIcon(":/Images/place_icon.png"), tr("Place"), this);
+		this->m_pPlaceToolAction->setCheckable(true);
+
+		this->m_pInteractionActionGroup = new QActionGroup(this);
+		this->m_pInteractionActionGroup->addAction(this->m_pMoveToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_pDispenseDotToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_pDispensePolygonToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_pPickToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_pPlaceToolAction);
+
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pMoveToolAction);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pDispenseDotToolAction);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pDispensePolygonToolAction);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pPickToolAction);
+		this->m_ui.m_pToolsToolBar->addAction(this->m_pPlaceToolAction);
+
+	}
+
+	void MainWindow::ToggleInteractionTools()
+	{
+		bool pnp = (this->m_guimode == PickNPlaceMode);
+	
+		this->m_pPickToolAction->setVisible(pnp);
+		this->m_pPlaceToolAction->setVisible(pnp);
+
+		this->m_pDispensePolygonToolAction->setVisible(!pnp);
+		this->m_pDispenseDotToolAction->setVisible(!pnp);
+	}
+
+	void MainWindow::ShowInformation(QString message, QMessageBox::Icon icon)
+	{
+		this->m_ui.m_pInformationFrame->setVisible(true);
+
+		//int iconSize = QApplication::style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
+		
+		// Get the icon pixmap.
+		QIcon tmpIcon;
+		switch (icon) 
+		{
+			case QMessageBox::Icon::Information:
+				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation);
+				break;
+			case QMessageBox::Icon::Warning:
+				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning);
+				break;
+			case QMessageBox::Icon::Critical:
+				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxCritical);
+				break;
+			case QMessageBox::Icon::Question:
+				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxQuestion);
+			default:
+				break;
+		}
+		
+		if (!tmpIcon.isNull())
+		{
+			this->m_ui.m_pInformationIconLabel->setPixmap(tmpIcon.pixmap(16, 16));
+		}
+		else
+		{
+			this->m_ui.m_pInformationIconLabel->setPixmap(NULL);
+		}
+
+		// Set the information message.
+		this->m_ui.m_pInformationLabel->setText(message);
 	}
 
 	///
@@ -140,6 +223,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ConnectSlots()
 	{
+		QMainWindow::connect(this->m_ui.m_pCloseInformationButton, SIGNAL(pressed()), this, SLOT(CloseInformationBar()));
 
 		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(valueChanged(int)), this, SLOT(BrightnessSliderChanged(int)));
 
@@ -164,152 +248,6 @@ namespace PicknPlaceGui
 			delete this->m_pMC;
 		}
 	}
-
-	/*
-	///
-	/// \brief	Slot for when the selected item in the command listwidget changes.
-	///			Changes the current argument controls to show based on the selected command.
-	///
-	/// \param	newCommandItem	The new command item selected from the command list widget.
-	/// \param	oldItem			The previous command item that was selected.
-	///
-	void MainWindow::SetArgumentWidget(QListWidgetItem *newCommandItem, QListWidgetItem *oldItem)
-	{
-		QString txt = newCommandItem->text();
-
-		// Check for which command we should enable the execute button.
-		if (!this->m_pMC->IsBusy() && ((txt == "Initialize") || this->m_pMC->IsInitialized()))
-		{
-			m_ui.m_pExecuteButton->setEnabled(true);
-		}
-		else
-		{
-			m_ui.m_pExecuteButton->setEnabled(false);
-		}
-
-		// Find out which item in the list is selected and activate the associated
-		// argument controls and set the description for the command.
-		if ((txt == "Initialize") || (txt == "Park"))
-		{
-			m_ui.m_pArgumentsStackedWidget->setCurrentWidget(m_ui.m_pNoArgsPage);
-			
-			if (txt == "Initialize")
-			{
-				m_ui.m_pDescriptionLabel->setText("Initializes the Pick n Place machine and makes sure the picker is in the correct starting position.");
-			}
-			else
-			{
-				m_ui.m_pDescriptionLabel->setText("Parks the picker head.");
-			}
-		}
-		else if (txt.startsWith("Rotate"))
-		{
-			m_ui.m_pArgumentsStackedWidget->setCurrentWidget(m_ui.m_pAnglePage);
-
-			if (txt.endsWith("relative", Qt::CaseInsensitive))
-			{
-				m_ui.m_pDescriptionLabel->setText("Rotate the picker relative to its current state.");
-			}
-			else
-			{
-				m_ui.m_pDescriptionLabel->setText("Rotate the picker to an absolute angle.");
-			}
-		}
-		else if (txt.startsWith("Position"))
-		{
-			m_ui.m_pArgumentsStackedWidget->setCurrentWidget(m_ui.m_pPositionPage);
-
-			if (txt.endsWith("relative", Qt::CaseInsensitive))
-			{
-				m_ui.m_pDescriptionLabel->setText("Position the picker relative to its current state.");
-				m_ui.m_pPositionSpinBox->setMinimum(-400000);
-			}
-			else
-			{
-				m_ui.m_pDescriptionLabel->setText("Place the picker at an absolute position.");
-				m_ui.m_pPositionSpinBox->setMinimum(0);
-			}
-		}
-	}
-
-	///
-	/// \brief Decides if the execute button should be enabled or not based on the current command and arguments.
-	///
-	void MainWindow::CheckIfExecutable(int notused)
-	{
-		QListWidgetItem *currentItem = this->m_ui.m_pCommandsListWidget->currentItem();
-		QString txt = currentItem->text();
-		bool executable = false;
-
-		if (txt.startsWith("Rotate"))
-		{
-			// Only enable the execute button if an angle has been specified.
-			executable = (this->m_ui.m_pAngleSpinBox->value() > 0);
-		}
-		else if (txt.startsWith("Position"))
-		{
-			executable = (this->m_ui.m_pPositionSpinBox->value() > 0);
-		}
-
-		// Only enable the execute button if the machine controller is initialized.
-		executable = executable && this->m_pMC->IsInitialized() && !this->m_pMC->IsBusy();
-
-		this->m_ui.m_pExecuteButton->setEnabled(executable);
-	}
-
-	///
-	/// \brief Slot that connects to the signal for clicking the Execute command button.
-	///
-	void MainWindow::ExecuteCommand(void)
-	{
-		QListWidgetItem *currentItem = this->m_ui.m_pCommandsListWidget->currentItem();
-		QString txt = currentItem->text();
-
-		if (txt == "Initialize")
-		{
-			this->m_pMC->InitializeMachine();
-		}
-		else if (txt == "Park")
-		{
-			// TODO: Run park command.
-		}
-		else if (txt.startsWith("Position"))
-
-		{
-			Axis axis = AXIS_X;
-
-			if (this->m_ui.m_pAxisComboBox->currentText() == "X")
-			{
-				axis = AXIS_X;
-			}
-			else if (this->m_ui.m_pAxisComboBox->currentText() == "Y")
-			{
-				axis = AXIS_Y;
-			}
-			else if (this->m_ui.m_pAxisComboBox->currentText() == "Z")
-			{
-				axis = AXIS_Z;
-			}
-
-			if (txt.endsWith("absolute"))
-			{
-				MachineMoveAbsoluteCommand mc(axis, this->m_ui.m_pPositionSpinBox->value());
-				this->m_pMC->RunCommand(mc);
-			}
-			else
-			{
-				// TODO: Run relative position command.
-			}
-		}
-		else if (txt == "Rotate absolute")
-		{
-			int degrees = this->m_ui.m_pAngleSpinBox->value() * (this->m_ui.m_pLeftRotateRadioButton->isChecked() ? -1 : 1);
-			float radians = (float)(degrees * (M_PI / 180.0f));
-
-			MachineRotateAbsoluteCommand mc(radians);
-			this->m_pMC->RunCommand(mc);
-		}
-	}*/
 
 	///
 	/// \brief Callback function for any MachineController events.
@@ -356,7 +294,8 @@ namespace PicknPlaceGui
 		if (this->m_pPickNPlaceToolAction->isChecked())
 		{
 			// TODO: Change to Pick and place mode.
-			this->m_guimode = GuiMode::PickNPlaceMode;
+			this->m_guimode = PickNPlaceMode;
+			this->ToggleInteractionTools();
 		}
 	}
 
@@ -368,7 +307,8 @@ namespace PicknPlaceGui
 		if (this->m_pDispenceToolAction->isChecked())
 		{
 			// TODO: Change to Dispence mode.
-			this->m_guimode = GuiMode::DispenceMode;
+			this->m_guimode = DispenceMode;
+			this->ToggleInteractionTools();
 		}
 	}
 
@@ -434,6 +374,7 @@ namespace PicknPlaceGui
 	void MainWindow::YValueChanged(int value)
 	{
 		// TODO: Change the Y-value for the machine head.
+		this->ShowInformation(tr("Hello!"), QMessageBox::Icon::Warning);
 	}
 
 	///
@@ -453,6 +394,14 @@ namespace PicknPlaceGui
 	}
 
 	// TODO: Add an event for when the camera widget has been clicked.
+
+	///
+	/// \brief Slot for when the close button on the information bar is pressed. Closes the information bar.
+	///
+	void MainWindow::CloseInformationBar()
+	{
+		this->m_ui.m_pInformationFrame->setVisible(false);
+	}
 }
 
 

@@ -1,7 +1,13 @@
 <RCC>
     <qresource prefix="/" >
+        <file>Images/cross_icon.png</file>
         <file>Images/dispence_icon.png</file>
+        <file>Images/dispensedot_icon.png</file>
+        <file>Images/dispensepoly_icon.png</file>
         <file>Images/moon.png</file>
+        <file>Images/move_icon.png</file>
+        <file>Images/pick_icon.png</file>
+        <file>Images/place_icon.png</file>
         <file>Images/pnp_icon.png</file>
         <file>Images/showpoly_icon.png</file>
         <file>Images/sun.png</file>
