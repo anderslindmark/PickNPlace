@@ -1,0 +1,26 @@
+<settings>
+ <machinecontroller>
+  <pnp:pickandplace>
+   <pnp:offsetX>11001</pnp:offsetX>
+   <pnp:offsetY>1</pnp:offsetY>
+   <pnp:headHeight>43000</pnp:headHeight>
+   <pnp:pickHeight>2</pnp:pickHeight>
+   <pnp:placeHeight>3</pnp:placeHeight>
+   <pnp:afterPickTime>4</pnp:afterPickTime>
+   <pnp:pickPressDownTime>5</pnp:pickPressDownTime>
+   <pnp:placePressDownTime>6</pnp:placePressDownTime>
+   <pnp:afterPlaceTime>7</pnp:afterPlaceTime>
+  </pnp:pickandplace>
+  <d:dispence>
+   <d:offsetX>9</d:offsetX>
+   <d:offsetY>8</d:offsetY>
+   <d:offsetZ>10</d:offsetZ>
+   <d:offsetZs>11</d:offsetZs>
+   <d:offsetTurn>12</d:offsetTurn>
+   <d:speed>13</d:speed>
+   <d:beforeTime>14</d:beforeTime>
+   <d:afterTime>15</d:afterTime>
+   <d:suckBackTime>16</d:suckBackTime>
+  </d:dispence>
+ </machinecontroller>
+</settings>
