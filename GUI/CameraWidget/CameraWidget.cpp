@@ -100,6 +100,10 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 	//barrelCorrection->setOutputSize(event->size().width(), event->size().height());
 }
 
+///
+/// \brief Sets which camera source to use when displaying a picture in the camera widget.
+/// TODO: Document the parameters properly here.
+///
 void CameraWidget::setCamera(const std::string &driverIdentifier, const std::string &cameraIdentifier)
 {
 	if(m_camera != NULL)
@@ -113,9 +117,14 @@ void CameraWidget::setCamera(const std::string &driverIdentifier, const std::str
 	m_camera->setListener(this);
 }
 
+///
+/// \brief Sets the image correction parameters used to get rid of the barrel distortion.
+/// TODO: Explain more how to obtain these coordinates.
+///
 void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8])
 {
-	if(m_barrelCorrection != NULL) {
+	if(m_barrelCorrection != NULL)
+	{
 		m_barrelCorrection->setDistortedCoordinates(distortedX, distortedY);
 	}
 	else
@@ -125,21 +134,27 @@ void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsi
 	}
 }
 
+///
+/// \brief TODO: Document this properly :D
+///
 void CameraWidget::setCoordinateMapping(int leftOffset, float leftZDiff, 
-						  int rightOffset, float rightZDiff, 					  
-						  int topOffset, float topZDiff, 
-						  int bottomOffset, float bottomZDiff)
+									  int rightOffset, float rightZDiff, 					  
+									  int topOffset, float topZDiff, 
+									  int bottomOffset, float bottomZDiff)
 {
-	m_leftOffset = leftOffset;
-	m_leftZDiff = leftZDiff;
-	m_rightOffset = rightOffset;
-	m_rightZDiff = rightZDiff;
-	m_topOffset = topOffset;
-	m_topZDiff = topZDiff;
-	m_bottomOffset = bottomOffset;
-	m_bottomZDiff = bottomZDiff;
+	m_leftOffset	= leftOffset;
+	m_leftZDiff		= leftZDiff;
+	m_rightOffset	= rightOffset;
+	m_rightZDiff	= rightZDiff;
+	m_topOffset		= topOffset;
+	m_topZDiff		= topZDiff;
+	m_bottomOffset	= bottomOffset;
+	m_bottomZDiff	= bottomZDiff;
 }
 
+///
+/// \brief Set the machine coordinates the machine head currently is at.
+///
 void CameraWidget::setMachineCoordinates(int x, int y, int z)
 {
 	m_machineX = x;
@@ -147,14 +162,20 @@ void CameraWidget::setMachineCoordinates(int x, int y, int z)
 	m_machineZ = z;
 }
 
+///
+/// \brief Returns the visible region shown in the camera view of the machines work table.
+///
 void CameraWidget::getVisibleRegion(int &left, int &right, int &top, int &bottom)
 {
-	left = m_machineX + m_leftOffset + (m_machineZ * m_leftZDiff);
-	right = m_machineX + m_rightOffset + (m_machineZ * m_rightZDiff);
-	top = m_machineY + m_topOffset + (m_machineZ * m_topZDiff);
-	bottom = m_machineY + m_bottomOffset + (m_machineZ * m_bottomZDiff);
+	left	= m_machineX + m_leftOffset		+ (m_machineZ * m_leftZDiff);
+	right	= m_machineX + m_rightOffset	+ (m_machineZ * m_rightZDiff);
+	top		= m_machineY + m_topOffset		+ (m_machineZ * m_topZDiff);
+	bottom	= m_machineY + m_bottomOffset	+ (m_machineZ * m_bottomZDiff);
 }
 
+///
+/// \brief Start receiving images from the camera.
+///
 void CameraWidget::start()
 {
 	if(m_camera != NULL)
@@ -163,6 +184,9 @@ void CameraWidget::start()
 	}
 }
 
+///
+/// \brief Stop receiving images from the camera.
+///
 void CameraWidget::stop()
 {
 	if(m_camera != NULL)
@@ -171,18 +195,30 @@ void CameraWidget::stop()
 	}
 }
 
+///
+/// \brief Sets if machine commands should be drawn or not.
+///
 void CameraWidget::setDrawCommands(bool enabled)
 {
 }
 
+///
+/// \brief Sets if machine head position coordinates will be drawn when moving the mouse over the camera widget.
+///
 void CameraWidget::setDrawHeadPosition(bool enabled)
 {
 }
 
+///
+/// \brief TODO: Document this.
+///
 void CameraWidget::setDrawEdges(bool enabled)
 {
 }
 
+///
+/// \brief Returns the current camera image.
+///
 camera::Image *CameraWidget::getImage()
 {
 	if(m_camera != NULL)
@@ -197,4 +233,8 @@ QImage *CameraWidget::getQImage()
 {
 	return &m_image;
 }
+
+// TODO: Add a way to add points to draw... This will be used when creating new pick/place commands, so that they are drawn before the actual command has been created.
+
+
 
