@@ -27,7 +27,7 @@ namespace PicknPlaceGui
 		// Runs the generated code that setups the initial UI.
 		this->m_ui.setupUi(this);
 
-		this->m_ui.m_pInformationFrame->setVisible(false);
+		this->CloseInformationBar();
 	
 		this->ConnectSlots();
 
@@ -242,23 +242,40 @@ namespace PicknPlaceGui
 	/// \brief Destructor, cleanup of the Machine controller.
 	///
 	MainWindow::~MainWindow()
-	{
+	{		
 		if (this->m_pMC)
 		{
+			// Make sure the machine controller has done its business.
+			this->m_pMC->Wait();
 			delete this->m_pMC;
 		}
+	}
+
+	void MainWindow::closeEvent(QCloseEvent *event)
+	{
+		// TODO: Check if the user really wants to quit before closing.
+		/*
+		if () 
+		{
+			event->accept();
+		} 
+		else 
+		{
+			event->ignore();
+		}
+		*/
 	}
 
 	///
 	/// \brief Callback function for any MachineController events.
 	///
-	void MainWindow::OnMachineEvent(MachineEvent *e) // TODO: This should not be passed as a pointer, but by value, so that we don't have to care about deleting this here!
+	void MainWindow::OnMachineEvent(MachineEvent *e)
 	{
 		MachineEventType type = e->GetEventType();
+		QString EventMessage = QString(e->GetEventMsg().c_str());
 
 		if (type == EVENT_MACHINE_INITIALIZED)
 		{
-			// TODO: Do something here?
 			mainwindow->statusBar()->showMessage("Machine initialized successfully");
 		}
 		else if (type == EVENT_CMD_DONE)
@@ -266,19 +283,17 @@ namespace PicknPlaceGui
 		}
 		else if (type == EVENT_CMD_FAILED)
 		{
-			this->statusBar()->showMessage(e->GetEventMsg().c_str());
+			this->ShowInformation(EventMessage, QMessageBox::Icon::Critical);
 		}
 		else if (type == EVENT_CMD_ILLEGAL)
 		{
-			this->statusBar()->showMessage(e->GetEventMsg().c_str());
+			this->ShowInformation(EventMessage, QMessageBox::Icon::Critical);
 		}
 		else if (type == EVENT_CMD_OUT_OF_BOUNDS)
 		{
-			this->statusBar()->showMessage(e->GetEventMsg().c_str());
+			this->ShowInformation(EventMessage, QMessageBox::Icon::Warning);
 		}
 		
-		// TODO: Handle all event types and show error dialogs and such.
-
 		delete e;
 	}
 

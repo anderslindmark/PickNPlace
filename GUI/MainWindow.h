@@ -30,6 +30,9 @@ namespace PicknPlaceGui
 	{
 		Q_OBJECT
 
+	protected:
+		void closeEvent(QCloseEvent *event);
+
 	public:
 		MainWindow();
 		~MainWindow();
@@ -68,7 +71,7 @@ namespace PicknPlaceGui
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
 
-		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispence.
+		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispense.
 
 		QList<GuiMachineCommand> m_commands;		///< The list of machine commands that are to be run.
 
