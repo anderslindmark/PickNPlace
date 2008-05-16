@@ -18,19 +18,17 @@ namespace PicknPlaceGui
 	bool Settings::Read()
 	{
 		bool returnVal;
-		QFile *file = new QFile(m_file);
-		QXmlInputSource *src = new QXmlInputSource(file);
-		m_xmlReader = new QXmlSimpleReader();
-		m_xmlReader->setFeature( "http://xml.org/sax/features/namespaces",
+		QFile file(m_file);
+		QXmlInputSource src(&file);
+		QXmlSimpleReader xmlReader;
+		xmlReader.setFeature( "http://xml.org/sax/features/namespaces",
                            true );
-		m_xmlReader->setFeature( "http://xml.org/sax/features/namespace-prefixes",
+		xmlReader.setFeature( "http://xml.org/sax/features/namespace-prefixes",
                            true );
-		m_xmlReader->setContentHandler(this);
-		m_xmlReader->setErrorHandler(this);
-		returnVal = m_xmlReader->parse(src);
-		delete file;
-		delete src;
-		delete m_xmlReader;
+		xmlReader.setContentHandler(this);
+		xmlReader.setErrorHandler(this);
+		returnVal = xmlReader.parse(&src);
+
 		return returnVal;
 	}
 

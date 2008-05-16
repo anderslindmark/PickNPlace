@@ -28,7 +28,6 @@ namespace PicknPlaceGui
 
 	private:
 		QString m_file;
-		QXmlSimpleReader *m_xmlReader;
 		PickStateStruct m_pickSettings;
 		DispenceStateStruct m_dispenceSettings;
 		int *m_intEntry;
