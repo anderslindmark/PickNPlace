@@ -94,42 +94,43 @@ bool MachineController::RunCommand(MachineCommand &cmd)
 
 	//Grab mutex
 	dwWaitResult = WaitForSingleObject( 
-		m_runCmdMutex,    // handle to mutex
-		INFINITE);  // no time-out interval
+		m_runCmdMutex,		// Handle to mutex
+		INFINITE);			// No time-out interval
 
-	//Check result from mutex grab
+	// Check result from mutex grab
 	switch (dwWaitResult) 
 	{
 		// The thread got ownership of the mutex
 		case WAIT_OBJECT_0: 
-			if (!m_working) {
+			if (!m_working) 
+			{
 				m_working = true;
 				delete m_cmd;
 				m_cmd = cmd.Copy();
 				WaitForSingleObject(m_thread, INFINITE);
-				threadArg = new ThreadArg(this); //Thread argument
+				threadArg = new ThreadArg(this); // Thread argument.
 
-				//Create a new thread to handle the command
+				// Create a new thread to handle the command.
 				m_thread = CreateThread( 
-					NULL,				// default security attributes
-					0,					// use default stack size  
-					(LPTHREAD_START_ROUTINE) this->RunThread,   // thread function 
-					threadArg,			// argument to thread function 
-					0,					// use default creation flags 
-					&m_threadId);			// returns the thread identifier 
+					NULL,										// Default security attributes.
+					0,											// Use default stack size.  
+					(LPTHREAD_START_ROUTINE) this->RunThread,	// Thread function.
+					threadArg,									// Argument to thread function. 
+					0,											// Use default creation flags.
+					&m_threadId);								// Returns the thread identifier.
 				returnVal = true;
 			}
 			break;
 
-		// The thread got ownership of an abandoned mutex
+		// The thread got ownership of an abandoned mutex.
 		case WAIT_ABANDONED: 
 			returnVal = false;
 	}
 
-	//Release mutex
+	// Release mutex.
 	if (! ReleaseMutex(m_runCmdMutex)) 
 	{ 
-					// Deal with error.
+		// TODO: Deal with error.
 	} 
 	return returnVal;
 }
@@ -145,7 +146,7 @@ void MachineController::DoCommand()
 {
 	MachineEvent *validateEvent;
 
-	// Validate command
+	// Validate command.
 	if (!ValidateCommand(*m_cmd, m_currentState, validateEvent))
 	{
 		SendEvent(*validateEvent);
@@ -196,16 +197,16 @@ void MachineController::SendEvent(MachineEvent &e)
 {
 	MachineEvent *eCopy;
 
-	for( unsigned int i = 0; i < m_handlers.size(); i++ )
+	for (unsigned int i = 0; i < m_handlers.size(); i++)
 	{
 		eCopy = new MachineEvent(e);
 		CreateThread( 
-					NULL,				// default security attributes
-					0,					// use default stack size  
-					(LPTHREAD_START_ROUTINE) m_handlers[i],   // thread function 
-					eCopy,				// argument to thread function 
-					0,					// use default creation flags 
-					NULL);			// returns the thread identifier 
+					NULL,									// Default security attributes.
+					0,										// Use default stack size.
+					(LPTHREAD_START_ROUTINE) m_handlers[i],	// Thread function.
+					eCopy,									// Argument to thread function.
+					0,										// Use default creation flags.
+					NULL);									// Returns the thread identifier.
 	}
 }
 
@@ -293,3 +294,4 @@ void MachineController::SetSettings(MachineSettings settings)
 {
 	m_settings = settings;
 }
+
