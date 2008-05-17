@@ -33,6 +33,7 @@ namespace PicknPlaceGui
 
 		this->InitCameraManager();
 		this->CreateToolbarButtons();
+		this->SetGuiSubMode(Move);
 		this->InitMachineController();
 	}
 
@@ -65,6 +66,9 @@ namespace PicknPlaceGui
 		}
 	}
 
+	///
+	/// \brief Initializes the Camera Manager.
+	///
 	void MainWindow::InitCameraManager()
 	{
 		/*		
@@ -141,18 +145,24 @@ namespace PicknPlaceGui
 		// Interaction tools.
 		this->m_pMoveToolAction = new QAction(QIcon(":/Images/move_icon.png"), tr("Move"), this);
 		this->m_pMoveToolAction->setCheckable(true);
+		this->m_pMoveToolAction->setChecked(true);
+		QMainWindow::connect(m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
 		
 		this->m_pDispenseDotToolAction = new QAction(QIcon(":/Images/dispensedot_icon.png"), tr("Dispense dot"), this);
 		this->m_pDispenseDotToolAction->setCheckable(true);
 		this->m_pDispenseDotToolAction->setVisible(false);
+		QMainWindow::connect(m_pDispenseDotToolAction, SIGNAL(triggered()), this, SLOT(DispenseDotToolTriggered()));
 		this->m_pDispensePolygonToolAction = new QAction(QIcon(":/Images/dispensepoly_icon.png"), tr("Dispense polygon"), this);
 		this->m_pDispensePolygonToolAction->setCheckable(true);
 		this->m_pDispensePolygonToolAction->setVisible(false);
+		QMainWindow::connect(m_pDispensePolygonToolAction, SIGNAL(triggered()), this, SLOT(DispensePolygonToolTriggered()));
 		
 		this->m_pPickToolAction = new QAction(QIcon(":/Images/pick_icon.png"), tr("Pick"), this);
 		this->m_pPickToolAction->setCheckable(true);
+		QMainWindow::connect(m_pPickToolAction, SIGNAL(triggered()), this, SLOT(PickToolTriggered()));
 		this->m_pPlaceToolAction = new QAction(QIcon(":/Images/place_icon.png"), tr("Place"), this);
 		this->m_pPlaceToolAction->setCheckable(true);
+		QMainWindow::connect(m_pPlaceToolAction, SIGNAL(triggered()), this, SLOT(PlaceToolTriggered()));
 
 		this->m_pInteractionActionGroup = new QActionGroup(this);
 		this->m_pInteractionActionGroup->addAction(this->m_pMoveToolAction);
@@ -166,9 +176,11 @@ namespace PicknPlaceGui
 		this->m_ui.m_pToolsToolBar->addAction(this->m_pDispensePolygonToolAction);
 		this->m_ui.m_pToolsToolBar->addAction(this->m_pPickToolAction);
 		this->m_ui.m_pToolsToolBar->addAction(this->m_pPlaceToolAction);
-
 	}
 
+	///
+	/// \brief Toggles between the tools that are shown in the Tools toolbar depending on what gui mode the window is in.
+	///
 	void MainWindow::ToggleInteractionTools()
 	{
 		bool pnp = (this->m_guimode == PickNPlaceMode);
@@ -180,11 +192,66 @@ namespace PicknPlaceGui
 		this->m_pDispenseDotToolAction->setVisible(!pnp);
 	}
 
+	///
+	/// \brief Changes the GUI sub mode.
+	/// \param mode The new GUI sub mode to change to.
+	///
+	void MainWindow::SetGuiSubMode(MainWindow::GuiSubMode mode)
+	{
+		this->m_subguimode = mode;
+		this->UpdateGuiBasedOnGuiSubMode();
+	}
+
+	///
+	/// \brief Changes the GUI to be consistent with the current GUI Sub mode.
+	///
+	void MainWindow::UpdateGuiBasedOnGuiSubMode()
+	{
+		QStackedWidget *msw = this->m_ui.m_pModeStackedWidget;
+
+		switch (this->m_subguimode)
+		{
+			default:
+			case Move:
+			{
+				msw->setCurrentWidget(this->m_ui.m_pEmptyModePage);
+				this->m_ui.m_pEnqueueCommandFrame->setVisible(false);
+				break;
+			}
+			case Pick:
+			{
+				msw->setCurrentWidget(this->m_ui.m_pPickPlaceModePage);
+				break;
+			}
+			case Place:
+			{
+				msw->setCurrentWidget(this->m_ui.m_pPickPlaceModePage);
+				break;
+			}
+			case DispenseDot:
+			{
+				msw->setCurrentWidget(this->m_ui.m_pDispenseDotModePage);
+				break;
+			}
+			case DispensePolygon:
+			{
+				msw->setCurrentWidget(this->m_ui.m_pDispensePolyModePage);
+				break;
+			}
+		}
+	}
+
+	///
+	/// \brief Shows a information message in the information bar at the top of the window.
+	/// \param message The message that should be shown.
+	/// \param icon The icon to use when displaying the message, warning/information and so on. Check the QMessageBox::Icon enum for all icon types.
+	///
 	void MainWindow::ShowInformation(QString message, QMessageBox::Icon icon)
 	{
 		this->m_ui.m_pInformationFrame->setVisible(true);
 
 		//int iconSize = QApplication::style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
+		QPalette pal = QApplication::palette();
 		
 		// Get the icon pixmap.
 		QIcon tmpIcon;
@@ -192,18 +259,25 @@ namespace PicknPlaceGui
 		{
 			case QMessageBox::Icon::Information:
 				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation);
+				pal.setColor(QPalette::Window, QColor::fromRgb(0, 230, 255));
 				break;
 			case QMessageBox::Icon::Warning:
 				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning);
+				pal.setColor(QPalette::ColorRole::Window, QColor::fromRgb(255, 255, 127));
 				break;
 			case QMessageBox::Icon::Critical:
 				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxCritical);
+				pal.setColor(QPalette::ColorRole::Window, QColor::fromRgb(255, 190, 0));
 				break;
 			case QMessageBox::Icon::Question:
 				tmpIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxQuestion);
+				pal.setColor(QPalette::ColorRole::Window, QColor::fromRgb(0, 230, 255));
 			default:
 				break;
 		}
+
+		// TODO: Fix setting palette for the information bar depending on message type, it's not working :(
+		this->m_ui.m_pInformationIconLabel->setPalette(pal);
 		
 		if (!tmpIcon.isNull())
 		{
@@ -236,6 +310,7 @@ namespace PicknPlaceGui
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
 			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
 
+		//QMainWindow::connect(this->m_ui.m_pAbortButton, SIGNAL(pressed()), this, SLOT(AbortButtonPressed()));
 	}
 
 	///
@@ -315,7 +390,7 @@ namespace PicknPlaceGui
 	}
 
 	///
-	/// \brief Slot for when the "Dispence" toolbar button (QAction) has been triggered, this should change the GUI mode.
+	/// \brief Slot for when the "Dispense" toolbar button (QAction) has been triggered, this should change the GUI mode.
 	///
 	void MainWindow::DispenceActionTriggered()
 	{
@@ -398,6 +473,8 @@ namespace PicknPlaceGui
 	void MainWindow::XValueChanged(int value)
 	{
 		// TODO: Change the X-value for the machine head.
+		//this->ShowAbortButton(!this->m_ui.m_pAbortButton->isVisible());
+		this->ShowInformation("poop", QMessageBox::Icon::Critical);
 	}
 
 	///
@@ -416,6 +493,54 @@ namespace PicknPlaceGui
 	void MainWindow::CloseInformationBar()
 	{
 		this->m_ui.m_pInformationFrame->setVisible(false);
+	}
+
+	///
+	/// \brief Slot for when the abort button the information bar is pressed.
+	///
+	void MainWindow::AbortButtonPressed()
+	{
+		// TODO: Abort picking/placing/dispensing stuff on the camera widget.
+	}
+
+	///
+	/// \brief Slot for when the move tool button is triggered.
+	///
+	void MainWindow::MoveToolTriggered()
+	{
+		SetGuiSubMode(GuiSubMode::Move);
+	}
+
+	///
+	/// \brief Slot for when the pick tool button is triggered.
+	///
+	void MainWindow::PickToolTriggered()
+	{
+		SetGuiSubMode(GuiSubMode::Pick);
+	}
+
+	///
+	/// \brief Slot for when the Place tool button is triggered.
+	///
+	void MainWindow::PlaceToolTriggered()
+	{
+		SetGuiSubMode(GuiSubMode::Place);
+	}
+
+	///
+	/// \brief Slot for when the Dispense Dot tool button is triggered.
+	///
+	void MainWindow::DispenseDotToolTriggered()
+	{
+		SetGuiSubMode(GuiSubMode::DispenseDot);
+	}
+
+	///
+	/// \brief Slot for when the Dispense Polygon tool button is triggered.
+	///
+	void MainWindow::DispensePolygonToolTriggered()
+	{
+		SetGuiSubMode(GuiSubMode::DispensePolygon);
 	}
 }
 

@@ -16,16 +16,6 @@
 
 namespace PicknPlaceGui
 {
-	///
-	/// \enum GuiMode
-	/// \brief The different modes the GUI can be in.
-	///
-	enum GuiMode
-	{
-		PickNPlaceMode,	///< Pick and place mode.
-		DispenceMode	///< Dispence mode.
-	};
-
 	class MainWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -59,19 +49,53 @@ namespace PicknPlaceGui
 		void CommandListItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 		void CloseInformationBar();
+		void AbortButtonPressed();
+
+		void MoveToolTriggered();
+		void PickToolTriggered();
+		void PlaceToolTriggered();
+		void DispenseDotToolTriggered();
+		void DispensePolygonToolTriggered();
 
 	private:
+
+		///
+		/// \enum GuiMode
+		/// \brief The different modes the GUI can be in.
+		///
+		enum GuiMode
+		{
+			PickNPlaceMode,							///< Pick and place mode.
+			DispenceMode							///< Dispence mode.
+		};
+
+		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispense.
+
+		///
+		/// \brief The different sub modes the GUI can be in.
+		///
+		enum GuiSubMode
+		{
+			Move,
+			Pick,
+			Place,
+			DispenseDot,
+			DispensePolygon
+		};
+
 		void ConnectSlots();
 		void InitCameraManager();
 		void InitMachineController();
 		void CreateToolbarButtons();
 		void ToggleInteractionTools();
 		void ShowInformation(QString message, QMessageBox::Icon icon);
+		void SetGuiSubMode(MainWindow::GuiSubMode mode);
+		void UpdateGuiBasedOnGuiSubMode();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
 
-		GuiMode m_guimode;							///< The current GUI mode, PnP or Dispense.
+		GuiSubMode m_subguimode;					///< The current sub GUI mode.
 
 		QList<GuiMachineCommand> m_commands;		///< The list of machine commands that are to be run.
 
