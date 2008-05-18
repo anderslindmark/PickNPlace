@@ -2,10 +2,17 @@
 
 namespace PicknPlaceGui
 {
+	DispencePolygonCommand::DispencePolygonCommand()
+	{
+		m_cmd = NULL;
+		m_isNull = true;
+	}
+
 	DispencePolygonCommand::DispencePolygonCommand(DispenceStateStruct settings)
 	{
 		m_settings = settings;
 		m_cmd = NULL;
+		m_isNull = false;
 	}
 
 	DispencePolygonCommand::~DispencePolygonCommand(void)
@@ -45,6 +52,7 @@ namespace PicknPlaceGui
 
 	void DispencePolygonCommand::SetSettings(DispenceStateStruct settings)
 	{
+		m_isNull = false;
 		m_settings = settings;
 	}
 }

@@ -3,12 +3,16 @@ TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 QTDIR_build:DESTDIR     = $$QT_BUILD_TREE/plugins/designer
 
-INCLUDEPATH += ../../CameraAPI
+INCLUDEPATH += ../../CameraAPI \
+		../ \
+		../../MachineAPI
 
 win32:LIBS += ../../Release/CameraAPI.lib
 
 HEADERS     = CameraWidget.h \
-              CameraWidgetPlugin.h 
+              CameraWidgetPlugin.h \
+              DispencePolygonCommand.h \
+              GuiMachineCommand.h
 SOURCES     = CameraWidget.cpp \
               CameraWidgetPlugin.cpp
 

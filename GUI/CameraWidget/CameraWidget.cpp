@@ -1,38 +1,3 @@
-/****************************************************************************
-**
-** Copyright (C) 2005-2007 Trolltech ASA. All rights reserved.
-**
-** This file is part of the example classes of the Qt Toolkit.
-**
-** This file may be used under the terms of the GNU General Public
-** License version 2.0 as published by the Free Software Foundation
-** and appearing in the file LICENSE.GPL included in the packaging of
-** this file.  Please review the following information to ensure GNU
-** General Public Licensing requirements will be met:
-** http://trolltech.com/products/qt/licenses/licensing/opensource/
-**
-** If you are unsure which license is appropriate for your use, please
-** review the following information:
-** http://trolltech.com/products/qt/licenses/licensing/licensingoverview
-** or contact the sales department at sales@trolltech.com.
-**
-** In addition, as a special exception, Trolltech gives you certain
-** additional rights. These rights are described in the Trolltech GPL
-** Exception version 1.0, which can be found at
-** http://www.trolltech.com/products/qt/gplexception/ and in the file
-** GPL_EXCEPTION.txt in this package.
-**
-** In addition, as a special exception, Trolltech, as the sole copyright
-** holder for Qt Designer, grants users of the Qt/Eclipse Integration
-** plug-in the right for the Qt/Eclipse Integration to link to
-** functionality provided by Qt Designer and its related libraries.
-**
-** Trolltech reserves all rights not expressly granted herein.
-**
-** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
-** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-**
-****************************************************************************/
 
 #include <QtGui>
 #include "CameraWidget.h"
@@ -98,6 +63,13 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 void CameraWidget::resizeEvent(QResizeEvent * event)
 {
 	//barrelCorrection->setOutputSize(event->size().width(), event->size().height());
+}
+
+///
+/// \brief The mouse was pressed inside the camera widget.
+///
+void CameraWidget::mousePressEvent(QMouseEvent * event)
+{
 }
 
 ///
@@ -217,7 +189,7 @@ void CameraWidget::setDrawEdges(bool enabled)
 }
 
 ///
-/// \brief Returns the current camera image.
+/// \brief Returns the current camera image in CameraAPI format.
 ///
 camera::Image *CameraWidget::getImage()
 {
@@ -236,5 +208,36 @@ QImage *CameraWidget::getQImage()
 
 // TODO: Add a way to add points to draw... This will be used when creating new pick/place commands, so that they are drawn before the actual command has been created.
 
+///
+/// \brief Sets the interaction mode for the camera widget. Is the user picking/placing/moving/dispensing?
+///
+void CameraWidget::setMode(InteractionMode mode)
+{
+	this->m_mode = mode;
+}
+
+///
+/// \brief Get the interaction mode for the camera widget.
+///
+CameraWidget::InteractionMode CameraWidget::getMode()
+{
+	return this->m_mode;
+}
+
+///
+/// \brief Reset a specific mode.
+///
+void CameraWidget::resetMode(InteractionMode mode)
+{
+
+}
+
+///
+/// \brief Resets all the pick/place/dispense points and polygons.
+///
+void CameraWidget::resetModes()
+{
+	// TODO: Reset all pick/place/dispense points/polygons.
+}
 
 

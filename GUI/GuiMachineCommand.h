@@ -12,5 +12,6 @@ namespace PicknPlaceGui
 
 	};
 }
+
 #endif // __GUIMACHINECOMMAND_H__
 

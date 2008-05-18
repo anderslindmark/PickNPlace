@@ -10,6 +10,7 @@ namespace PicknPlaceGui
 	class DispencePolygonCommand : public MachinePolygon, public GuiMachineCommand
 	{
 	public:
+		DispencePolygonCommand();
 		DispencePolygonCommand(DispenceStateStruct settings);
 		~DispencePolygonCommand(void);
 		MachineWrapperCommand& GetMachineCommand();
@@ -17,8 +18,10 @@ namespace PicknPlaceGui
 		void SetSpeed(int speed);
 		DispenceStateStruct GetSettings();
 		void SetSettings(DispenceStateStruct settings);
+		void isNull();
 
 	private:
+		bool m_isNull;
 		DispenceStateStruct m_settings;
 		MachineWrapperCommand *m_cmd;
 	};
