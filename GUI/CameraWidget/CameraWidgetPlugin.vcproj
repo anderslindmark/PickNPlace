@@ -50,7 +50,7 @@
 				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..;..\..\CameraAPI;..\..\MachineAPI"
+				AdditionalIncludeDirectories="..\..\CameraAPI;..\..\MachineAPI;..\GuiCommands"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -128,7 +128,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/I$(QTDIR)\include\QtDesigner /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtCore /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtGui /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtXml /I$(QTDIR)\include\QtScript /I$(QTDIR)\include\QtScript /I$(QTDIR)\include /I$(QTDIR)\include\ActiveQt /I$(QTDIR)\mkspecs\default -Zm200 "
-				AdditionalIncludeDirectories="..\..\CameraAPI;..\;..\..\MachineAPI"
+				AdditionalIncludeDirectories="..\..\CameraAPI;..\..\MachineAPI;..\GuiCommands"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;QT_DLL;QT_PLUGIN;QT_SCRIPT_LIB;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;QT_THREAD_SUPPORT;WIN32"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
@@ -284,22 +284,18 @@
 			<File
 				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
-				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
@@ -312,6 +308,10 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
+				>
 			</File>
 		</Filter>
 	</Files>

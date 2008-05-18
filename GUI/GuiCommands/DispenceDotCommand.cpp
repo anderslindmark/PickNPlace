@@ -1,3 +1,4 @@
+
 #include "DispenceDotCommand.h"
 
 namespace PicknPlaceGui

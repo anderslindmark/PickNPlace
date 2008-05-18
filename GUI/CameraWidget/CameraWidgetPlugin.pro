@@ -4,10 +4,12 @@ TEMPLATE    = lib
 QTDIR_build:DESTDIR     = $$QT_BUILD_TREE/plugins/designer
 
 INCLUDEPATH += ../../CameraAPI \
-		../ \
+		../GuiCommands \
 		../../MachineAPI
 
-win32:LIBS += ../../Release/CameraAPI.lib
+win32:LIBS += ../../Release/CameraAPI.lib \
+		../../Release/GuiCommands.lib \
+		../../Release/MachineAPI.lib
 
 HEADERS     = CameraWidget.h \
               CameraWidgetPlugin.h \

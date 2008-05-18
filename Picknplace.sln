@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Settings", "Settings\Settin
 		{289B07FC-C0F6-4C3B-9560-C8BC80800887} = {289B07FC-C0F6-4C3B-9560-C8BC80800887}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GuiCommands", "GUI\GuiCommands\GuiCommands.vcproj", "{91CDD995-E83D-4A00-B92D-A8A7F636319A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -52,6 +54,10 @@ Global
 		{31C55B28-0177-4B6C-A496-207BA1CB8C10}.Debug|Win32.Build.0 = Debug|Win32
 		{31C55B28-0177-4B6C-A496-207BA1CB8C10}.Release|Win32.ActiveCfg = Release|Win32
 		{31C55B28-0177-4B6C-A496-207BA1CB8C10}.Release|Win32.Build.0 = Release|Win32
+		{91CDD995-E83D-4A00-B92D-A8A7F636319A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91CDD995-E83D-4A00-B92D-A8A7F636319A}.Debug|Win32.Build.0 = Debug|Win32
+		{91CDD995-E83D-4A00-B92D-A8A7F636319A}.Release|Win32.ActiveCfg = Release|Win32
+		{91CDD995-E83D-4A00-B92D-A8A7F636319A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,3 +1,4 @@
+
 #ifndef __DISPENCEDOTCOMMAND_H__
 #define __DISPENCEDOTCOMMAND_H__
 
@@ -32,3 +33,4 @@ namespace PicknPlaceGui
 
 
 #endif // __DISPENCEDOTCOMMAND_H__
+
