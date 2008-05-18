@@ -21,17 +21,22 @@ To compile you'll need to follow these steps:
    c. Under "System variables" click "New"
    d. Variable name: QTDIR
    e. Variable value: c:\qt-win-opensource-src-4.3.3
-   f. Also add C:\qt-win-opensource-src-4.3.3\bin to the end of your PATH-variable
+   f. Also add C:\qt-win-opensource-src-4.3.3\bin to your PATH-variable
       (this is so that the QT dll's will be found by your program when running it without having
-      to copy them to your build directory).
+      to copy them to your build directory. Note that you'll need to restart Visual Studio after adding this).
    
 5. a. Start -> Programs -> Microsoft Visual Studio 2008 -> Visual Studio Tools -> Visual Studio 2008 Command prompt
    b. cd %QTDIR%
-   c. configure
+   c. configure (answer the questions)
    d. nmake
-   e. Wait for Qt to finish building :)
+   e. Wait for Qt to finish building (this can take a LONG time, ~1 hour) :)
    
 6. Open the "Picknplace.sln" solution file in Visual Studio 2008 and build.
+   (Note! The camera widget is always built in "Release"-mode! This is so that
+   it can be used in the "QT Designer", since any plugins for it has to be
+   built as Release if the Designer was built for that. This means that you should
+   first build the solution in Release mode, before you can build any of the projects
+   in Debug mode).
 
 
 
