@@ -17,6 +17,21 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 	m_camera = NULL;
 	m_barrelCorrection = NULL;
 	this->m_pDispensePolygon = NULL;
+
+	this->m_image = QImage(500, 500, QImage::Format_RGB32);
+	QPainter painter(&this->m_image);
+	painter.setBrush(Qt::BrushStyle::DiagCrossPattern);
+	painter.fillRect(0, 0, 800, 500, painter.brush());
+
+	this->m_currentPickCount	= 0;
+	this->m_currentPlaceCount	= 0;
+	this->m_machineHeight		= 0;
+	this->m_machineWidth		= 0;
+	this->m_machineX			= 0;
+	this->m_machineY			= 0;
+	this->m_machineZ			= 0;
+
+	this->m_mode = Pick;
 }
 
 CameraWidget::~CameraWidget()
@@ -57,12 +72,36 @@ void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std:
 void CameraWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
-	painter.drawImage(0, 0, m_image);
+
+	QSize s = this->size();
+	QSize imgs = this->m_image.size();
 	
+	// Scale the image to fit the camera widget while keeping aspect ratio.
+	QImage scaledImage = m_image.scaled(s, Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation); // TODO: Change this to FastTransform if performance sucks :)
+
+	// Draw the image in the center of the control.
+	int x = (s.width() - scaledImage.width()) / 2;
+	int y = (s.height() - scaledImage.height()) / 2;
+
+	painter.drawImage(x, y, scaledImage);
+		
 	// TODO: Draw the commands in the command queue
 	
+	// TODO: Draw the current command being created.
+	painter.setBrush(Qt::red);
+	painter.setPen(Qt::darkRed);
+
+	int widgetX = 0;
+	int widgetY = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		this->machineToWidgetCoordinates(this->m_pickPoints[i].x(), this->m_pickPoints[i].y(), &widgetX, &widgetY);
+		painter.drawEllipse(widgetX, widgetY, 5, 5);
+	}
 }
 
+// TODO: Hmmm, is this really needed when we have proper aspect ratio ??
 ///
 /// \brief The camera widget was resized. Since the size of the camera image changes, we need to recalculate the correction vectors
 ///        used to correct the camera image here.
@@ -78,15 +117,18 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 void CameraWidget::mousePressEvent(QMouseEvent * event)
 {
 	Qt::MouseButton button = event->button();
-	int mouseMachineX = event->x() + this->m_machineX; // TODO: Account for the aspect ratio stuff here?
-	int mouseMachineY = event->y() + this->m_machineY;
+	int mouseMachineX = 0; 
+	int mouseMachineY = 0;
+
+	this->widgetToMachineCoordinates(event->x(), event->y(), &mouseMachineX, &mouseMachineY);
 
 	switch (this->m_mode)
 	{
 		default:
 		case Move:
 		{		
-			// TODO: Signal that we want to move the head to new machine coordinates.
+			// Signal that we want to move the head to new machine coordinates.
+			emit newMachineCoordinates(mouseMachineX, mouseMachineY);
 			break;
 		}
 		case Calibration:
@@ -445,5 +487,57 @@ QPoint *CameraWidget::getPlacePoints()
 	return this->m_placePoints;
 }
 
+///
+/// \brief Gets the current size of the camera widget in machine coordinates. 
+/// This is dependent on which zoom level and so on.
+///
+void CameraWidget::getMachineCoordinateSize(int *width, int *height)
+{
+	if (width)
+	{
+		*width = this->m_machineWidth;
+	}
+
+	if (height)
+	{
+		*height = this->m_machineHeight;
+	}
+}
+
+///
+/// \brief Converts from machine coordinates to widget coordinates.
+///
+void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int *widgetX, int *widgetY)
+{
+	if (widgetX)
+	{
+		*widgetX = machineX; // TODO: !!! Convert coordinates properly !!!!!
+	}
+
+	if (widgetY)
+	{
+		*widgetY = machineY;  // TODO: !!! Convert coordinates properly !!!!!
+	}
+}
+
+///
+/// \brief Converts from widget coordinates to widget coordinates.
+///
+void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int *machineX, int *machineY)
+{
+	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
+	int left, right, top, bottom;
+	this->getVisibleRegion(left, right, top, bottom);
+
+	if (machineX)
+	{
+		*machineX = this->m_machineX + widgetX; // TODO: !!! Convert coordinates properly !!!!!
+	}
+
+	if (machineY)
+	{
+		*machineY = this->m_machineY + (widgetY - this->size().height()); // TODO: !!! Convert coordinates properly !!!!!
+	}
+}
 
 

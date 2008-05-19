@@ -42,7 +42,6 @@ public:
 							  int rightOffset, float rightZDiff, 					  
 							  int topOffset, float topZDiff, 
 							  int bottomOffset, float bottomZDiff);
-	void setMachineCoordinates(int x, int y, int z);
 	void getVisibleRegion(int &left, int &right, int &top, int &bottom);
 	void start();
 	void stop();
@@ -77,10 +76,23 @@ public:
 	void resetMode(CameraWidget::InteractionMode mode);
 	void resetModes();
 
+	void machineToWidgetCoordinates(int machineX, int machineY, int *widgetX, int *widgetY);
+	void widgetToMachineCoordinates(int widgetX, int widgetY, int *machineX, int *machineY);
+	void getMachineCoordinateSize(int *width, int *height);
+
 public slots:
 	void setDrawCommands(bool enabled);
+	void setMachineCoordinates(int x, int y, int z);
 
 signals:
+
+	///
+	/// \brief Signal for when the user clicks somewhere on the camera image while in "Move" mode.
+	/// \param machineX The new X coordinate the user wants to move to.
+	/// \param machineY The new Y coordinate the user wants to move to.
+	///
+	void newMachineCoordinates(int machineX, int machineY);
+
 	///
 	/// \brief Signal for when a command that the user is creating on the camera widget is ready/valid to be created.
 	/// For instance, if in Pick mode, and a Place has already been created, when the Pick points have been set we have
@@ -113,9 +125,12 @@ private:
 
 	QList<PicknPlaceGui::GuiMachineCommand>	*commands;	///< A reference to the list of commands that should be drawn on the camera widget.
 	
-	int		m_machineX;		///< The current machine x position.
-	int		m_machineY;		///< The current machine y position.
-	int		m_machineZ;		///< The current machine z position.
+	int		m_machineX;			///< The current machine x position.
+	int		m_machineY;			///< The current machine y position.
+	int		m_machineZ;			///< The current machine z position.
+
+	int		m_machineWidth;		///< The width of the widget in camera coordinates.
+	int		m_machineHeight;	///< The height of the widget in camera coordinates.
 	
 	// TODO: Document what these are for.
 	int		m_leftOffset;
