@@ -94,7 +94,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 
 	for (int i = 0; i < 3; i++)
 	{
-		this->machineToWidgetCoordinates(this->m_pickPoints[i].x(), this->m_pickPoints[i].y(), &widgetX, &widgetY);
+		this->machineToWidgetCoordinates(this->m_pickPoints[i].x(), this->m_pickPoints[i].y(), widgetX, widgetY);
 		painter.drawEllipse(widgetX, widgetY, 5, 5);
 	}
 }
@@ -118,7 +118,7 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 	int mouseMachineX = 0; 
 	int mouseMachineY = 0;
 
-	this->widgetToMachineCoordinates(event->x(), event->y(), &mouseMachineX, &mouseMachineY);
+	this->widgetToMachineCoordinates(event->x(), event->y(), mouseMachineX, mouseMachineY);
 
 	switch (this->m_mode)
 	{
@@ -515,8 +515,8 @@ void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int &w
 	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
 	
 	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
-	widgetX = size().width() * (machineX - machineLeft) / (machineRight - machineLeft);
-	widgetY = size().height() * (machineY - machineTop) / (machineBottom - machineTop);
+	widgetX = size().width() * (machineX - machineLeft) / max(1, (machineRight - machineLeft));
+	widgetY = size().height() * (machineY - machineTop) / max(1, (machineBottom - machineTop));
 }
 
 ///
