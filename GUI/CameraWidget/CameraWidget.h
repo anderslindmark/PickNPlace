@@ -76,9 +76,9 @@ public:
 	void resetMode(CameraWidget::InteractionMode mode);
 	void resetModes();
 
-	void machineToWidgetCoordinates(int machineX, int machineY, int *widgetX, int *widgetY);
-	void widgetToMachineCoordinates(int widgetX, int widgetY, int *machineX, int *machineY);
-	void getMachineCoordinateSize(int *width, int *height);
+	void machineToWidgetCoordinates(int machineX, int machineY, int &widgetX, int &widgetY);
+	void widgetToMachineCoordinates(int widgetX, int widgetY, int &machineX, int &machineY);
+	void getMachineCoordinateSize(int &width, int &height);
 
 public slots:
 	void setDrawCommands(bool enabled);
@@ -129,9 +129,6 @@ private:
 	int		m_machineY;			///< The current machine y position.
 	int		m_machineZ;			///< The current machine z position.
 
-	int		m_machineWidth;		///< The width of the widget in camera coordinates.
-	int		m_machineHeight;	///< The height of the widget in camera coordinates.
-	
 	// TODO: Document what these are for.
 	int		m_leftOffset;
 	float	m_leftZDiff;

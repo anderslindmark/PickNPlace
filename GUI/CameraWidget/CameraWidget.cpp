@@ -25,8 +25,6 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 
 	this->m_currentPickCount	= 0;
 	this->m_currentPlaceCount	= 0;
-	this->m_machineHeight		= 0;
-	this->m_machineWidth		= 0;
 	this->m_machineX			= 0;
 	this->m_machineY			= 0;
 	this->m_machineZ			= 0;
@@ -243,6 +241,10 @@ void CameraWidget::setCamera(const std::string &driverIdentifier, const std::str
 	camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 	m_camera = cameraManager->createCamera(driverIdentifier, cameraIdentifier);
 	m_camera->setListener(this);
+	if(m_barrelCorrection != NULL)
+	{
+		m_camera->addFilter(m_barrelCorrection);
+	}
 }
 
 ///
@@ -258,7 +260,10 @@ void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsi
 	else
 	{
 		m_barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
-		m_camera->addFilter(m_barrelCorrection);
+		if(m_camera != NULL)
+		{
+			m_camera->addFilter(m_barrelCorrection);
+		}
 	}
 }
 
@@ -491,53 +496,40 @@ QPoint *CameraWidget::getPlacePoints()
 /// \brief Gets the current size of the camera widget in machine coordinates. 
 /// This is dependent on which zoom level and so on.
 ///
-void CameraWidget::getMachineCoordinateSize(int *width, int *height)
+void CameraWidget::getMachineCoordinateSize(int &width, int &height)
 {
-	if (width)
-	{
-		*width = this->m_machineWidth;
-	}
-
-	if (height)
-	{
-		*height = this->m_machineHeight;
-	}
+	int machineLeft, machineRight, machineTop, machineBottom;
+	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
+	
+	// Machine coordinates have 0,0 in the bottom left corner
+	width = machineRight - machineLeft;
+	height = machineTop - machineBottom;
 }
 
 ///
 /// \brief Converts from machine coordinates to widget coordinates.
 ///
-void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int *widgetX, int *widgetY)
+void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int &widgetX, int &widgetY)
 {
-	if (widgetX)
-	{
-		*widgetX = machineX; // TODO: !!! Convert coordinates properly !!!!!
-	}
-
-	if (widgetY)
-	{
-		*widgetY = machineY;  // TODO: !!! Convert coordinates properly !!!!!
-	}
+	int machineLeft, machineRight, machineTop, machineBottom;
+	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
+	
+	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
+	widgetX = size().width() * (machineX - machineLeft) / (machineRight - machineLeft);
+	widgetY = size().height() * (machineY - machineTop) / (machineBottom - machineTop);
 }
 
 ///
 /// \brief Converts from widget coordinates to widget coordinates.
 ///
-void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int *machineX, int *machineY)
+void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int &machineX, int &machineY)
 {
+	int machineLeft, machineRight, machineTop, machineBottom;
+	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
+	
 	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
-	int left, right, top, bottom;
-	this->getVisibleRegion(left, right, top, bottom);
-
-	if (machineX)
-	{
-		*machineX = this->m_machineX + widgetX; // TODO: !!! Convert coordinates properly !!!!!
-	}
-
-	if (machineY)
-	{
-		*machineY = this->m_machineY + (widgetY - this->size().height()); // TODO: !!! Convert coordinates properly !!!!!
-	}
+	machineX = machineLeft + (machineRight - machineLeft) * (widgetX / size().width());
+	machineY = machineTop + (machineBottom - machineTop) * (widgetY / size().height());
 }
 
 
