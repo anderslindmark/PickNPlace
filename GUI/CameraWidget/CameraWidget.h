@@ -6,6 +6,7 @@
 #include <QtDesigner/QDesignerExportWidget>
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
+#include <QPoint>
 
 // CameraAPI.
 #include "CameraManager.h"
@@ -45,7 +46,6 @@ public:
 	void getVisibleRegion(int &left, int &right, int &top, int &bottom);
 	void start();
 	void stop();
-	void setDrawCommands(bool enabled);
 	void setDrawHeadPosition(bool enabled);
 	void setDrawEdges(bool enabled);
 	camera::Image *getImage();
@@ -69,6 +69,17 @@ public:
 	void setMode(CameraWidget::InteractionMode mode);
 	InteractionMode getMode(); 
 
+	PicknPlaceGui::DispencePolygonCommand *getDispensePolygon();
+	QPoint getDotDispensePoint();
+	QPoint *getPickPoints();
+	QPoint *getPlacePoints();
+
+	void resetMode(CameraWidget::InteractionMode mode);
+	void resetModes();
+
+public slots:
+	void setDrawCommands(bool enabled);
+
 signals:
 	///
 	/// \brief Signal for when a command that the user is creating on the camera widget is ready/valid to be created.
@@ -76,7 +87,14 @@ signals:
 	/// enough information to create a Pick and Place command, so this signal will then be raised so that the program
 	/// knows it can fetch the required information to create a new command.
 	///
-	void commandReady();
+	void commandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon);
+	void commandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints);
+	void commandReady(CameraWidget::InteractionMode mode, QPoint dot);
+
+	///
+	/// \brief Signal for when the current command being created on the camera widget has been made invalid.
+	///
+	void commandInvalid();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -85,8 +103,7 @@ protected:
     
 private:
 
-	void resetMode(CameraWidget::InteractionMode mode);
-	void resetModes();
+	bool isPickPlaceReady();
 
 	camera::Camera 				*m_camera;				///< The camera associated with the camera widget.
 	camera::BarrelCorrection	*m_barrelCorrection;	///< The barrel correction filter for the camera.
@@ -110,6 +127,9 @@ private:
 	int		m_bottomOffset;
 	float	m_bottomZDiff;
 
+	int		m_currentPlaceCount;				///< The current point we're placing in place mode.
+	int		m_currentPickCount;					///< The current point we're placing in pick mode.
+
 	// Pick and place.
 	QPoint	m_pickPoints[3];					///< The 3 points that the user adds when picking a component.
 	QPoint	m_placePoints[3];					///< The 3 points the user adds when placing a component.
@@ -119,7 +139,7 @@ private:
 	float	m_dispenseDotRadius;				///< The radius of the dispense dot.
 
 	// Dispense polygon.
-	PicknPlaceGui::DispencePolygonCommand m_dispensePolygon;	///< The dispense polygon when the user is creating a new one.
+	PicknPlaceGui::DispencePolygonCommand *m_pDispensePolygon;	///< The dispense polygon when the user is creating a new one.
 };
 
 #endif // __CAMERAWIDGET_H__

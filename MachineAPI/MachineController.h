@@ -167,7 +167,7 @@ private:
 	/// \return true if command is legal else false
 	bool ValidateCommand(MachineCommand &cmd, MachineState &ms, MachineEvent *&validateEvent);
 
-	//Thread stuff
+	// Thread stuff
 	HANDLE m_thread; ///< Handler for the command Thread
 	DWORD m_threadId;	///< Command threads ID
 	HANDLE m_runCmdMutex; ///< Mutex for the RunCommand function

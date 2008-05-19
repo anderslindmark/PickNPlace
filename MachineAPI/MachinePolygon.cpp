@@ -46,10 +46,9 @@ int MachinePolygon::Size()
 	return m_points.size();
 }
 
-/*
 vector<MachinePolygonPoint> &MachinePolygon::GetPoints()
 {
 	return m_points;
 }
-*/
+
 

@@ -18,7 +18,10 @@ namespace PicknPlaceGui
 
 	DispencePolygonCommand::~DispencePolygonCommand(void)
 	{
-		delete m_cmd;
+		if (this->m_cmd)
+		{
+			delete m_cmd;
+		}
 	}
 
 	MachineWrapperCommand& DispencePolygonCommand::GetMachineCommand()

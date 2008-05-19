@@ -74,7 +74,8 @@ public:
 	///
 	/// \return		The number of points in the polygon
 	int Size(); // Returns size of point-list
-	//vector<MachinePolygonPoint> &GetPoints();
+	
+	vector<MachinePolygonPoint> &GetPoints();
 
 protected:
 	vector<MachinePolygonPoint> m_points; ///< The vector that contains the points

@@ -16,18 +16,25 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 	
 	m_camera = NULL;
 	m_barrelCorrection = NULL;
+	this->m_pDispensePolygon = NULL;
 }
 
 CameraWidget::~CameraWidget()
 {
-	if(m_camera != NULL)
+	if (this->m_camera != NULL)
 	{
-		delete m_camera;
+		delete this->m_camera;
 	}
 
-	if(m_barrelCorrection != NULL)
+	if (this->m_barrelCorrection != NULL)
 	{
-		delete m_barrelCorrection;
+		delete this->m_barrelCorrection;
+	}
+
+	if (this->m_pDispensePolygon != NULL)
+	{
+		delete this->m_pDispensePolygon;
+		this->m_pDispensePolygon = NULL;
 	}
 }
 
@@ -70,6 +77,113 @@ void CameraWidget::resizeEvent(QResizeEvent * event)
 ///
 void CameraWidget::mousePressEvent(QMouseEvent * event)
 {
+	Qt::MouseButton button = event->button();
+	int mouseMachineX = event->x() + this->m_machineX; // TODO: Account for the aspect ratio stuff here?
+	int mouseMachineY = event->y() + this->m_machineY;
+
+	switch (this->m_mode)
+	{
+		default:
+		case Move:
+		{		
+			// TODO: Signal that we want to move the head to new machine coordinates.
+			break;
+		}
+		case Calibration:
+		{		
+			// TODO: Do magic here!
+			break;
+		}
+		case DispenseDot:
+		{
+			if (button == Qt::LeftButton)
+			{
+				this->m_dispenseDotPoint.setX(mouseMachineX);
+				this->m_dispenseDotPoint.setY(mouseMachineY);
+				emit this->commandReady(this->m_mode, this->m_dispenseDotPoint);
+			}
+			break;
+		}
+		case DispensePolygon:
+		{
+			if (button == Qt::LeftButton)
+			{
+				if (this->m_pDispensePolygon == NULL)
+				{
+					this->m_pDispensePolygon = new PicknPlaceGui::DispencePolygonCommand();
+				}
+
+				// Get the previous point.
+				MachinePolygonPoint prev = this->m_pDispensePolygon->GetPoints().back();
+
+				int adjustedX = 0;
+				int adjustedY = 0;
+
+				int deltaX = mouseMachineX - prev.x;
+				int deltaY = mouseMachineY - prev.y;
+				
+				// Dispense polygons only allow points that are at 90 degree angels to each other
+				// so we snap the actual point to one of the axis here.
+				if (abs(deltaX) >= abs(deltaY))
+				{
+					// Snap to X-axis.
+					adjustedX = mouseMachineX;
+					adjustedY = prev.y;
+				}
+				else
+				{
+					// Snap to Y-axis.
+					adjustedX = prev.x;
+					adjustedY = mouseMachineY;
+				}
+
+				MachinePolygonPoint pp(adjustedX, adjustedY);
+				this->m_pDispensePolygon->AddPoint(pp);
+
+				emit this->commandReady(this->m_mode, this->m_pickPoints, this->m_placePoints);
+			}
+
+			break;
+		}
+		case Pick:
+		{	
+			this->m_currentPickCount++;
+			this->m_currentPickCount = min(this->m_currentPickCount, 2);
+			this->m_pickPoints[this->m_currentPickCount].setX(mouseMachineX);
+			this->m_pickPoints[this->m_currentPickCount].setY(mouseMachineY);
+
+			break;
+		}
+		case Place:
+		{
+			this->m_currentPlaceCount++;
+			this->m_currentPlaceCount = min(this->m_currentPlaceCount, 2);
+			this->m_placePoints[this->m_currentPlaceCount].setX(mouseMachineX);
+			this->m_placePoints[this->m_currentPlaceCount].setY(mouseMachineY);
+
+			break;
+		}
+	}
+
+	if ((this->m_mode == Pick || this->m_mode == Place) && isPickPlaceReady())
+	{
+		emit this->commandReady(this->m_mode, this->m_pickPoints, this->m_placePoints);
+	}
+}
+
+///
+/// \returns If both the Pick and Place coordinates have been placed.
+///
+bool CameraWidget::isPickPlaceReady()
+{
+	bool ready = false;
+
+	for (int i = 0; i < 3; i++)
+	{
+		ready = ready && !this->m_placePoints[i].isNull() && !this->m_pickPoints[i].isNull();
+	}
+
+	return ready;
 }
 
 ///
@@ -229,7 +343,61 @@ CameraWidget::InteractionMode CameraWidget::getMode()
 ///
 void CameraWidget::resetMode(InteractionMode mode)
 {
+	switch (mode)
+	{
+		default:
+		case Move:
+		{		
+			// TODO: Reset something here? :D
+			break;
+		}
+		case Calibration:
+		{		
+			// TODO: Reset something here? :D
+			break;
+		}
+		case DispenseDot:
+		{
+			this->m_dispenseDotPoint.setX(0);
+			this->m_dispenseDotPoint.setY(0);
+			break;
+		}
+		case DispensePolygon:
+		{		
+			if (this->m_pDispensePolygon)
+			{
+				delete this->m_pDispensePolygon;
+				this->m_pDispensePolygon = NULL;
+			}
 
+			this->m_currentPlaceCount = 0;
+
+			break;
+		}
+		case Pick:
+		{	
+			for (int i = 0; i < 3; i++)
+			{
+				this->m_pickPoints[i].setX(0);
+				this->m_pickPoints[i].setY(0);
+			}
+
+			this->m_currentPickCount = 0;
+
+			break;
+		}
+		case Place:
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				this->m_placePoints[i].setX(0);
+				this->m_placePoints[i].setY(0);
+			}
+			break;
+		}
+	}
+
+	emit this->commandInvalid();
 }
 
 ///
@@ -237,7 +405,45 @@ void CameraWidget::resetMode(InteractionMode mode)
 ///
 void CameraWidget::resetModes()
 {
-	// TODO: Reset all pick/place/dispense points/polygons.
+	this->resetMode(InteractionMode::Move);
+	this->resetMode(InteractionMode::Calibration);
+	this->resetMode(InteractionMode::DispenseDot);
+	this->resetMode(InteractionMode::DispensePolygon);
+	this->resetMode(InteractionMode::Pick);
+	this->resetMode(InteractionMode::Place);
 }
+
+///
+/// \brief Returns the current dispense polygon being created on the camera widget.
+///
+PicknPlaceGui::DispencePolygonCommand *CameraWidget::getDispensePolygon()
+{
+	return this->m_pDispensePolygon;
+}
+
+///
+/// \brief Returns the current dispense dot being created on the camera widget.
+///
+QPoint CameraWidget::getDotDispensePoint()
+{
+	return this->m_dispenseDotPoint;
+}
+
+///
+/// \brief Returns the current pick points being created on the camera widget.
+///
+QPoint *CameraWidget::getPickPoints()
+{
+	return this->m_pickPoints;
+}
+
+///
+/// \brief Returns the current place points being created on the camera widget.
+///
+QPoint *CameraWidget::getPlacePoints()
+{
+	return this->m_placePoints;
+}
+
 
 
