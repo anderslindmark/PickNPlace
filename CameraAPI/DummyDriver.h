@@ -22,6 +22,10 @@ class DummyDriver : public Driver
 		std::string getCameraIdentifier(int index);
 		Camera *createCamera(const std::string &identifier);
 		
+		///
+		/// \brief Set the size of the images the DummyCamera should produce.
+		/// This has to be called before creating the DummyCamera
+		///
 		void setImageSize(int width, int height);
 		
 	private:

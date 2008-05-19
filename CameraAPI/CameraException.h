@@ -6,6 +6,9 @@
 namespace camera 
 {
 
+///
+/// \brief This exception will be thrown by the camera API
+///
 class CameraException : public std::runtime_error
 {
 	public:

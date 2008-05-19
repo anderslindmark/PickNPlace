@@ -14,7 +14,7 @@ class Driver
 		virtual ~Driver();
 		
 		///
-		/// \brief Returns an identifier string for this driver. For example "MyDriver". This string must not contain dotts (.)
+		/// \brief Returns an identifier string for this driver. For example "MyDriver".
 		///
 		virtual std::string getIdentifier() = 0;
 		
@@ -55,6 +55,7 @@ class Driver
 		
 		///
 		/// \brief Create a Camera
+		/// \return A pointer to the created camera.
 		///
 		virtual Camera *createCamera(const std::string &identifier) = 0;
 };

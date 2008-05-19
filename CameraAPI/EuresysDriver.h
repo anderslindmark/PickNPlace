@@ -10,6 +10,9 @@ namespace camera
 class EuresysDriver : public Driver
 {
 	public:
+		///
+		/// \brief The maximum number of Euresys video card this driver can handle
+		///
 		static const int MAX_BOARD_COUNT = 8;
 		
 		EuresysDriver();
@@ -25,8 +28,16 @@ class EuresysDriver : public Driver
 		std::string getCameraIdentifier(int index);
 		Camera *createCamera(const std::string &identifier);
 		
+		///
+		/// \brief Convert Euresys internal format to Image::Format
+		///
 		static Image::Format fromEuresysFormat(int format);
+		
+		///
+		/// \brief Convert Image::Format to Euresys internal format
+		///
 		static int toEuresysFormat(Image::Format format);
+		
 	private:
 		std::vector<std::string> m_identifiers;
 };

@@ -13,9 +13,22 @@ class Filter
 		Filter();
 		virtual ~Filter();
 		
+		///
+		/// \brief Set if this filter is enabled or not.
+		/// \param enabled true if the filter is enabled and false if it's not.
+		///
 		void setEnabled(bool enabled);
+		
+		///
+		/// \brief Check if the filter is enabled of not.
+		///
 		bool getEnabled();
 		
+		///
+		/// \brief Apply the filter.
+		/// \param image The image to apply the filter to
+		/// \return The resulting image. This can be the same as the input image if the filter modifies the input image directly.
+		///
 		virtual Image *apply(Image *image) = 0;
 		
 	private:
