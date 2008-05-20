@@ -111,6 +111,8 @@ namespace PicknPlaceGui
 
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
 		QActionGroup *m_pInteractionActionGroup;	///< Action Group for the different interactions that can be done with the camera widget.
+
+		GuiMachineCommand *m_pCurrentNewCommand;	///< The command that is ready to be added to the list of commands.
 	};
 }
 

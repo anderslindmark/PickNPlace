@@ -73,7 +73,8 @@ namespace PicknPlaceGui
 	{
 		camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 		
-		// Add the dummy driver to the camera manager. This driver is used for testing the camera API on a computer without any frame grabber card
+		// Add the dummy driver to the camera manager. This driver is used for testing 
+		// the camera API on a computer without any frame grabber card
 		camera::DummyDriver *dummyDriver = new camera::DummyDriver();
 		dummyDriver->setImageSize(400, 400);
 		cameraManager->addDriver(dummyDriver);
@@ -86,8 +87,8 @@ namespace PicknPlaceGui
 		std::string driverIdentifier = cameraManager->getDriver(0)->getIdentifier();
 		std::string cameraIdentifier = cameraManager->getDriver(0)->getCameraIdentifier(1);
 		// Set which camera the widget shoud use and start the acquiring
-		m_pMainCameraWidget->setCamera(driverIdentifier, cameraIdentifier);
-		m_pMainCameraWidget->start();
+		this->m_ui.m_pMainCameraWidget->setCamera(driverIdentifier, cameraIdentifier);
+		this->m_ui.m_pMainCameraWidget->start();
 		
 		// TODO: Get the correction parameters from the settings
 		unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
@@ -526,6 +527,15 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ClearPickPlaceButtonPressed()
 	{
+		if (this->m_subguimode == Pick)
+		{
+			this->m_ui.m_pMainCameraWidget->resetMode(CameraWidget::InteractionMode::Pick);
+		}
+
+		if (this->m_subguimode == Place)
+		{
+			this->m_ui.m_pMainCameraWidget->resetMode(CameraWidget::InteractionMode::Place);
+		}
 	}
 
 	///
@@ -541,6 +551,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::RemoveDotButtonPressed()
 	{
+		this->m_ui.m_pMainCameraWidget->resetMode(CameraWidget::InteractionMode::DispenseDot);
 	}
 
 	///
