@@ -766,7 +766,7 @@
      <x>0</x>
      <y>0</y>
      <width>705</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_pMenuFile" >
@@ -794,8 +794,8 @@
   <widget class="QToolBar" name="m_pModeToolBar" >
    <property name="minimumSize" >
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="windowTitle" >
@@ -811,14 +811,16 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak" >
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
+   <addaction name="m_pPickNPlaceToolAction" />
+   <addaction name="m_pDispenceToolAction" />
   </widget>
   <widget class="QToolBar" name="m_pToolsToolBar" >
    <property name="minimumSize" >
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="windowTitle" >
@@ -834,8 +836,16 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak" >
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
+   <addaction name="m_pZoomToolAction" />
+   <addaction name="m_pShowPolygonToolAction" />
+   <addaction name="separator" />
+   <addaction name="m_pMoveToolAction" />
+   <addaction name="m_pDispenseDotToolAction" />
+   <addaction name="m_pDispensePolygonToolAction" />
+   <addaction name="m_pPickToolAction" />
+   <addaction name="m_pPlaceToolAction" />
   </widget>
   <action name="m_pActionExit" >
    <property name="text" >
@@ -845,6 +855,120 @@
   <action name="actionShow_Information_bar" >
    <property name="text" >
     <string>Show Information bar</string>
+   </property>
+  </action>
+  <action name="m_pPickNPlaceToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/pnp_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Pick and Place</string>
+   </property>
+  </action>
+  <action name="m_pDispenceToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/dispence_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Dispense</string>
+   </property>
+  </action>
+  <action name="m_pZoomToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/zoom_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Zoom</string>
+   </property>
+  </action>
+  <action name="m_pShowPolygonToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/showpoly_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show Polygons</string>
+   </property>
+  </action>
+  <action name="m_pMoveToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/move_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="m_pDispenseDotToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/dispensedot_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Dispense dot</string>
+   </property>
+   <property name="visible" >
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="m_pDispensePolygonToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/dispensepoly_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Dispense polygon</string>
+   </property>
+   <property name="visible" >
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="m_pPickToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/pick_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Pick</string>
+   </property>
+  </action>
+  <action name="m_pPlaceToolAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="pnp.qrc" >:/Images/place_icon.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Place</string>
    </property>
   </action>
  </widget>

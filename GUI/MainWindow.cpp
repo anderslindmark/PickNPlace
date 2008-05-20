@@ -32,7 +32,7 @@ namespace PicknPlaceGui
 		this->ConnectSlots();
 
 		this->InitCameraManager();
-		this->CreateToolbarButtons();
+		this->CreateToolbarActionGroups();
 		this->SetGuiSubMode(Move);
 		this->InitMachineController();
 	}
@@ -71,111 +71,49 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::InitCameraManager()
 	{
-		/*		
+		// TODO: Fix this properly! Kers!
+		/*
 		camera::CameraManager *cameraManager = camera::CameraManager::getInstance();
 		camera::DummyDriver *dd = new camera::DummyDriver();
 		dd->setImageSize(400, 400);
 		cameraManager->addDriver(dd);
 
-		//camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
-		//cameraManager->addDriver(euresysDriver);
+		/*
+		camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
+		cameraManager->addDriver(euresysDriver);
 
 		camera::CameraIdentifierList identifiers = cameraManager->getCameraIdentifiers();
+		*/
 
-		m_pMainCameraWidget->setCamera(identifiers.at(1));
+		/*
+		this->m_ui.m_pMainCameraWidget->setCamera(identifiers.at(1));
 		m_pMainCameraWidget->start();
+
 		
-		int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
-		int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
-		m_pMainCameraWidget.setImageCorrectionParameters(distortedX, distortedY);
+		unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
+		unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
+		this->m_ui.m_pMainCameraWidget->setImageCorrectionParameters(distortedX, distortedY);
+
+		this->m_ui.m_pMainCameraWidget->setCoordinateMapping(0, 0, 100, 0, 100, 0, 0, 0);
 		*/
 	}
 
 	///
-	/// \brief Creates the buttons for the toolbars and connects them to their slots. 
-	/// (This is only done here because the QT Designer doesn't allow you to do this in the GUI).
-	/// ATTENTION! - The ":/Images" directory here refers to the QT resoures file, the name of the directory
-	/// is case sensitive so it needs to have the exact same name on your filesystem!!
+	/// \brief Creates the action groups for the toolbars (so that only one item is selected at once).
 	///
-	void MainWindow::CreateToolbarButtons()
-	{
-		//
-		// Mode toolbar.
-		//
-		this->m_pPickNPlaceToolAction = new QAction(QIcon(":/Images/pnp_icon.png"), tr("&Pick and Place"), this);
-		this->m_pPickNPlaceToolAction->setCheckable(true);
-		this->m_pPickNPlaceToolAction->setShortcut(tr("Ctrl+P"));
-		this->m_pPickNPlaceToolAction->setStatusTip(tr("Enter Pick and Place mode"));
-		QMainWindow::connect(m_pPickNPlaceToolAction, SIGNAL(triggered()), this, SLOT(PickNPlaceActionTriggered()));
-
-		this->m_pDispenceToolAction = new QAction(QIcon(":/Images/dispence_icon.png"), tr("&Dispence"), this);
-		this->m_pDispenceToolAction->setCheckable(true);
-		this->m_pDispenceToolAction->setShortcut(tr("Ctrl+D"));
-		this->m_pDispenceToolAction->setStatusTip(tr("Enter Dispence mode"));
-		QMainWindow::connect(m_pDispenceToolAction, SIGNAL(triggered()), this, SLOT(DispenceActionTriggered()));
-
+	void MainWindow::CreateToolbarActionGroups()
+	{		
 		// Create an action group so that only one mode can be active at any given time.
 		this->m_pModesActionGroup = new QActionGroup(this);
-		this->m_pModesActionGroup->addAction(this->m_pPickNPlaceToolAction);
-		this->m_pModesActionGroup->addAction(this->m_pDispenceToolAction);
-		this->m_pPickNPlaceToolAction->setChecked(true);
-
-		this->m_ui.m_pModeToolBar->addAction(this->m_pPickNPlaceToolAction);
-		this->m_ui.m_pModeToolBar->addAction(this->m_pDispenceToolAction);
-
-		//
-		// Tools toolbar.
-		//
-		this->m_pZoomToolAction = new QAction(QIcon(":/Images/zoom_icon.png"), tr("&Zoom"), this);
-		this->m_pZoomToolAction->setCheckable(true);
-		this->m_pZoomToolAction->setShortcut(tr("Ctrl+Z"));
-		this->m_pZoomToolAction->setStatusTip(tr("Show the zoomed in camera view for fine positioning"));
-		QMainWindow::connect(m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
-
-		this->m_pShowPolygonToolAction = new QAction(QIcon(":/Images/showpoly_icon.png"), tr("Show &Polygons"), this);
-		this->m_pShowPolygonToolAction->setCheckable(true);
-		this->m_pShowPolygonToolAction->setShortcut(tr("Ctrl+P"));
-		this->m_pShowPolygonToolAction->setStatusTip(tr("Shows polygons on the camera image"));
-		QMainWindow::connect(m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
-
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pZoomToolAction);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pShowPolygonToolAction);
-		this->m_ui.m_pToolsToolBar->addSeparator();
-
-		// Interaction tools.
-		this->m_pMoveToolAction = new QAction(QIcon(":/Images/move_icon.png"), tr("Move"), this);
-		this->m_pMoveToolAction->setCheckable(true);
-		this->m_pMoveToolAction->setChecked(true);
-		QMainWindow::connect(m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
-		
-		this->m_pDispenseDotToolAction = new QAction(QIcon(":/Images/dispensedot_icon.png"), tr("Dispense dot"), this);
-		this->m_pDispenseDotToolAction->setCheckable(true);
-		this->m_pDispenseDotToolAction->setVisible(false);
-		QMainWindow::connect(m_pDispenseDotToolAction, SIGNAL(triggered()), this, SLOT(DispenseDotToolTriggered()));
-		this->m_pDispensePolygonToolAction = new QAction(QIcon(":/Images/dispensepoly_icon.png"), tr("Dispense polygon"), this);
-		this->m_pDispensePolygonToolAction->setCheckable(true);
-		this->m_pDispensePolygonToolAction->setVisible(false);
-		QMainWindow::connect(m_pDispensePolygonToolAction, SIGNAL(triggered()), this, SLOT(DispensePolygonToolTriggered()));
-		
-		this->m_pPickToolAction = new QAction(QIcon(":/Images/pick_icon.png"), tr("Pick"), this);
-		this->m_pPickToolAction->setCheckable(true);
-		QMainWindow::connect(m_pPickToolAction, SIGNAL(triggered()), this, SLOT(PickToolTriggered()));
-		this->m_pPlaceToolAction = new QAction(QIcon(":/Images/place_icon.png"), tr("Place"), this);
-		this->m_pPlaceToolAction->setCheckable(true);
-		QMainWindow::connect(m_pPlaceToolAction, SIGNAL(triggered()), this, SLOT(PlaceToolTriggered()));
-
+		this->m_pModesActionGroup->addAction(this->m_ui.m_pPickNPlaceToolAction);
+		this->m_pModesActionGroup->addAction(this->m_ui.m_pDispenceToolAction);
+	
 		this->m_pInteractionActionGroup = new QActionGroup(this);
-		this->m_pInteractionActionGroup->addAction(this->m_pMoveToolAction);
-		this->m_pInteractionActionGroup->addAction(this->m_pDispenseDotToolAction);
-		this->m_pInteractionActionGroup->addAction(this->m_pDispensePolygonToolAction);
-		this->m_pInteractionActionGroup->addAction(this->m_pPickToolAction);
-		this->m_pInteractionActionGroup->addAction(this->m_pPlaceToolAction);
-
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pMoveToolAction);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pDispenseDotToolAction);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pDispensePolygonToolAction);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pPickToolAction);
-		this->m_ui.m_pToolsToolBar->addAction(this->m_pPlaceToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_ui.m_pMoveToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_ui.m_pDispenseDotToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_ui.m_pDispensePolygonToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_ui.m_pPickToolAction);
+		this->m_pInteractionActionGroup->addAction(this->m_ui.m_pPlaceToolAction);
 	}
 
 	///
@@ -185,11 +123,11 @@ namespace PicknPlaceGui
 	{
 		bool pnp = (this->m_guimode == PickNPlaceMode);
 	
-		this->m_pPickToolAction->setVisible(pnp);
-		this->m_pPlaceToolAction->setVisible(pnp);
+		this->m_ui.m_pPickToolAction->setVisible(pnp);
+		this->m_ui.m_pPlaceToolAction->setVisible(pnp);
 
-		this->m_pDispensePolygonToolAction->setVisible(!pnp);
-		this->m_pDispenseDotToolAction->setVisible(!pnp);
+		this->m_ui.m_pDispensePolygonToolAction->setVisible(!pnp);
+		this->m_ui.m_pDispenseDotToolAction->setVisible(!pnp);
 	}
 
 	///
@@ -208,6 +146,7 @@ namespace PicknPlaceGui
 	void MainWindow::UpdateGuiBasedOnGuiSubMode()
 	{
 		QStackedWidget *msw = this->m_ui.m_pModeStackedWidget;
+		CameraWidget *cw = this->m_ui.m_pMainCameraWidget;
 
 		switch (this->m_subguimode)
 		{
@@ -216,26 +155,31 @@ namespace PicknPlaceGui
 			{
 				msw->setCurrentWidget(this->m_ui.m_pEmptyModePage);
 				this->m_ui.m_pEnqueueCommandFrame->setVisible(false);
+				cw->setMode(CameraWidget::InteractionMode::Move);
 				break;
 			}
 			case Pick:
 			{
 				msw->setCurrentWidget(this->m_ui.m_pPickPlaceModePage);
+				cw->setMode(CameraWidget::InteractionMode::Pick);
 				break;
 			}
 			case Place:
 			{
 				msw->setCurrentWidget(this->m_ui.m_pPickPlaceModePage);
+				cw->setMode(CameraWidget::InteractionMode::Place);
 				break;
 			}
 			case DispenseDot:
 			{
 				msw->setCurrentWidget(this->m_ui.m_pDispenseDotModePage);
+				cw->setMode(CameraWidget::InteractionMode::DispenseDot);
 				break;
 			}
 			case DispensePolygon:
 			{
 				msw->setCurrentWidget(this->m_ui.m_pDispensePolyModePage);
+				cw->setMode(CameraWidget::InteractionMode::DispensePolygon);
 				break;
 			}
 		}
@@ -297,8 +241,33 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ConnectSlots()
 	{
+		//
+		// Mode toolbar.
+		//
+		QMainWindow::connect(this->m_ui.m_pPickNPlaceToolAction, SIGNAL(triggered()), this, SLOT(PickNPlaceActionTriggered()));
+		QMainWindow::connect(this->m_ui.m_pDispenceToolAction, SIGNAL(triggered()), this, SLOT(DispenceActionTriggered()));
+
+		//
+		// Tools toolbar.
+		//
+		QMainWindow::connect(m_ui.m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
+		QMainWindow::connect(m_ui.m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
+
+		// Interaction tools.
+		QMainWindow::connect(m_ui.m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
+		QMainWindow::connect(m_ui.m_pDispenseDotToolAction, SIGNAL(triggered()), this, SLOT(DispenseDotToolTriggered()));
+		QMainWindow::connect(m_ui.m_pDispensePolygonToolAction, SIGNAL(triggered()), this, SLOT(DispensePolygonToolTriggered()));
+		QMainWindow::connect(m_ui.m_pPickToolAction, SIGNAL(triggered()), this, SLOT(PickToolTriggered()));
+		QMainWindow::connect(m_ui.m_pPlaceToolAction, SIGNAL(triggered()), this, SLOT(PlaceToolTriggered()));
+
+		//
+		// Information bar.
+		//
 		QMainWindow::connect(this->m_ui.m_pCloseInformationButton, SIGNAL(pressed()), this, SLOT(CloseInformationBar()));
 
+		//
+		// Other controls.
+		//
 		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(valueChanged(int)), this, SLOT(BrightnessSliderChanged(int)));
 
 		QMainWindow::connect(this->m_ui.m_pLockZPushButton, SIGNAL(toggled(bool)), this, SLOT(ZLockButtonToggled(bool)));
@@ -309,8 +278,6 @@ namespace PicknPlaceGui
 		
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
 			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
-
-		//QMainWindow::connect(this->m_ui.m_pAbortButton, SIGNAL(pressed()), this, SLOT(AbortButtonPressed()));
 	}
 
 	///
@@ -381,7 +348,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::PickNPlaceActionTriggered()
 	{
-		if (this->m_pPickNPlaceToolAction->isChecked())
+		if (this->m_ui.m_pPickNPlaceToolAction->isChecked())
 		{
 			// TODO: Change to Pick and place mode.
 			this->m_guimode = PickNPlaceMode;
@@ -394,7 +361,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::DispenceActionTriggered()
 	{
-		if (this->m_pDispenceToolAction->isChecked())
+		if (this->m_ui.m_pDispenceToolAction->isChecked())
 		{
 			// TODO: Change to Dispence mode.
 			this->m_guimode = DispenceMode;
@@ -407,7 +374,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ZoomActionTriggered()
 	{
-		if (this->m_pZoomToolAction->isChecked())
+		if (this->m_ui.m_pZoomToolAction->isChecked())
 		{
 			// TODO: Turn on the zoom camera on the camera widget.
 		}
@@ -421,7 +388,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ShowPolygonActionTriggered()
 	{
-		if (this->m_pShowPolygonToolAction->isChecked())
+		if (this->m_ui.m_pShowPolygonToolAction->isChecked())
 		{
 			// TODO: Toggle drawing polygons on the camera widget.
 

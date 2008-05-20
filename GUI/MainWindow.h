@@ -86,7 +86,7 @@ namespace PicknPlaceGui
 		void ConnectSlots();
 		void InitCameraManager();
 		void InitMachineController();
-		void CreateToolbarButtons();
+		void CreateToolbarActionGroups();
 		void ToggleInteractionTools();
 		void ShowInformation(QString message, QMessageBox::Icon icon);
 		void SetGuiSubMode(MainWindow::GuiSubMode mode);
@@ -99,23 +99,8 @@ namespace PicknPlaceGui
 
 		QList<GuiMachineCommand> m_commands;		///< The list of machine commands that are to be run.
 
-		// Modes toolbar actions.
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
-		QAction *m_pPickNPlaceToolAction;			///< Toolbar button for activating Pick and Place mode.
-		QAction *m_pDispenceToolAction;				///< Toolbar button for activating Dispence mode.
-
-		// Tools toolbar actions.
-		QAction *m_pZoomToolAction;					///< Toolbar button for toggling the zoom camera on the camera widget.
-		QAction *m_pShowPolygonToolAction;			///< Toolbar button for toggling polygon drawing on the camera widget.
-
 		QActionGroup *m_pInteractionActionGroup;	///< Action Group for the different interactions that can be done with the camera widget.
-		QAction *m_pMoveToolAction;					///< Toolbar button for moving around the work area by clicking on the camera widget.
-		
-		QAction *m_pPickToolAction;					///< Toolbar button for chosing where to pick a component.
-		QAction *m_pPlaceToolAction;				///< Toolbar button for chosing where to place a component.
-
-		QAction *m_pDispensePolygonToolAction;		///< Toolbar button for drawing a dispense polygon.
-		QAction *m_pDispenseDotToolAction;			///< Toolbar button for dispensing a dot.
 	};
 }
 
