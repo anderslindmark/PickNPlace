@@ -260,6 +260,7 @@ void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsi
 	else
 	{
 		m_barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
+		m_barrelCorrection->setEnabled(true);
 		if(m_camera != NULL)
 		{
 			m_camera->addFilter(m_barrelCorrection);
@@ -510,8 +511,8 @@ void CameraWidget::getMachineCoordinateSize(int &width, int &height)
 	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
 	
 	// Machine coordinates have 0,0 in the bottom left corner
-	width = machineRight - machineLeft;
-	height = machineTop - machineBottom;
+	width = abs(machineRight - machineLeft);
+	height = abs(machineTop - machineBottom);
 }
 
 ///
@@ -523,8 +524,8 @@ void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int &w
 	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
 	
 	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
-	widgetX = size().width() * (machineX - machineLeft) / max(1, (machineRight - machineLeft));
-	widgetY = size().height() * (machineY - machineTop) / max(1, (machineBottom - machineTop));
+	widgetX = size().width() * (machineX - machineLeft) / (machineRight - machineLeft);
+	widgetY = size().height() * (machineY - machineTop) / (machineBottom - machineTop);
 }
 
 ///
