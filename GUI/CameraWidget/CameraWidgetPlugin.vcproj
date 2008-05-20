@@ -284,18 +284,22 @@
 			<File
 				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\release\moc_CameraWidget.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
@@ -308,10 +312,6 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\debug\moc_CameraWidgetPlugin.cpp"
-				>
 			</File>
 		</Filter>
 	</Files>

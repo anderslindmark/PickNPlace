@@ -73,6 +73,8 @@ public:
 	QPoint *getPickPoints();
 	QPoint *getPlacePoints();
 
+	void setDispenseDotRadius(float radius);
+
 	void resetCurrentMode();
 	void resetMode(CameraWidget::InteractionMode mode);
 	void resetModes();

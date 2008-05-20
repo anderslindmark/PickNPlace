@@ -187,23 +187,26 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 		}
 		case Pick:
 		{	
-			this->m_currentPickCount++;
 			this->m_currentPickCount = min(this->m_currentPickCount, 2);
 			this->m_pickPoints[this->m_currentPickCount].setX(mouseMachineX);
 			this->m_pickPoints[this->m_currentPickCount].setY(mouseMachineY);
+			this->m_currentPickCount++;
 
 			break;
 		}
 		case Place:
 		{
-			this->m_currentPlaceCount++;
 			this->m_currentPlaceCount = min(this->m_currentPlaceCount, 2);
 			this->m_placePoints[this->m_currentPlaceCount].setX(mouseMachineX);
 			this->m_placePoints[this->m_currentPlaceCount].setY(mouseMachineY);
+			this->m_currentPlaceCount++;
 
 			break;
 		}
 	}
+	
+	// Force a redraw so any new graphics will become visible.
+	this->update();
 
 	if ((this->m_mode == Pick || this->m_mode == Place) && isPickPlaceReady())
 	{
@@ -524,8 +527,10 @@ void CameraWidget::machineToWidgetCoordinates(int machineX, int machineY, int &w
 	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
 	
 	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
-	widgetX = size().width() * (machineX - machineLeft) / (machineRight - machineLeft);
-	widgetY = size().height() * (machineY - machineTop) / (machineBottom - machineTop);
+	int w = size().width();
+	int h = size().height();
+	widgetX = w * (machineX - machineLeft) / (float)(machineRight - machineLeft);
+	widgetY = h * (machineY - machineTop) / (float)(machineBottom - machineTop);
 }
 
 ///
@@ -537,8 +542,17 @@ void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int &mac
 	getVisibleRegion(machineLeft, machineRight, machineTop, machineBottom);
 	
 	// Machine coordinates have 0,0 in the bottom left corner, widget coordinates has it in the upper left.
-	machineX = machineLeft + (machineRight - machineLeft) * (widgetX / size().width());
-	machineY = machineTop + (machineBottom - machineTop) * (widgetY / size().height());
+	int w = size().width();
+	int h = size().height();
+	machineX = machineLeft + (machineRight - machineLeft) * (widgetX / (float)w);
+	machineY = machineTop + (machineBottom - machineTop) * (widgetY / (float)h);
 }
 
-
+///
+/// \brief Sets the radius of the dispense dot.
+///
+void CameraWidget::setDispenseDotRadius(float radius)
+{
+	// TODO: How do we draw this properly???
+	this->m_dispenseDotRadius = radius;
+}
