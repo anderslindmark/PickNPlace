@@ -277,6 +277,16 @@ namespace PicknPlaceGui
 		
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
 			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
+
+		QMainWindow::connect(this->m_ui.m_pClearPickPlacePointsButton, SIGNAL(pressed(int)), this, SLOT(ClearPickPlaceButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pClearPolygonButton, SIGNAL(pressed(int)), this, SLOT(ClearPolygonButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pRemoveDotButton, SIGNAL(pressed(int)), this, SLOT(RemoveDotButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pDispenseDotSpinBox, SIGNAL(valueChanged(int)), this, SLOT(DispenseDotSpinBoxValueChanged(int)));
+
+		QMainWindow::connect(this->m_ui.m_pEnqueueCommandButton, SIGNAL(pressed()), this, SLOT(EnqueueCommandButtonPressed()));
+
+		QMainWindow::connect(this->m_ui.m_pRunCommandsButton, SIGNAL(pressed()), this, SLOT(RunCommandsButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pRemoveCommandButton, SIGNAL(pressed()), this, SLOT(RemoveCommandButtonPressed()));		
 	}
 
 	///
@@ -507,6 +517,56 @@ namespace PicknPlaceGui
 	void MainWindow::DispensePolygonToolTriggered()
 	{
 		SetGuiSubMode(GuiSubMode::DispensePolygon);
+	}
+
+	///
+	/// \brief Slot for when the clear pick and place points button has been clicked.
+	///
+	void MainWindow::ClearPickPlaceButtonPressed()
+	{
+	}
+
+	///
+	/// \brief Slot for when the clear polygon button has been clicked.
+	///
+	void MainWindow::ClearPolygonButtonPressed()
+	{
+		this->m_ui.m_pMainCameraWidget->resetMode(CameraWidget::InteractionMode::DispensePolygon);
+	}
+
+	///
+	/// \brief Slot for when the remove dot button has been clicked.
+	///
+	void MainWindow::RemoveDotButtonPressed()
+	{
+	}
+
+	///
+	/// \brief Slot for when the dispense dot spin box changes value.
+	///
+	void MainWindow::DispenseDotSpinBoxValueChanged(int value)
+	{
+	}
+
+	///
+	/// \brief Slot for when the enqueue command button has been clicked.
+	///
+	void MainWindow::EnqueueCommandButtonPressed()
+	{
+	}
+
+	///
+	/// \brief Slot for when the run commands button has been clicked.
+	///
+	void MainWindow::RunCommandsButtonPressed()
+	{
+	}
+
+	///
+	/// \brief Slot for when the remove command button has been clicked.
+	///
+	void MainWindow::RemoveCommandButtonPressedPressed()
+	{
 	}
 }
 

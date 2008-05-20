@@ -57,6 +57,16 @@ namespace PicknPlaceGui
 		void DispenseDotToolTriggered();
 		void DispensePolygonToolTriggered();
 
+		void ClearPickPlaceButtonPressed();
+		void ClearPolygonButtonPressed();
+		void RemoveDotButtonPressed();
+		void DispenseDotSpinBoxValueChanged(int value);
+
+		void EnqueueCommandButtonPressed();
+
+		void RunCommandsButtonPressed();
+		void RemoveCommandButtonPressedPressed();
+
 	private:
 
 		///
