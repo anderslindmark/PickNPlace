@@ -76,7 +76,7 @@ namespace PicknPlaceGui
 		// Add the dummy driver to the camera manager. This driver is used for testing 
 		// the camera API on a computer without any frame grabber card
 		camera::DummyDriver *dummyDriver = new camera::DummyDriver();
-		dummyDriver.setImageSize(768, 576);
+		dummyDriver->setImageSize(768, 576);
 		cameraManager->addDriver(dummyDriver);
 		
 		// Add the Euresys driver to the camera manager.
@@ -88,17 +88,18 @@ namespace PicknPlaceGui
 		std::string cameraIdentifier = cameraManager->getDriver(0)->getCameraIdentifier(1);
 		// Set which camera the widget shoud use and start the acquiring
 		this->m_ui.m_pMainCameraWidget->setCamera(driverIdentifier, cameraIdentifier);
-		this->m_ui.m_pMainCameraWidget->start();
 		
 		// TODO: Get the correction parameters from the settings
 		unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
 		unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
 		// Set the parameters for the barrel correction filter
-		this->m_ui.m_pMainCameraWidget->setImageCorrectionParameters(distortedX, distortedY);
+		this->m_ui.m_pMainCameraWidget->setImageCorrectionParameters(distortedX, distortedY); // TODO: Causes crash!
 		
 		// TODO: Get the coordinate conversion parameters from the settings
 		// Set the coordinate conversion parameters
 		this->m_ui.m_pMainCameraWidget->setCoordinateMapping(0, 0, 100, 0, 100, 0, 0, 0);
+
+		this->m_ui.m_pMainCameraWidget->start();
 	}
 
 	///
@@ -559,6 +560,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::DispenseDotSpinBoxValueChanged(int value)
 	{
+		this->m_ui.m_pMainCameraWidget->setDispenseDotRadius(value);
 	}
 
 	///
