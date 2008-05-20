@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>705</width>
-    <height>598</height>
+    <width>729</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="minimumSize" >
@@ -17,6 +17,9 @@
   </property>
   <property name="windowTitle" >
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="pnp.qrc" >:/Images/pnp_icon.png</iconset>
   </property>
   <widget class="QWidget" name="m_pCentralwidget" >
    <layout class="QVBoxLayout" >
@@ -228,7 +231,7 @@
               <string/>
              </property>
              <property name="pixmap" >
-              <pixmap resource="pnp.qrc" >:/Images/sun.png</pixmap>
+              <pixmap resource="pnp.qrc" >:/Images/light.png</pixmap>
              </property>
             </widget>
            </item>
@@ -254,7 +257,7 @@
               <string/>
              </property>
              <property name="pixmap" >
-              <pixmap resource="pnp.qrc" >:/Images/moon.png</pixmap>
+              <pixmap resource="pnp.qrc" >:/Images/dark.png</pixmap>
              </property>
             </widget>
            </item>
@@ -482,26 +485,93 @@
           </size>
          </property>
          <property name="currentIndex" >
-          <number>1</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="m_pEmptyModePage" />
          <widget class="QWidget" name="m_pPickPlaceModePage" >
           <widget class="QPushButton" name="m_pClearPickPlacePoints" >
            <property name="geometry" >
             <rect>
-             <x>110</x>
+             <x>60</x>
              <y>10</y>
              <width>75</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text" >
-            <string>Clear</string>
+            <string>Clear points</string>
            </property>
           </widget>
          </widget>
-         <widget class="QWidget" name="m_pDispenseDotModePage" />
-         <widget class="QWidget" name="m_pDispensePolyModePage" />
+         <widget class="QWidget" name="m_pDispenseDotModePage" >
+          <widget class="QSpinBox" name="m_pDispenseDotSpinBox" >
+           <property name="geometry" >
+            <rect>
+             <x>70</x>
+             <y>10</y>
+             <width>42</width>
+             <height>20</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="m_pDispenseDotRadiusLabel" >
+           <property name="geometry" >
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>61</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text" >
+            <string>Dot radius:</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_pDispenseDotSpinBox</cstring>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="m_pRemoveDotButton" >
+           <property name="geometry" >
+            <rect>
+             <x>120</x>
+             <y>10</y>
+             <width>75</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text" >
+            <string>Remove dot</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="m_pDispensePolyModePage" >
+          <widget class="QPushButton" name="m_pClearPolygonButton" >
+           <property name="geometry" >
+            <rect>
+             <x>120</x>
+             <y>10</y>
+             <width>75</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text" >
+            <string>Clear polygon</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="m_pRemoveLastPointButton" >
+           <property name="geometry" >
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>101</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text" >
+            <string>Remove last point</string>
+           </property>
+          </widget>
+         </widget>
         </widget>
        </item>
        <item>
@@ -765,7 +835,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>705</width>
+     <width>729</width>
      <height>22</height>
     </rect>
    </property>
@@ -1006,12 +1076,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>598</x>
-     <y>406</y>
+     <x>707</x>
+     <y>415</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>597</x>
-     <y>451</y>
+     <x>707</x>
+     <y>489</y>
     </hint>
    </hints>
   </connection>
@@ -1022,12 +1092,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>597</x>
-     <y>451</y>
+     <x>707</x>
+     <y>489</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>598</x>
-     <y>347</y>
+     <x>707</x>
+     <y>415</y>
     </hint>
    </hints>
   </connection>

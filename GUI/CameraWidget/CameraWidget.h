@@ -73,6 +73,7 @@ public:
 	QPoint *getPickPoints();
 	QPoint *getPlacePoints();
 
+	void resetCurrentMode();
 	void resetMode(CameraWidget::InteractionMode mode);
 	void resetModes();
 

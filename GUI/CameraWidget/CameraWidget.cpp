@@ -448,6 +448,14 @@ void CameraWidget::resetMode(InteractionMode mode)
 }
 
 ///
+/// \brief Resets the current GUI mode.
+///
+void CameraWidget::resetCurrentMode()
+{
+	this->resetMode(this->m_mode);
+}
+
+///
 /// \brief Resets all the pick/place/dispense points and polygons.
 ///
 void CameraWidget::resetModes()

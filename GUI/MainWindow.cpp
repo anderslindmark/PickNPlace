@@ -154,7 +154,6 @@ namespace PicknPlaceGui
 			case Move:
 			{
 				msw->setCurrentWidget(this->m_ui.m_pEmptyModePage);
-				this->m_ui.m_pEnqueueCommandFrame->setVisible(false);
 				cw->setMode(CameraWidget::InteractionMode::Move);
 				break;
 			}
@@ -250,15 +249,15 @@ namespace PicknPlaceGui
 		//
 		// Tools toolbar.
 		//
-		QMainWindow::connect(m_ui.m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
-		QMainWindow::connect(m_ui.m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
+		QMainWindow::connect(this->m_ui.m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
+		QMainWindow::connect(this->m_ui.m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
 
 		// Interaction tools.
-		QMainWindow::connect(m_ui.m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
-		QMainWindow::connect(m_ui.m_pDispenseDotToolAction, SIGNAL(triggered()), this, SLOT(DispenseDotToolTriggered()));
-		QMainWindow::connect(m_ui.m_pDispensePolygonToolAction, SIGNAL(triggered()), this, SLOT(DispensePolygonToolTriggered()));
-		QMainWindow::connect(m_ui.m_pPickToolAction, SIGNAL(triggered()), this, SLOT(PickToolTriggered()));
-		QMainWindow::connect(m_ui.m_pPlaceToolAction, SIGNAL(triggered()), this, SLOT(PlaceToolTriggered()));
+		QMainWindow::connect(this->m_ui.m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
+		QMainWindow::connect(this->m_ui.m_pDispenseDotToolAction, SIGNAL(triggered()), this, SLOT(DispenseDotToolTriggered()));
+		QMainWindow::connect(this->m_ui.m_pDispensePolygonToolAction, SIGNAL(triggered()), this, SLOT(DispensePolygonToolTriggered()));
+		QMainWindow::connect(this->m_ui.m_pPickToolAction, SIGNAL(triggered()), this, SLOT(PickToolTriggered()));
+		QMainWindow::connect(this->m_ui.m_pPlaceToolAction, SIGNAL(triggered()), this, SLOT(PlaceToolTriggered()));
 
 		//
 		// Information bar.
