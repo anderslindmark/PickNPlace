@@ -76,7 +76,7 @@ namespace PicknPlaceGui
 		// Add the dummy driver to the camera manager. This driver is used for testing 
 		// the camera API on a computer without any frame grabber card
 		camera::DummyDriver *dummyDriver = new camera::DummyDriver();
-		dummyDriver->setImageSize(400, 400);
+		dummyDriver.setImageSize(768, 576);
 		cameraManager->addDriver(dummyDriver);
 		
 		// Add the Euresys driver to the camera manager.
