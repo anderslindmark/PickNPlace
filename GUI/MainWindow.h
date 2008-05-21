@@ -13,6 +13,7 @@
 #include "CameraListener.h"
 #include "CameraException.h"
 #include "GuiMachineCommand.h"
+#include "DispenceDotCommand.h"
 
 namespace PicknPlaceGui
 {
@@ -71,6 +72,7 @@ namespace PicknPlaceGui
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon);
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints);
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot);
+		void CameraWidgetCommandInvalid();
 
 	private:
 

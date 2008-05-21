@@ -75,6 +75,14 @@ void CameraWidget::mouseMoveEvent(QMouseEvent * event)
 	this->update();
 }
 
+void CameraWidget::leaveEvent(QEvent * event)
+{
+	// Don't draw the helper line when moving outside the control.
+	this->m_mouseX = this->size().width() + 1;
+	this->m_mouseY = this->size().height() + 1;
+	this->update();
+}
+
 void CameraWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
@@ -177,33 +185,36 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 				//
 				// Draw a helper line.
 				//
-				painter.setPen(QPen(QBrush(QColor(255, 150, 0, 200)), 2, Qt::DotLine));
-
-				MachinePolygonPoint prev = points.back();
-
-				int adjustedX = 0;
-				int adjustedY = 0;
-				this->machineToWidgetCoordinates(prev.x, prev.y, widgetX, widgetY);
-				// TODO: Put the stuff below in a separate function (used in 2 places).
-				int deltaX = this->m_mouseX - widgetX;
-				int deltaY = this->m_mouseY - widgetY;
-				
-				// Dispense polygons only allow points that are at 90 degree angels to each other
-				// so we snap the actual point to one of the axis here.
-				if (abs(deltaX) >= abs(deltaY))
+				if (this->m_mouseX < this->size().width() && this->m_mouseY < this->size().height())
 				{
-					// Snap to X-axis.
-					adjustedX = this->m_mouseX;
-					adjustedY = widgetY;
-				}
-				else
-				{
-					// Snap to Y-axis.
-					adjustedX = widgetX;
-					adjustedY = this->m_mouseY;
-				}
+					painter.setPen(QPen(QBrush(QColor(255, 150, 0, 200)), 2, Qt::DotLine));
 
-				painter.drawLine(widgetX, widgetY, adjustedX, adjustedY);
+					MachinePolygonPoint prev = points.back();
+
+					int adjustedX = 0;
+					int adjustedY = 0;
+					this->machineToWidgetCoordinates(prev.x, prev.y, widgetX, widgetY);
+					// TODO: Put the stuff below in a separate function (used in 2 places).
+					int deltaX = this->m_mouseX - widgetX;
+					int deltaY = this->m_mouseY - widgetY;
+					
+					// Dispense polygons only allow points that are at 90 degree angels to each other
+					// so we snap the actual point to one of the axis here.
+					if (abs(deltaX) >= abs(deltaY))
+					{
+						// Snap to X-axis.
+						adjustedX = this->m_mouseX;
+						adjustedY = widgetY;
+					}
+					else
+					{
+						// Snap to Y-axis.
+						adjustedX = widgetX;
+						adjustedY = this->m_mouseY;
+					}
+
+					painter.drawLine(widgetX, widgetY, adjustedX, adjustedY);
+				}
 			}
 			break;
 		}

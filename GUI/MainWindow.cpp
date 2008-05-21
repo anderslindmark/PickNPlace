@@ -35,6 +35,27 @@ namespace PicknPlaceGui
 		this->CreateToolbarActionGroups();
 		this->SetGuiSubMode(Move);
 		this->InitMachineController();
+
+		this->m_pCurrentNewCommand = NULL;
+	}
+
+	
+	///
+	/// \brief Destructor.
+	///
+	MainWindow::~MainWindow()
+	{		
+		if (this->m_pMC)
+		{
+			// Make sure the machine controller has done its business.
+			this->m_pMC->Wait();
+			delete this->m_pMC;
+		}
+
+		if (this->m_pCurrentNewCommand)
+		{
+			delete this->m_pCurrentNewCommand;
+		}
 	}
 
 	///
@@ -307,21 +328,10 @@ namespace PicknPlaceGui
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, PicknPlaceGui::DispencePolygonCommand)));
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)),
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)));
-		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)),
-			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint dot)));
-	}
-
-	///
-	/// \brief Destructor, cleanup of the Machine controller.
-	///
-	MainWindow::~MainWindow()
-	{		
-		if (this->m_pMC)
-		{
-			// Make sure the machine controller has done its business.
-			this->m_pMC->Wait();
-			delete this->m_pMC;
-		}
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint)),
+			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint)));
+	
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandInvalid()), this, SLOT(CameraWidgetCommandInvalid()));
 	}
 
 	void MainWindow::closeEvent(QCloseEvent *event)
@@ -586,6 +596,18 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::EnqueueCommandButtonPressed()
 	{
+		CameraWidget *cw = this->m_ui.m_pMainCameraWidget;
+		CameraWidget::InteractionMode cmode = cw->getMode();
+
+		if (cmode == CameraWidget::InteractionMode::DispensePolygon)
+		{
+
+			DispencePolygonCommand dpc = DispencePolygonCommand(*cw->getDispensePolygon());
+			this->m_commands.append(dpc);
+
+			//GuiMachineCommand *gmc = this->m_pCurrentNewCommand;
+			//this->m_commands.append(*this->m_pCurrentNewCommand);
+		}
 	}
 
 	///
@@ -615,6 +637,18 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon)
 	{
+		/*
+		if (this->m_pCurrentNewCommand)
+		{
+			delete this->m_pCurrentNewCommand;
+		}
+
+		this->m_pCurrentNewCommand = new DispencePolygonCommand(*polygon);
+		*/
+
+		// TODO: Set speeds and such from the GUI.
+
+		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
 	}
 
 	///
@@ -622,6 +656,14 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints)
 	{
+		/*
+		if (this->m_pCurrentNewCommand)
+		{
+			delete this->m_pCurrentNewCommand;
+		}
+		*/
+
+		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
 	}
 
 	///
@@ -629,7 +671,28 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot)
 	{
-	}	
+		/*
+		if (this->m_pCurrentNewCommand)
+		{
+			delete this->m_pCurrentNewCommand;
+		}
+
+		//(int x, int y, DispenceStateStruct settings)
+
+		DispenceStateStruct dss = DispenceStateStruct(); // TODO: Get the values for this.
+		this->m_pCurrentNewCommand = new DispenceDotCommand(dot.x(), dot.y(), dss);
+		*/
+
+		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
+	}
+
+	///
+	/// \brief Slot for when the camera widget doesn't have enough information to create a new command anymore.
+	///
+	void MainWindow::CameraWidgetCommandInvalid()
+	{
+		this->m_ui.m_pEnqueueCommandButton->setEnabled(false);
+	}
 }
 
 

@@ -9,7 +9,7 @@ namespace PicknPlaceGui
 		m_isNull = true;
 	}
 
-	DispencePolygonCommand(DispencePolygonCommand &cmd)
+	DispencePolygonCommand::DispencePolygonCommand(const DispencePolygonCommand &cmd)
 	{
 		m_settings = cmd.m_settings;
 		m_points = cmd.m_points;

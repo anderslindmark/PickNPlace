@@ -116,6 +116,7 @@ protected:
 	void resizeEvent(QResizeEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseMoveEvent(QMouseEvent * event);
+	void leaveEvent(QEvent * event);
     
 private:
 
