@@ -51,7 +51,7 @@ namespace PicknPlaceGui
 
 		if (ret == QMessageBox::Cancel)
 		{
-			// TODO: Abort and shutdown.
+			// TODO: Abort and shutdown. Or maybe disable all controls and show a "init button" only in the gui.
 			return;
 		}
 
@@ -282,9 +282,9 @@ namespace PicknPlaceGui
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
 			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
 
-		QMainWindow::connect(this->m_ui.m_pClearPickPlacePointsButton, SIGNAL(pressed(int)), this, SLOT(ClearPickPlaceButtonPressed()));
-		QMainWindow::connect(this->m_ui.m_pClearPolygonButton, SIGNAL(pressed(int)), this, SLOT(ClearPolygonButtonPressed()));
-		QMainWindow::connect(this->m_ui.m_pRemoveDotButton, SIGNAL(pressed(int)), this, SLOT(RemoveDotButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pClearPickPlacePointsButton, SIGNAL(pressed()), this, SLOT(ClearPickPlaceButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pClearPolygonButton, SIGNAL(pressed()), this, SLOT(ClearPolygonButtonPressed()));
+		QMainWindow::connect(this->m_ui.m_pRemoveDotButton, SIGNAL(pressed()), this, SLOT(RemoveDotButtonPressed()));
 		QMainWindow::connect(this->m_ui.m_pDispenseDotSpinBox, SIGNAL(valueChanged(int)), this, SLOT(DispenseDotSpinBoxValueChanged(int)));
 
 		QMainWindow::connect(this->m_ui.m_pEnqueueCommandButton, SIGNAL(pressed()), this, SLOT(EnqueueCommandButtonPressed()));
