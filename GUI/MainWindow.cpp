@@ -90,10 +90,18 @@ namespace PicknPlaceGui
 		this->m_ui.m_pMainCameraWidget->setCamera(driverIdentifier, cameraIdentifier);
 		
 		// TODO: Get the correction parameters from the settings
-		unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
-		unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
+		int distortedRectangle[8][2] = {
+			{31, 60},
+			{350, 30},
+			{732, 17},
+			{30, 288},
+			{741, 288},
+			{37, 513},
+			{355, 542},
+			{731, 550}
+		};
 		// Set the parameters for the barrel correction filter
-		this->m_ui.m_pMainCameraWidget->setImageCorrectionParameters(distortedX, distortedY); // TODO: Causes crash!
+		this->m_ui.m_pMainCameraWidget->setImageCorrectionParameters(distortedRectangle);
 		
 		// TODO: Get the coordinate conversion parameters from the settings
 		// Set the coordinate conversion parameters
