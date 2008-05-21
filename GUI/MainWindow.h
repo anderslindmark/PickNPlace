@@ -67,6 +67,11 @@ namespace PicknPlaceGui
 		void RunCommandsButtonPressed();
 		void RemoveCommandButtonPressedPressed();
 
+		void CameraWidgetNewMachineCoordinates(int newMachineX, int newMachineY);
+		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon);
+		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints);
+		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot);
+
 	private:
 
 		///

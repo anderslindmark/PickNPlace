@@ -28,6 +28,7 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 	this->m_machineX			= 0;
 	this->m_machineY			= 0;
 	this->m_machineZ			= 0;
+	this->m_dispenseDotRadius	= 1;
 
 	this->m_mode = Pick;
 }
@@ -67,6 +68,13 @@ void CameraWidget::cameraError(camera::Camera *camera, int errorCode, const std:
 	qWarning("cameraError: #%d: %s", errorCode, errorMessage);
 }
 
+void CameraWidget::mouseMoveEvent(QMouseEvent * event)
+{
+	this->m_mouseX = event->x();
+	this->m_mouseY = event->y();
+	this->update();
+}
+
 void CameraWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
@@ -85,17 +93,144 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 		
 	// TODO: Draw the commands in the command queue
 	
-	// TODO: Draw the current command being created.
-	painter.setBrush(Qt::red);
-	painter.setPen(Qt::darkRed);
-
+	//
+	// Draw the current command being created by the user.
+	//
 	int widgetX = 0;
-	int widgetY = 0;
+	int widgetY = 0;	
+	int nodeSize = 5;
 
-	for (int i = 0; i < 3; i++)
+	switch (this->m_mode)
 	{
-		this->machineToWidgetCoordinates(this->m_pickPoints[i].x(), this->m_pickPoints[i].y(), widgetX, widgetY);
-		painter.drawEllipse(widgetX, widgetY, 5, 5);
+		default:
+		case Move:
+		{
+			break;
+		}
+		case Calibration:
+		{
+			break;
+		}
+		case DispenseDot:
+		{
+			// TODO: How do we draw this properly???
+			nodeSize = (int)this->m_dispenseDotRadius;
+
+			QBrush b = QBrush(QColor(0, 255, 0, 200));
+			painter.setBrush(b);
+			painter.setPen(Qt::darkGreen);
+
+			QPoint p = this->m_dispenseDotPoint;
+
+			this->machineToWidgetCoordinates(p.x(), p.y(), widgetX, widgetY);
+			painter.drawEllipse(widgetX - (nodeSize / 2), widgetY - (nodeSize / 2), nodeSize, nodeSize);
+			
+			break;
+		}
+		case DispensePolygon:
+		{	
+			if (this->m_pDispensePolygon)
+			{
+				nodeSize = 10;
+
+				QBrush b = QBrush(QColor(0, 255, 0, 200));
+				painter.setBrush(b);
+				painter.setPen(Qt::darkGreen);
+				
+				QPen p = painter.pen();
+				QPen fatPen = painter.pen();
+				fatPen.setWidth(2);
+
+				std::vector<MachinePolygonPoint> points = this->m_pDispensePolygon->GetPoints();
+								
+				//
+				// Draw polygon lines.
+				//
+				int prevX = 0;
+				int prevY = 0;
+				painter.setPen(fatPen);
+
+				for (int i = 0; i < points.size(); i++)
+				{
+					this->machineToWidgetCoordinates(points[i].x, points[i].y, widgetX, widgetY);
+					
+					if (i != 0)
+					{					
+						painter.drawLine(prevX, prevY, widgetX, widgetY);
+					}
+					
+					prevX = widgetX;
+					prevY = widgetY;
+				}
+
+				//
+				// Draw corner points.
+				//
+				painter.setPen(p);
+
+				for (int i = 0; i < points.size(); i++)
+				{
+					this->machineToWidgetCoordinates(points[i].x, points[i].y, widgetX, widgetY);
+					painter.drawEllipse(widgetX - (nodeSize / 2), widgetY - (nodeSize / 2), nodeSize, nodeSize);
+				}
+
+				//
+				// Draw a helper line.
+				//
+				painter.setPen(QPen(QBrush(QColor(255, 150, 0, 200)), 2, Qt::DotLine));
+
+				MachinePolygonPoint prev = points.back();
+
+				int adjustedX = 0;
+				int adjustedY = 0;
+				this->machineToWidgetCoordinates(prev.x, prev.y, widgetX, widgetY);
+				// TODO: Put the stuff below in a separate function (used in 2 places).
+				int deltaX = this->m_mouseX - widgetX;
+				int deltaY = this->m_mouseY - widgetY;
+				
+				// Dispense polygons only allow points that are at 90 degree angels to each other
+				// so we snap the actual point to one of the axis here.
+				if (abs(deltaX) >= abs(deltaY))
+				{
+					// Snap to X-axis.
+					adjustedX = this->m_mouseX;
+					adjustedY = widgetY;
+				}
+				else
+				{
+					// Snap to Y-axis.
+					adjustedX = widgetX;
+					adjustedY = this->m_mouseY;
+				}
+
+				painter.drawLine(widgetX, widgetY, adjustedX, adjustedY);
+			}
+			break;
+		}
+		case Pick:
+		{	
+			painter.setBrush(Qt::red);
+			painter.setPen(Qt::darkRed);
+
+			for (int i = 0; i < 3; i++)
+			{
+				this->machineToWidgetCoordinates(this->m_pickPoints[i].x(), this->m_pickPoints[i].y(), widgetX, widgetY);
+				painter.drawEllipse(widgetX, widgetY, 5, 5);
+			}
+			break;
+		}
+		case Place:
+		{
+			painter.setBrush(Qt::blue);
+			painter.setPen(Qt::darkBlue);
+
+			for (int i = 0; i < 3; i++)
+			{
+				this->machineToWidgetCoordinates(this->m_placePoints[i].x(), this->m_placePoints[i].y(), widgetX, widgetY);
+				painter.drawEllipse(widgetX, widgetY, 5, 5);
+			}
+			break;
+		}
 	}
 }
 
@@ -148,33 +283,38 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 		{
 			if (button == Qt::LeftButton)
 			{
-				if (this->m_pDispensePolygon == NULL)
-				{
-					this->m_pDispensePolygon = new PicknPlaceGui::DispencePolygonCommand();
-				}
-
-				// Get the previous point.
-				MachinePolygonPoint prev = this->m_pDispensePolygon->GetPoints().back();
-
 				int adjustedX = 0;
 				int adjustedY = 0;
 
-				int deltaX = mouseMachineX - prev.x;
-				int deltaY = mouseMachineY - prev.y;
-				
-				// Dispense polygons only allow points that are at 90 degree angels to each other
-				// so we snap the actual point to one of the axis here.
-				if (abs(deltaX) >= abs(deltaY))
+				if (this->m_pDispensePolygon == NULL)
 				{
-					// Snap to X-axis.
+					this->m_pDispensePolygon = new PicknPlaceGui::DispencePolygonCommand();
+					
 					adjustedX = mouseMachineX;
-					adjustedY = prev.y;
+					adjustedY = mouseMachineY;
 				}
 				else
 				{
-					// Snap to Y-axis.
-					adjustedX = prev.x;
-					adjustedY = mouseMachineY;
+					// Get the previous point.
+					MachinePolygonPoint prev = this->m_pDispensePolygon->GetPoints().back();
+
+					int deltaX = mouseMachineX - prev.x;
+					int deltaY = mouseMachineY - prev.y;
+					
+					// Dispense polygons only allow points that are at 90 degree angels to each other
+					// so we snap the actual point to one of the axis here.
+					if (abs(deltaX) >= abs(deltaY))
+					{
+						// Snap to X-axis.
+						adjustedX = mouseMachineX;
+						adjustedY = prev.y;
+					}
+					else
+					{
+						// Snap to Y-axis.
+						adjustedX = prev.x;
+						adjustedY = mouseMachineY;
+					}
 				}
 
 				MachinePolygonPoint pp(adjustedX, adjustedY);
@@ -219,7 +359,7 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 ///
 bool CameraWidget::isPickPlaceReady()
 {
-	bool ready = false;
+	bool ready = true;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -371,14 +511,14 @@ QImage *CameraWidget::getQImage()
 	return &m_image;
 }
 
-// TODO: Add a way to add points to draw... This will be used when creating new pick/place commands, so that they are drawn before the actual command has been created.
-
 ///
 /// \brief Sets the interaction mode for the camera widget. Is the user picking/placing/moving/dispensing?
 ///
 void CameraWidget::setMode(InteractionMode mode)
 {
 	this->m_mode = mode;
+	this->setMouseTracking(this->m_mode == DispensePolygon);
+	this->update();
 }
 
 ///
@@ -411,6 +551,7 @@ void CameraWidget::resetMode(InteractionMode mode)
 		{
 			this->m_dispenseDotPoint.setX(0);
 			this->m_dispenseDotPoint.setY(0);
+			this->m_dispenseDotRadius = 0;
 			break;
 		}
 		case DispensePolygon:
@@ -444,9 +585,15 @@ void CameraWidget::resetMode(InteractionMode mode)
 				this->m_placePoints[i].setX(0);
 				this->m_placePoints[i].setY(0);
 			}
+			
+			this->m_currentPlaceCount = 0;
+
 			break;
 		}
 	}
+
+	// Make sure we redraw.
+	this->update();
 
 	emit this->commandInvalid();
 }
@@ -553,6 +700,6 @@ void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int &mac
 ///
 void CameraWidget::setDispenseDotRadius(float radius)
 {
-	// TODO: How do we draw this properly???
 	this->m_dispenseDotRadius = radius;
+	this->update();
 }

@@ -115,6 +115,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 	void resizeEvent(QResizeEvent * event);
 	void mousePressEvent(QMouseEvent * event);
+	void mouseMoveEvent(QMouseEvent * event);
     
 private:
 
@@ -155,6 +156,9 @@ private:
 
 	// Dispense polygon.
 	PicknPlaceGui::DispencePolygonCommand *m_pDispensePolygon;	///< The dispense polygon when the user is creating a new one.
+
+	int m_mouseX;
+	int m_mouseY;
 };
 
 #endif // __CAMERAWIDGET_H__

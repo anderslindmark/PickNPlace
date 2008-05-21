@@ -298,7 +298,17 @@ namespace PicknPlaceGui
 		QMainWindow::connect(this->m_ui.m_pEnqueueCommandButton, SIGNAL(pressed()), this, SLOT(EnqueueCommandButtonPressed()));
 
 		QMainWindow::connect(this->m_ui.m_pRunCommandsButton, SIGNAL(pressed()), this, SLOT(RunCommandsButtonPressed()));
-		QMainWindow::connect(this->m_ui.m_pRemoveCommandButton, SIGNAL(pressed()), this, SLOT(RemoveCommandButtonPressed()));		
+		QMainWindow::connect(this->m_ui.m_pRemoveCommandButton, SIGNAL(pressed()), this, SLOT(RemoveCommandButtonPressed()));
+
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(newMachineCoordinates(int, int)), 
+			this, SLOT(CameraWidgetNewMachineCoordinates(int, int)));
+		
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, PicknPlaceGui::DispencePolygonCommand)),
+			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, PicknPlaceGui::DispencePolygonCommand)));
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)),
+			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)));
+		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)),
+			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint dot)));
 	}
 
 	///
@@ -591,6 +601,35 @@ namespace PicknPlaceGui
 	void MainWindow::RemoveCommandButtonPressedPressed()
 	{
 	}
+
+	///
+	/// \brief Slot for when the camera widget wants the machine to move.
+	///
+	void MainWindow::CameraWidgetNewMachineCoordinates(int newMachineX, int newMachineY)
+	{
+		// TODO: Move the machine!
+	}
+
+	///
+	/// \brief Slot for when the camera widget has enough information to create a new command.
+	///
+	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon)
+	{
+	}
+
+	///
+	/// \brief Slot for when the camera widget has enough information to create a new command.
+	///
+	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints)
+	{
+	}
+
+	///
+	/// \brief Slot for when the camera widget has enough information to create a new command.
+	///
+	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot)
+	{
+	}	
 }
 
 
