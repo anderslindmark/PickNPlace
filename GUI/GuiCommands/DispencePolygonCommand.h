@@ -12,6 +12,7 @@ namespace PicknPlaceGui
 	{
 	public:
 		DispencePolygonCommand();
+		DispencePolygonCommand(DispencePolygonCommand &cmd);
 		DispencePolygonCommand(DispenceStateStruct settings);
 		~DispencePolygonCommand(void);
 		MachineWrapperCommand& GetMachineCommand();
