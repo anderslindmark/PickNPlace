@@ -254,15 +254,15 @@ void CameraWidget::setCamera(const std::string &driverIdentifier, const std::str
 /// \brief Sets the image correction parameters used to get rid of the barrel distortion.
 /// TODO: Explain more how to obtain these coordinates.
 ///
-void CameraWidget::setImageCorrectionParameters(unsigned int distortedX[8], unsigned int distortedY[8])
+void CameraWidget::setImageCorrectionParameters(int distortedRectangle[8][2])
 {
 	if(m_barrelCorrection != NULL)
 	{
-		m_barrelCorrection->setDistortedCoordinates(distortedX, distortedY);
+		m_barrelCorrection->setDistortedCoordinates(distortedRectangle);
 	}
 	else
 	{
-		m_barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
+		m_barrelCorrection = new camera::BarrelCorrection(distortedRectangle);
 		m_barrelCorrection->setEnabled(true);
 		if(m_camera != NULL)
 		{
