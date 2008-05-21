@@ -14,7 +14,8 @@ win32:LIBS += ../../Release/CameraAPI.lib \
 HEADERS     = CameraWidget.h \
               CameraWidgetPlugin.h \
               DispencePolygonCommand.h \
-              GuiMachineCommand.h
+              GuiMachineCommand.h \
+              BarrelCorrection.h
 SOURCES     = CameraWidget.cpp \
               CameraWidgetPlugin.cpp
 

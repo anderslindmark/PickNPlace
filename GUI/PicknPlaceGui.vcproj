@@ -82,7 +82,7 @@
 				OutputFile="release\PicknPlaceGui.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\MachineAPI\Release;..\Release;&quot;$(QTDIR)\lib&quot;;&quot;$(QTDIR)\plugins\designer&quot;;..\CameraAPI\Release;..\CameraAPI\euresys\Lib;.\GuiCommands\Release"
+				AdditionalLibraryDirectories="..\MachineAPI\Release;..\Release;..\CameraAPI\Release;..\CameraAPI\euresys\Lib;.\GuiCommands\Release;&quot;$(QTDIR)\lib&quot;;&quot;$(QTDIR)\plugins\designer&quot;"
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs=""
 				ProgramDatabaseFile=".\release/PicknPlaceGui.pdb"
@@ -330,10 +330,10 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\release\moc_MainWindow.cpp"
+				RelativePath=".\Debug\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -342,10 +342,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Debug\moc_MainWindow.cpp"
+				RelativePath=".\release\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
