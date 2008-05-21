@@ -150,7 +150,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 				int prevY = 0;
 				painter.setPen(fatPen);
 
-				for (int i = 0; i < points.size(); i++)
+				for (unsigned int i = 0; i < points.size(); i++)
 				{
 					this->machineToWidgetCoordinates(points[i].x, points[i].y, widgetX, widgetY);
 					
@@ -168,7 +168,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 				//
 				painter.setPen(p);
 
-				for (int i = 0; i < points.size(); i++)
+				for (unsigned int i = 0; i < points.size(); i++)
 				{
 					this->machineToWidgetCoordinates(points[i].x, points[i].y, widgetX, widgetY);
 					painter.drawEllipse(widgetX - (nodeSize / 2), widgetY - (nodeSize / 2), nodeSize, nodeSize);
@@ -398,7 +398,7 @@ void CameraWidget::setImageCorrectionParameters(int distortedRectangle[8][2])
 {
 	if(m_barrelCorrection != NULL)
 	{
-		m_barrelCorrection->setDistortedCoordinates(distortedRectangle);
+		m_barrelCorrection->setDistortedRectangle(distortedRectangle);
 	}
 	else
 	{
