@@ -1,4 +1,5 @@
 #include "BarrelCorrection.h"
+#include "CameraException.h"
 #include "log.h"
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
@@ -6,7 +7,7 @@
 namespace camera 
 {
 
-BarrelCorrection::BarrelCorrection(unsigned int distortedX[8], unsigned int distortedY[8])
+BarrelCorrection::BarrelCorrection(int distortedRectangle[8][2])
 {
 	LOG_TRACE("BarrelCorrection::BarrelCorrection()");
 	
@@ -15,7 +16,7 @@ BarrelCorrection::BarrelCorrection(unsigned int distortedX[8], unsigned int dist
 	m_pixelMapping = NULL;
 	m_correctedImage = NULL;
 
-	setDistortedCoordinates(distortedX, distortedY);
+	setDistortedRectangle(distortedRectangle);
 }
 
 BarrelCorrection::~BarrelCorrection()
@@ -43,19 +44,28 @@ Image *BarrelCorrection::apply(Image *image)
 	}
 	
 	if(m_correctedImage == NULL || m_pixelMapping == NULL)
-		return image;
+	{
+		LOG_ERROR("BarrelCorrection::apply(): Output image or pixel mapping array is not set. The filter is not ready to be applied");
+		throw CameraException("Output image or pixel mapping array is not set. The filter is not ready to be applied");
+	}
 	
 	if(image->getFormat() != Image::FORMAT_RGB32)
 	{
 		LOG_ERROR("BarrelCorrection::apply(): Input image is not in RGB32 format");
-		return image;
+		throw CameraException("Input image is not in RGB32 format");
 	}
 	
 	int numPixels                   = m_correctedImage->getWidth() * m_correctedImage->getHeight();
-	unsigned int *mapping           = m_pixelMapping;
+	int *mapping                    = m_pixelMapping;
 	ImageBuffer *cBufferAddr		= m_correctedImage->getBufferAddress();
 	ImageBuffer *dBufferBaseAddr	= image->getBufferAddress();
 	ImageBuffer *dBufferAddr		= NULL;
+	
+	if(m_pixelMappingMin < 0 || m_pixelMappingMax * 4 > image->getBufferSize())
+	{
+		LOG_ERROR("BarrelCorrection::apply(): Input image is not too small to contain the specified distorted rectangle");
+		throw CameraException("Input image is not too small to contain the specified distorted rectangle");
+	}
 	
 	for(int i = 0; i < numPixels; i++)
 	{
@@ -67,27 +77,29 @@ Image *BarrelCorrection::apply(Image *image)
 		*(cBufferAddr++) = *(dBufferAddr++); // G (Green)
 		*(cBufferAddr++) = *(dBufferAddr++); // R (Red)
 		*(cBufferAddr++) = *(dBufferAddr++); // X (Not used)
-		
 		mapping++;
+		
+		//memcpy(cBufferAddr, dBufferAddr, 4);
+		//mapping += 4;
 	}
 	
 	return m_correctedImage;
 }
 
-void BarrelCorrection::setDistortedCoordinates(unsigned int distortedX[8], unsigned int distortedY[8])
+void BarrelCorrection::setDistortedRectangle(int distortedRectangle[8][2])
 {	
-	LOG_TRACE("BarrelCorrection::setDistortedCoordinates()");
+	LOG_TRACE("BarrelCorrection::setDistortedRectangle()");
 	
 	for(int i = 0; i < 8; i++)
 	{
-		m_distortedX[i] = distortedX[i];
-		m_distortedY[i] = distortedY[i];
+		m_distortedRectangle[i][0] = distortedRectangle[i][0];
+		m_distortedRectangle[i][1] = distortedRectangle[i][1];
 	}
 	
 	calculatePixelMapping();
 }
 
-void BarrelCorrection::setOutputSize(unsigned int width, unsigned int height)
+void BarrelCorrection::setOutputSize(int width, int height)
 {
 	LOG_TRACE("BarrelCorrection::setOutputSize()");
 	// TODO: Need mutex lock so the corrected image or pixel mapping array isn't used in another thread when they are reallocated
@@ -114,11 +126,7 @@ void BarrelCorrection::setOutputSize(unsigned int width, unsigned int height)
 	}
 	
 	// Reallocate pixel mapping array
-	if(m_pixelMapping != NULL)
-	{
-		delete m_pixelMapping;
-	}
-	m_pixelMapping = new unsigned int[m_outputWidth * m_outputHeight];
+	m_pixelMapping = (int *) realloc(m_pixelMapping, m_outputWidth * m_outputHeight * sizeof(int));
 	
 	calculatePixelMapping();
 }
@@ -131,8 +139,17 @@ void BarrelCorrection::calculatePixelMapping()
 	if(m_outputWidth <= 0 || m_outputHeight <= 0)
 		return;
 	
-	int correctedX[8] = {0, m_outputWidth / 2, m_outputWidth - 1, 0, m_outputWidth - 1, 0, m_outputWidth / 2, m_outputWidth - 1};
-	int correctedY[8] = {0, 0, 0, m_outputHeight / 2, m_outputHeight / 2, m_outputHeight - 1, m_outputHeight - 1, m_outputHeight - 1};
+	int correctedRectangle[8][2] = {
+		{0,                   0},
+		{m_outputWidth / 2,   0},
+		{m_outputWidth - 1,   0},
+		{0,                   m_outputHeight / 2},
+		{m_outputWidth - 1,   m_outputHeight / 2},
+		{0,                   m_outputHeight - 1},
+		{m_outputWidth / 2,   m_outputHeight - 1},
+		{m_outputWidth - 1,   m_outputHeight - 1}
+	};
+	
 	float M[8][9];
 	float correctionVectorA[8];
 	float correctionVectorB[8];
@@ -140,15 +157,15 @@ void BarrelCorrection::calculatePixelMapping()
 	// Calculate correctionVectorA
 	for (int r = 0; r < 8; r++)
 	{
-		M[r][0] = (float) (correctedY[r]*correctedY[r]*correctedX[r]);
-		M[r][1] = (float) (correctedY[r]*correctedX[r]*correctedX[r]);
-		M[r][2] = (float) (correctedY[r]*correctedY[r]);
-		M[r][3] = (float) (correctedX[r]*correctedX[r]);
-		M[r][4] = (float) (correctedY[r]*correctedX[r]);
-		M[r][5] = (float) (correctedY[r]);
-		M[r][6] = (float) (correctedX[r]);
+		M[r][0] = (float) (correctedRectangle[r][1]*correctedRectangle[r][1]*correctedRectangle[r][0]);
+		M[r][1] = (float) (correctedRectangle[r][1]*correctedRectangle[r][0]*correctedRectangle[r][0]);
+		M[r][2] = (float) (correctedRectangle[r][1]*correctedRectangle[r][1]);
+		M[r][3] = (float) (correctedRectangle[r][0]*correctedRectangle[r][0]);
+		M[r][4] = (float) (correctedRectangle[r][1]*correctedRectangle[r][0]);
+		M[r][5] = (float) (correctedRectangle[r][1]);
+		M[r][6] = (float) (correctedRectangle[r][0]);
 		M[r][7] = 1;
-		M[r][8] = (float) (m_distortedY[r]);
+		M[r][8] = (float) (m_distortedRectangle[r][1]);
 	}
 	solveLinearEquation(M);
 	for (int r = 0; r < 8; r++)
@@ -159,15 +176,15 @@ void BarrelCorrection::calculatePixelMapping()
 	// Calculate correctionVectorB
 	for (int r = 0; r < 8; r++)
 	{
-		M[r][0] = (float) (correctedY[r]*correctedY[r]*correctedX[r]);
-		M[r][1] = (float) (correctedY[r]*correctedX[r]*correctedX[r]);
-		M[r][2] = (float) (correctedY[r]*correctedY[r]);
-		M[r][3] = (float) (correctedX[r]*correctedX[r]);
-		M[r][4] = (float) (correctedY[r]*correctedX[r]);
-		M[r][5] = (float) (correctedY[r]);
-		M[r][6] = (float) (correctedX[r]);
+		M[r][0] = (float) (correctedRectangle[r][1]*correctedRectangle[r][1]*correctedRectangle[r][0]);
+		M[r][1] = (float) (correctedRectangle[r][1]*correctedRectangle[r][0]*correctedRectangle[r][0]);
+		M[r][2] = (float) (correctedRectangle[r][1]*correctedRectangle[r][1]);
+		M[r][3] = (float) (correctedRectangle[r][0]*correctedRectangle[r][0]);
+		M[r][4] = (float) (correctedRectangle[r][1]*correctedRectangle[r][0]);
+		M[r][5] = (float) (correctedRectangle[r][1]);
+		M[r][6] = (float) (correctedRectangle[r][0]);
 		M[r][7] = 1;
-		M[r][8] = (float) (m_distortedX[r]);
+		M[r][8] = (float) (m_distortedRectangle[r][0]);
 	}
 	solveLinearEquation(M);
 	for (int r = 0; r < 8; r++)
@@ -177,10 +194,12 @@ void BarrelCorrection::calculatePixelMapping()
 	
 	// Calculate pixel mapping
 	int dx, dy;
-	unsigned int *mapping = m_pixelMapping;
-	for (unsigned int y = 0; y < m_outputHeight; y++)
+	int *mapping = m_pixelMapping;
+	m_pixelMappingMin = 0;
+	m_pixelMappingMax = 0;
+	for (int y = 0; y < m_outputHeight; y++)
 	{
-		for (unsigned int x = 0; x < m_outputWidth; x++)
+		for (int x = 0; x < m_outputWidth; x++)
 		{
 			dy = (int) (correctionVectorA[0]*x*y*y +
 				correctionVectorA[1]*x*x*y +
@@ -200,7 +219,11 @@ void BarrelCorrection::calculatePixelMapping()
 				correctionVectorB[6]*x +
 				correctionVectorB[7]);
 			
+			// TODO: Fix this bug!
+			// BUG: m_outputWidth should be the with of the input image. Only output with the same width as the input is supported now!
 			*mapping = dy * m_outputWidth + dx;
+			m_pixelMappingMin = (*mapping) < m_pixelMappingMin ? (*mapping) : m_pixelMappingMin;
+			m_pixelMappingMax = (*mapping) > m_pixelMappingMax ? (*mapping) : m_pixelMappingMax;
 			mapping++;
 		}
 	}

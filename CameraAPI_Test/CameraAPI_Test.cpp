@@ -45,10 +45,18 @@ int main()
 	dummyDriver.setImageSize(768, 576);
 	cameraManager->addDriver(&dummyDriver);
 	
-	unsigned int distortedX[8] = {31, 350, 732, 30, 741, 37, 355, 731};
-	unsigned int distortedY[8] = {60, 30, 17, 288, 288, 513, 542, 550};
-	camera::BarrelCorrection *barrelCorrection = new camera::BarrelCorrection(distortedX, distortedY);
-	//barrelCorrection->setOutputSize(500, 500);
+	int distortedRectangle[8][2] = {
+		{31, 60},
+		{350, 30},
+		{732, 17},
+		{30, 288},
+		{741, 288},
+		{37, 513},
+		{355, 542},
+		{731, 550}
+	};
+	camera::BarrelCorrection *barrelCorrection = new camera::BarrelCorrection(distortedRectangle);
+	//barrelCorrection->setOutputSize(768, 576);
 	
 #ifdef USE_EURESYS
 	camera::EuresysDriver *euresysDriver;
