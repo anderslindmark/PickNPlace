@@ -64,4 +64,9 @@ namespace PicknPlaceGui
 	{
 		m_settings = settings;
 	}
+
+	QString DispenceDotCommand::toString()
+	{
+		return QString("Dispense dot command");
+	}
 }

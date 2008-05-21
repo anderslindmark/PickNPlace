@@ -4,12 +4,14 @@
 
 #include "MachinePolygon.h"
 #include "MachineCommands.h"
+#include <QString>
 
 namespace PicknPlaceGui
 {
 	class GuiMachineCommand
 	{
-
+	public:
+		virtual QString toString() = 0;
 	};
 }
 

@@ -36,7 +36,7 @@ namespace PicknPlaceGui
 		this->SetGuiSubMode(Move);
 		this->InitMachineController();
 
-		this->m_pCurrentNewCommand = NULL;
+//		this->m_pCurrentNewCommand = NULL;
 	}
 
 	
@@ -52,10 +52,12 @@ namespace PicknPlaceGui
 			delete this->m_pMC;
 		}
 
+		/*
 		if (this->m_pCurrentNewCommand)
 		{
 			delete this->m_pCurrentNewCommand;
 		}
+		*/
 	}
 
 	///
@@ -601,12 +603,58 @@ namespace PicknPlaceGui
 
 		if (cmode == CameraWidget::InteractionMode::DispensePolygon)
 		{
-
-			DispencePolygonCommand dpc = DispencePolygonCommand(*cw->getDispensePolygon());
+			DispencePolygonCommand *dpc = new DispencePolygonCommand(*cw->getDispensePolygon());
 			this->m_commands.append(dpc);
+		}
+		else if (cmode == CameraWidget::InteractionMode::DispenseDot)
+		{
+			QPoint p = cw->getDotDispensePoint();
+			DispenceStateStruct dss = DispenceStateStruct();
 
-			//GuiMachineCommand *gmc = this->m_pCurrentNewCommand;
-			//this->m_commands.append(*this->m_pCurrentNewCommand);
+			DispenceDotCommand *ddp = new DispenceDotCommand(p.x(), p.y(), dss);
+
+			this->m_commands.append(ddp);
+		}
+		else if ((cmode == CameraWidget::InteractionMode::Pick) || (cmode == CameraWidget::InteractionMode::Place))
+		{
+			QPoint *pickSrc = cw->getPickPoints();
+			QPoint *placeSrc = cw->getPlacePoints();
+			Coordinate2D pickPoints[3];
+			Coordinate2D placePoints[3];
+			
+			for (int i = 0; i < 3; i++)
+			{
+				pickPoints[i].x = pickSrc[i].x();
+				pickPoints[i].y = pickSrc[i].y();
+
+				placePoints[i].x = placeSrc[i].x();
+				placePoints[i].y = placeSrc[i].y();
+			}
+
+			PickStateStruct pss = PickStateStruct();
+
+			PickAndPlaceCommand *ppc = new PickAndPlaceCommand(pickPoints[0], pickPoints[1], pickPoints[2], 
+														placePoints[0], placePoints[1], placePoints[2], pss);
+
+			this->m_commands.append(ppc);
+		}
+
+		this->RefreshCommandList();
+	}
+
+	///
+	/// \brief Refreshes the contents of the command list.
+	///
+	void MainWindow::RefreshCommandList()
+	{
+		QListWidget *clw = this->m_ui.m_pCommandsListWidget;
+
+		this->m_ui.m_pCommandsListWidget->clear();
+
+		for (int i = 0; i < this->m_commands.size(); i++)
+		{
+			QString str = QString(this->m_commands.at(i)->toString());
+			clw->addItem(str);
 		}
 	}
 

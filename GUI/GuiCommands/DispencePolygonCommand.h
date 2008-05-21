@@ -21,6 +21,7 @@ namespace PicknPlaceGui
 		DispenceStateStruct GetSettings();
 		void SetSettings(DispenceStateStruct settings);
 		void isNull();
+		QString toString();
 
 	private:
 		bool m_isNull;

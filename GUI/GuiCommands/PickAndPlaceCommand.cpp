@@ -258,4 +258,9 @@ namespace PicknPlaceGui
 	{
 		return m_orientation3;
 	} */
+
+	QString PickAndPlaceCommand::toString()
+	{
+		return QString("Pick and place command");
+	}
 }

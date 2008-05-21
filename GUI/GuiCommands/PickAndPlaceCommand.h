@@ -34,6 +34,8 @@ namespace PicknPlaceGui
 							int placeX, int placeY, float placeAngle, PickStateStruct settings);
 		
 		~PickAndPlaceCommand(void);
+
+		QString toString();
 		
 		/// \brief Get a command that can be supplied to a MachineController of this 
 		///			PickAndPlaceCommand.

@@ -23,6 +23,8 @@ namespace PicknPlaceGui
 		DispenceStateStruct GetSettings();
 		void SetSettings(DispenceStateStruct settings);
 
+		QString toString();
+
 	private:
 		int m_x;
 		int m_y;

@@ -14,6 +14,7 @@
 #include "CameraException.h"
 #include "GuiMachineCommand.h"
 #include "DispenceDotCommand.h"
+#include "PickAndPlaceCommand.h"
 
 namespace PicknPlaceGui
 {
@@ -108,18 +109,19 @@ namespace PicknPlaceGui
 		void ShowInformation(QString message, QMessageBox::Icon icon);
 		void SetGuiSubMode(MainWindow::GuiSubMode mode);
 		void UpdateGuiBasedOnGuiSubMode();
+		void RefreshCommandList();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		MachineController *m_pMC;				    ///< Machine controler.
 
 		GuiSubMode m_subguimode;					///< The current sub GUI mode.
 
-		QList<GuiMachineCommand> m_commands;		///< The list of machine commands that are to be run.
+		QList<GuiMachineCommand *> m_commands;		///< The list of machine commands that are to be run.
 
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
 		QActionGroup *m_pInteractionActionGroup;	///< Action Group for the different interactions that can be done with the camera widget.
 
-		GuiMachineCommand *m_pCurrentNewCommand;	///< The command that is ready to be added to the list of commands.
+		//GuiMachineCommand *m_pCurrentNewCommand;	///< The command that is ready to be added to the list of commands.
 	};
 }
 

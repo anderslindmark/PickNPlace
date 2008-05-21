@@ -67,4 +67,9 @@ namespace PicknPlaceGui
 		m_isNull = false;
 		m_settings = settings;
 	}
+
+	QString DispencePolygonCommand::toString()
+	{
+		return QString("Dispense polygon command");
+	}
 }
