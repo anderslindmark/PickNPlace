@@ -41,12 +41,20 @@ MachineController::MachineController(string serialPort)
 
 MachineController::~MachineController(void)
 {
-	if (m_sp != NULL)
+	if (this->m_sp != NULL)
 	{
 		m_sp->ClosePort();
 	}
-	delete m_sp;
-	delete m_cmd;
+
+	if (this->m_sp)
+	{
+		delete m_sp;
+	}
+
+	if (this->m_cmd)
+	{
+		delete m_cmd;
+	}
 }
 
 bool MachineController::InitializeSerial()
