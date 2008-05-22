@@ -91,7 +91,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 	QSize imgs = this->m_image.size();
 	
 	// Scale the image to fit the camera widget while keeping aspect ratio.
-	QImage scaledImage = m_image.scaled(s, Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation); // TODO: Change this to FastTransform if performance sucks :)
+	QImage scaledImage = m_image.scaled(s); //, Qt::IgnoreAspectRatio, Qt::TransformationMode::FastTransformation); // TODO: Change this to FastTransform if performance sucks :)
 
 	// Draw the image in the center of the control.
 	int x = (s.width() - scaledImage.width()) / 2;

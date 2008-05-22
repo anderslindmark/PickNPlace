@@ -78,6 +78,9 @@ namespace PicknPlaceGui
 		void RemoveLastPointButtonPressed();
 		void CommandsCanceled();
 
+		void MachineEventOccured(int type, QString message);
+		//void MachineEventOccured();
+
 	private:
 
 		///
@@ -114,6 +117,7 @@ namespace PicknPlaceGui
 		void UpdateGuiBasedOnGuiSubMode();
 		void RefreshCommandList();
 		void RunCommands();
+		void UpdateCameraWidgetMachineCoordinates();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
 		QProgressDialog *m_pProgressDialog;			///< Dialog for command progress.

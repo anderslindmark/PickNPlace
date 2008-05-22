@@ -12,7 +12,13 @@ PicknPlaceGui::MainWindow *mainwindow;
 ///
 void on_machine_event(MachineEvent *e)
 {
-	mainwindow->OnMachineEvent(e);
+	int type = (MachineEventType)e->GetEventType();
+	QString message = QString(e->GetEventMsg().c_str());
+
+	QMetaObject::invokeMethod(mainwindow, "MachineEventOccured", Qt::QueuedConnection, 
+		Q_ARG(int, type), Q_ARG(QString, message));
+
+	delete e;
 }
 
 namespace PicknPlaceGui
@@ -38,6 +44,7 @@ namespace PicknPlaceGui
 
 		this->m_pProgressDialog = NULL;
 		this->m_currentCommandIndex = 0;
+		this->m_runningCommandList = false;
 	}
 
 	
@@ -81,6 +88,7 @@ namespace PicknPlaceGui
 		{
 			// TODO: Fail and exit if the machine controler cannot be initialized?
 		}
+		this->m_pMC->Wait();
 	}
 
 	///
@@ -92,17 +100,17 @@ namespace PicknPlaceGui
 		
 		// Add the dummy driver to the camera manager. This driver is used for testing 
 		// the camera API on a computer without any frame grabber card
-		camera::DummyDriver *dummyDriver = new camera::DummyDriver();
+		/*camera::DummyDriver *dummyDriver = new camera::DummyDriver();
 		dummyDriver->setImageSize(768, 576);
 		cameraManager->addDriver(dummyDriver);
-		
+		*/
 		// Add the Euresys driver to the camera manager.
-		//camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
-		//cameraManager->addDriver(euresysDriver);
+		camera::EuresysDriver *euresysDriver = new camera::EuresysDriver();
+		cameraManager->addDriver(euresysDriver);
 		
 		// TODO: Get the driverIdentifier and cameraIdentifier from the settings
 		std::string driverIdentifier = cameraManager->getDriver(0)->getIdentifier();
-		std::string cameraIdentifier = cameraManager->getDriver(0)->getCameraIdentifier(1);
+		std::string cameraIdentifier = cameraManager->getDriver(0)->getCameraIdentifier(2);
 		// Set which camera the widget shoud use and start the acquiring
 		this->m_ui.m_pMainCameraWidget->setCamera(driverIdentifier, cameraIdentifier);
 		
@@ -122,7 +130,7 @@ namespace PicknPlaceGui
 		
 		// TODO: Get the coordinate conversion parameters from the settings
 		// Set the coordinate conversion parameters
-		this->m_ui.m_pMainCameraWidget->setCoordinateMapping(0, 0, 100, 0, 100, 0, 0, 0);
+		this->m_ui.m_pMainCameraWidget->setCoordinateMapping(-47500, 0, 47500, 0, 32500, 0, -32500, 0);
 
 		this->m_ui.m_pMainCameraWidget->start();
 
@@ -320,7 +328,7 @@ namespace PicknPlaceGui
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint)));
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandInvalid()), this, SLOT(CameraWidgetCommandInvalid()));
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(itemSelectionChanged()), this, SLOT(CommandSelectionChanged()));
-		QMainWindow::connect(this->m_ui.m_pRemoveLastPointButton, SIGNAL(pressed()), this, SLOT(RemoveLastPointButtonPressed()));		
+		QMainWindow::connect(this->m_ui.m_pRemoveLastPointButton, SIGNAL(pressed()), this, SLOT(RemoveLastPointButtonPressed()));
 	}
 
 	void MainWindow::closeEvent(QCloseEvent *event)
@@ -339,16 +347,15 @@ namespace PicknPlaceGui
 	}
 
 	///
-	/// \brief Callback function for any MachineController events.
+	/// \brief Slot for when a machine event has occured.
 	///
-	void MainWindow::OnMachineEvent(MachineEvent *e)
+	void MainWindow::MachineEventOccured(int type, QString message)
 	{
-		MachineEventType type = e->GetEventType();
-		QString EventMessage = QString(e->GetEventMsg().c_str());
+		this->UpdateCameraWidgetMachineCoordinates();
 
 		if (type == EVENT_MACHINE_INITIALIZED)
 		{
-			mainwindow->statusBar()->showMessage("Machine initialized successfully");
+			//mainwindow->statusBar()->showMessage("Machine initialized successfully");
 		}
 		else if (type == EVENT_CMD_DONE)
 		{
@@ -360,18 +367,16 @@ namespace PicknPlaceGui
 		}
 		else if (type == EVENT_CMD_FAILED)
 		{
-			this->ShowInformation(EventMessage, QMessageBox::Icon::Critical);
+			this->ShowInformation(message, QMessageBox::Icon::Critical);
 		}
 		else if (type == EVENT_CMD_ILLEGAL)
 		{
-			this->ShowInformation(EventMessage, QMessageBox::Icon::Critical);
+			this->ShowInformation(message, QMessageBox::Icon::Critical);
 		}
 		else if (type == EVENT_CMD_OUT_OF_BOUNDS)
 		{
-			this->ShowInformation(EventMessage, QMessageBox::Icon::Warning);
+			this->ShowInformation(message, QMessageBox::Icon::Warning);
 		}
-		
-		delete e;
 	}
 
 	///
@@ -381,6 +386,8 @@ namespace PicknPlaceGui
 	{
 		this->setEnabled(false);
 		this->m_runningCommandList = true;
+
+		this->m_ui.m_pMainCameraWidget->setDrawCommands(false);
 
 		if (!this->m_pProgressDialog)
 		{
@@ -395,7 +402,7 @@ namespace PicknPlaceGui
 		}
 
 		// Run the next command.
-		if (this->m_currentCommandIndex < this->m_commands.size())
+		while (this->m_currentCommandIndex < this->m_commands.size())
 		{
 			PicknPlaceGui::GuiMachineCommand *c = this->m_commands.at(this->m_currentCommandIndex);
 			this->m_pMC->RunCommand(c->GetMachineCommand());
@@ -407,9 +414,12 @@ namespace PicknPlaceGui
 
 			this->m_currentCommandIndex++;
 			return;
+			//this->m_pMC->Wait();
 		}
 
 		CommandsCanceled();
+		this->m_ui.m_pMainCameraWidget->setDrawCommands(this->m_ui.m_pShowPolygonToolAction->isChecked());
+		this->UpdateCameraWidgetMachineCoordinates();
 	}
 
 	///
@@ -483,6 +493,17 @@ namespace PicknPlaceGui
 	}
 
 	///
+	/// \brief Updates the machine coordinates for the camera widget.
+	///
+	void MainWindow::UpdateCameraWidgetMachineCoordinates()
+	{
+		int x = this->m_pMC->GetCurrentState().GetState().x;
+		int y = this->m_pMC->GetCurrentState().GetState().y;
+		int z = this->m_pMC->GetCurrentState().GetState().z;
+		this->m_ui.m_pMainCameraWidget->setMachineCoordinates(x, y, z);
+	}
+
+	///
 	/// \brief The Z lock button was toggled.
 	///
 	void MainWindow::ZLockButtonToggled(bool toggled)
@@ -490,6 +511,7 @@ namespace PicknPlaceGui
 		// Toggle the Z spinbox and slider (If the button is pressed they should be locked).
 		this->m_ui.m_pZSpinBox->setEnabled(!toggled);
 		this->m_ui.m_pZVerticalSlider->setEnabled(!toggled);
+		this->UpdateCameraWidgetMachineCoordinates();
 	}
 
 	///
@@ -500,6 +522,8 @@ namespace PicknPlaceGui
 		// Change the Z-Level for the machine head.
 		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_Z, value);
 		this->m_pMC->RunCommand(move);
+		this->m_pMC->Wait();
+		this->UpdateCameraWidgetMachineCoordinates();
 	}
 
 	///
@@ -510,6 +534,8 @@ namespace PicknPlaceGui
 		// Change the Y-value for the machine head.
 		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_Y, value);
 		this->m_pMC->RunCommand(move);
+		this->m_pMC->Wait();
+		this->UpdateCameraWidgetMachineCoordinates();
 	}
 
 	///
@@ -520,6 +546,8 @@ namespace PicknPlaceGui
 		// Change the X-value for the machine head.
 		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_X, value);
 		this->m_pMC->RunCommand(move);
+		this->m_pMC->Wait();
+		this->UpdateCameraWidgetMachineCoordinates();
 	}
 
 	///
