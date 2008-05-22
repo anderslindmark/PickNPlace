@@ -302,19 +302,6 @@
 			Filter="ui"
 			>
 			<File
-				RelativePath=".\CommandsProgress.ui"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="$(QTDIR)\bin\uic.exe &quot;$(InputPath)&quot; -o .\ui_CommandsProgress.h"
-						Outputs=".\ui_CommandsProgress.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="MainWindow.ui"
 				>
 				<FileConfiguration
@@ -343,18 +330,6 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\release\moc_MainWindow.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\Debug\moc_MainWindow.cpp"
 				>
 				<FileConfiguration
@@ -367,11 +342,19 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\qrc_pnp.cpp"
+				RelativePath=".\release\moc_MainWindow.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\ui_CommandsProgress.h"
+				RelativePath=".\qrc_pnp.cpp"
 				>
 			</File>
 			<File
