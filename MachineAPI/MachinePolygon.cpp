@@ -33,7 +33,10 @@ bool MachinePolygon::AddPoint(int index, MachinePolygonPoint pp)
 
 void MachinePolygon::DelPoint(int index)
 {
-	m_points.erase(m_points.begin()+index);
+	if ((index >= 0) || (index < this->Size()))
+	{
+		this->m_points.erase(m_points.begin() + index);
+	}
 }
 
 MachinePolygonPoint MachinePolygon::GetPoint(int index)
