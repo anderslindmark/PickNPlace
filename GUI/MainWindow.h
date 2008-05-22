@@ -38,7 +38,6 @@ namespace PicknPlaceGui
 		void DispenceActionTriggered();
 
 		// Tools toolbar action triggers.
-		void ShowPolygonActionTriggered();
 		void ZoomActionTriggered();
 
 		void BrightnessSliderChanged(int value);
@@ -51,7 +50,6 @@ namespace PicknPlaceGui
 		void CommandListItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 		void CloseInformationBar();
-		void AbortButtonPressed();
 
 		void MoveToolTriggered();
 		void PickToolTriggered();
@@ -67,13 +65,18 @@ namespace PicknPlaceGui
 		void EnqueueCommandButtonPressed();
 
 		void RunCommandsButtonPressed();
-		void RemoveCommandButtonPressedPressed();
+		void RemoveCommandButtonPressed();
 
 		void CameraWidgetNewMachineCoordinates(int newMachineX, int newMachineY);
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon);
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints);
 		void CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot);
 		void CameraWidgetCommandInvalid();
+
+		void CommandSelectionChanged();
+
+		void RemoveLastPointButtonPressed();
+		void CommandsCanceled();
 
 	private:
 
@@ -110,18 +113,20 @@ namespace PicknPlaceGui
 		void SetGuiSubMode(MainWindow::GuiSubMode mode);
 		void UpdateGuiBasedOnGuiSubMode();
 		void RefreshCommandList();
+		void RunCommands();
 
 		Ui::MainWindow m_ui;					    ///< Generated User Interface.
+		QProgressDialog *m_pProgressDialog;			///< Dialog for command progress.
 		MachineController *m_pMC;				    ///< Machine controler.
 
 		GuiSubMode m_subguimode;					///< The current sub GUI mode.
 
+		bool m_runningCommandList;					///< Are we running the list of commands, or are we just issuing stray commands (such as moving around).
+		int m_currentCommandIndex;					///< Which is the current command we're running?
 		QList<GuiMachineCommand *> m_commands;		///< The list of machine commands that are to be run.
 
 		QActionGroup *m_pModesActionGroup;			///< The Action Group for the different GUI modes, making only one selectable at a time.
 		QActionGroup *m_pInteractionActionGroup;	///< Action Group for the different interactions that can be done with the camera widget.
-
-		//GuiMachineCommand *m_pCurrentNewCommand;	///< The command that is ready to be added to the list of commands.
 	};
 }
 

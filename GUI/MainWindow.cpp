@@ -28,7 +28,7 @@ namespace PicknPlaceGui
 		this->m_ui.setupUi(this);
 
 		this->CloseInformationBar();
-	
+
 		this->ConnectSlots();
 
 		this->InitCameraManager();
@@ -36,7 +36,8 @@ namespace PicknPlaceGui
 		this->SetGuiSubMode(Move);
 		this->InitMachineController();
 
-//		this->m_pCurrentNewCommand = NULL;
+		this->m_pProgressDialog = NULL;
+		this->m_currentCommandIndex = 0;
 	}
 
 	
@@ -51,13 +52,6 @@ namespace PicknPlaceGui
 			this->m_pMC->Wait();
 			delete this->m_pMC;
 		}
-
-		/*
-		if (this->m_pCurrentNewCommand)
-		{
-			delete this->m_pCurrentNewCommand;
-		}
-		*/
 	}
 
 	///
@@ -131,13 +125,15 @@ namespace PicknPlaceGui
 		this->m_ui.m_pMainCameraWidget->setCoordinateMapping(0, 0, 100, 0, 100, 0, 0, 0);
 
 		this->m_ui.m_pMainCameraWidget->start();
+
+		this->m_ui.m_pMainCameraWidget->setMachineCommandList(&this->m_commands);
 	}
 
 	///
 	/// \brief Creates the action groups for the toolbars (so that only one item is selected at once).
 	///
 	void MainWindow::CreateToolbarActionGroups()
-	{		
+	{
 		// Create an action group so that only one mode can be active at any given time.
 		this->m_pModesActionGroup = new QActionGroup(this);
 		this->m_pModesActionGroup->addAction(this->m_ui.m_pPickNPlaceToolAction);
@@ -157,7 +153,7 @@ namespace PicknPlaceGui
 	void MainWindow::ToggleInteractionTools()
 	{
 		bool pnp = (this->m_guimode == PickNPlaceMode);
-	
+
 		this->m_ui.m_pPickToolAction->setVisible(pnp);
 		this->m_ui.m_pPlaceToolAction->setVisible(pnp);
 
@@ -228,7 +224,6 @@ namespace PicknPlaceGui
 	{
 		this->m_ui.m_pInformationFrame->setVisible(true);
 
-		//int iconSize = QApplication::style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
 		QPalette pal = QApplication::palette();
 		
 		// Get the icon pixmap.
@@ -285,7 +280,6 @@ namespace PicknPlaceGui
 		// Tools toolbar.
 		//
 		QMainWindow::connect(this->m_ui.m_pZoomToolAction, SIGNAL(triggered()), this, SLOT(ZoomActionTriggered()));
-		QMainWindow::connect(this->m_ui.m_pShowPolygonToolAction, SIGNAL(triggered()), this, SLOT(ShowPolygonActionTriggered()));
 
 		// Interaction tools.
 		QMainWindow::connect(this->m_ui.m_pMoveToolAction, SIGNAL(triggered()), this, SLOT(MoveToolTriggered()));
@@ -303,37 +297,30 @@ namespace PicknPlaceGui
 		// Other controls.
 		//
 		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(valueChanged(int)), this, SLOT(BrightnessSliderChanged(int)));
-
 		QMainWindow::connect(this->m_ui.m_pLockZPushButton, SIGNAL(toggled(bool)), this, SLOT(ZLockButtonToggled(bool)));
-
 		QMainWindow::connect(this->m_ui.m_pXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(XValueChanged(int)));
 		QMainWindow::connect(this->m_ui.m_pYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(YValueChanged(int)));
 		QMainWindow::connect(this->m_ui.m_pZSpinBox, SIGNAL(valueChanged(int)), this, SLOT(ZValueChanged(int)));
-		
 		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
 			this, SLOT(CommandListItemChanged(QListWidgetItem *, QListWidgetItem *)));
-
 		QMainWindow::connect(this->m_ui.m_pClearPickPlacePointsButton, SIGNAL(pressed()), this, SLOT(ClearPickPlaceButtonPressed()));
 		QMainWindow::connect(this->m_ui.m_pClearPolygonButton, SIGNAL(pressed()), this, SLOT(ClearPolygonButtonPressed()));
 		QMainWindow::connect(this->m_ui.m_pRemoveDotButton, SIGNAL(pressed()), this, SLOT(RemoveDotButtonPressed()));
 		QMainWindow::connect(this->m_ui.m_pDispenseDotSpinBox, SIGNAL(valueChanged(int)), this, SLOT(DispenseDotSpinBoxValueChanged(int)));
-
 		QMainWindow::connect(this->m_ui.m_pEnqueueCommandButton, SIGNAL(pressed()), this, SLOT(EnqueueCommandButtonPressed()));
-
 		QMainWindow::connect(this->m_ui.m_pRunCommandsButton, SIGNAL(pressed()), this, SLOT(RunCommandsButtonPressed()));
 		QMainWindow::connect(this->m_ui.m_pRemoveCommandButton, SIGNAL(pressed()), this, SLOT(RemoveCommandButtonPressed()));
-
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(newMachineCoordinates(int, int)), 
 			this, SLOT(CameraWidgetNewMachineCoordinates(int, int)));
-		
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, PicknPlaceGui::DispencePolygonCommand)),
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, PicknPlaceGui::DispencePolygonCommand)));
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)),
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint *, QPoint *)));
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandReady(CameraWidget::InteractionMode, QPoint)),
 			this, SLOT(CameraWidgetCommandReady(CameraWidget::InteractionMode, QPoint)));
-	
 		QMainWindow::connect(this->m_ui.m_pMainCameraWidget, SIGNAL(commandInvalid()), this, SLOT(CameraWidgetCommandInvalid()));
+		QMainWindow::connect(this->m_ui.m_pCommandsListWidget, SIGNAL(itemSelectionChanged()), this, SLOT(CommandSelectionChanged()));
+		QMainWindow::connect(this->m_ui.m_pRemoveLastPointButton, SIGNAL(pressed()), this, SLOT(RemoveLastPointButtonPressed()));		
 	}
 
 	void MainWindow::closeEvent(QCloseEvent *event)
@@ -365,6 +352,11 @@ namespace PicknPlaceGui
 		}
 		else if (type == EVENT_CMD_DONE)
 		{
+			// Check if there's any more commands to run in the command list.
+			if (this->m_runningCommandList)
+			{
+				this->RunCommands();
+			}
 		}
 		else if (type == EVENT_CMD_FAILED)
 		{
@@ -383,8 +375,62 @@ namespace PicknPlaceGui
 	}
 
 	///
+	/// \brief Runs the list of commands.
+	///
+	void MainWindow::RunCommands()
+	{
+		this->setEnabled(false);
+		this->m_runningCommandList = true;
+
+		if (!this->m_pProgressDialog)
+		{
+			this->m_pProgressDialog = new QProgressDialog(this);
+			this->m_pProgressDialog->setCancelButtonText(tr("Stop"));
+			this->m_pProgressDialog->setMaximum(this->m_commands.size());
+			QMainWindow::connect(this->m_pProgressDialog, SIGNAL(canceled()), this, SLOT(CommandsCanceled()));		
+		}
+		else
+		{
+			this->m_pProgressDialog->setValue(this->m_currentCommandIndex + 1);
+		}
+
+		// Run the next command.
+		if (this->m_currentCommandIndex < this->m_commands.size())
+		{
+			PicknPlaceGui::GuiMachineCommand *c = this->m_commands.at(this->m_currentCommandIndex);
+			this->m_pMC->RunCommand(c->GetMachineCommand());
+			
+			// Show progress.
+			this->m_pProgressDialog->setLabelText(QString(tr("Running command: %1 (%2 of %3)"))
+				.arg(c->toString()).arg(this->m_currentCommandIndex + 1).arg(this->m_commands.size()));
+			this->m_pProgressDialog->show();
+
+			this->m_currentCommandIndex++;
+			return;
+		}
+
+		CommandsCanceled();
+	}
+
+	///
 	/// ======================================== SLOTS ==================================================
 	///
+
+	///
+	/// \brief Slot for when the "Stop" button is clicked on the command progress bar.
+	///
+	void MainWindow::CommandsCanceled()
+	{
+		if (this->m_pProgressDialog)
+		{
+			delete this->m_pProgressDialog;
+		}
+
+		this->m_currentCommandIndex = 0;
+		this->m_runningCommandList = false;
+
+		this->setEnabled(true);
+	}
 
 	///
 	/// \brief Slot for when the "Pick and Place" toolbar button (QAction) has been triggered, this should change the GUI mode.
@@ -393,7 +439,7 @@ namespace PicknPlaceGui
 	{
 		if (this->m_ui.m_pPickNPlaceToolAction->isChecked())
 		{
-			// TODO: Change to Pick and place mode.
+			// Change to Pick and place mode.
 			this->m_guimode = PickNPlaceMode;
 			this->ToggleInteractionTools();
 		}
@@ -406,7 +452,7 @@ namespace PicknPlaceGui
 	{
 		if (this->m_ui.m_pDispenceToolAction->isChecked())
 		{
-			// TODO: Change to Dispence mode.
+			// Change to Dispence mode.
 			this->m_guimode = DispenceMode;
 			this->ToggleInteractionTools();
 		}
@@ -427,27 +473,13 @@ namespace PicknPlaceGui
 	}
 	
 	///
-	/// \brief Slot for when the "Show polygon" action is triggered.
-	///
-	void MainWindow::ShowPolygonActionTriggered()
-	{
-		if (this->m_ui.m_pShowPolygonToolAction->isChecked())
-		{
-			// TODO: Toggle drawing polygons on the camera widget.
-
-		}
-		else
-		{
-		}
-	}
-
-	///
 	/// \brief Slot for when the brightness slider changes.
 	///
 	void MainWindow::BrightnessSliderChanged(int value)
 	{
-		// TODO: Set the brightness for the machine.
-		this->m_ui.m_pYSpinBox->setValue(value);
+		// Set the brightness for the machine.
+		MachineLightBrightnessCommand brightness = MachineLightBrightnessCommand(Lamp::LAMP_CAMERA, value);
+		this->m_pMC->RunCommand(brightness);
 	}
 
 	///
@@ -465,7 +497,9 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::ZValueChanged(int value)
 	{
-		// TODO: Change the Z-Level for the machine head.
+		// Change the Z-Level for the machine head.
+		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_Z, value);
+		this->m_pMC->RunCommand(move);
 	}
 
 	///
@@ -473,8 +507,9 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::YValueChanged(int value)
 	{
-		// TODO: Change the Y-value for the machine head.
-		this->ShowInformation(tr("Hello!"), QMessageBox::Icon::Warning);
+		// Change the Y-value for the machine head.
+		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_Y, value);
+		this->m_pMC->RunCommand(move);
 	}
 
 	///
@@ -482,9 +517,9 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::XValueChanged(int value)
 	{
-		// TODO: Change the X-value for the machine head.
-		//this->ShowAbortButton(!this->m_ui.m_pAbortButton->isVisible());
-		this->ShowInformation("poop", QMessageBox::Icon::Critical);
+		// Change the X-value for the machine head.
+		MachineMoveAbsoluteCommand move = MachineMoveAbsoluteCommand(AXIS_X, value);
+		this->m_pMC->RunCommand(move);
 	}
 
 	///
@@ -495,22 +530,12 @@ namespace PicknPlaceGui
 		this->m_ui.m_pRemoveCommandButton->setEnabled(current != NULL);
 	}
 
-	// TODO: Add an event for when the camera widget has been clicked.
-
 	///
 	/// \brief Slot for when the close button on the information bar is pressed. Closes the information bar.
 	///
 	void MainWindow::CloseInformationBar()
 	{
 		this->m_ui.m_pInformationFrame->setVisible(false);
-	}
-
-	///
-	/// \brief Slot for when the abort button the information bar is pressed.
-	///
-	void MainWindow::AbortButtonPressed()
-	{
-		// TODO: Abort picking/placing/dispensing stuff on the camera widget.
 	}
 
 	///
@@ -604,7 +629,10 @@ namespace PicknPlaceGui
 		if (cmode == CameraWidget::InteractionMode::DispensePolygon)
 		{
 			DispencePolygonCommand *dpc = new DispencePolygonCommand(*cw->getDispensePolygon());
-			this->m_commands.append(dpc);
+			if (dpc)
+			{
+				this->m_commands.append(dpc);
+			}
 		}
 		else if (cmode == CameraWidget::InteractionMode::DispenseDot)
 		{
@@ -613,7 +641,10 @@ namespace PicknPlaceGui
 
 			DispenceDotCommand *ddp = new DispenceDotCommand(p.x(), p.y(), dss);
 
-			this->m_commands.append(ddp);
+			if (ddp)
+			{
+				this->m_commands.append(ddp);
+			}
 		}
 		else if ((cmode == CameraWidget::InteractionMode::Pick) || (cmode == CameraWidget::InteractionMode::Place))
 		{
@@ -634,10 +665,19 @@ namespace PicknPlaceGui
 			PickStateStruct pss = PickStateStruct();
 
 			PickAndPlaceCommand *ppc = new PickAndPlaceCommand(pickPoints[0], pickPoints[1], pickPoints[2], 
-														placePoints[0], placePoints[1], placePoints[2], pss);
+															placePoints[0], placePoints[1], placePoints[2], pss);
 
-			this->m_commands.append(ppc);
+			if (ppc)
+			{
+				this->m_commands.append(ppc);
+			}
+
+			cw->resetMode(CameraWidget::InteractionMode::Pick);
+			cw->resetMode(CameraWidget::InteractionMode::Place);
 		}
+
+		// Don't let the user mistakingly enqueue the same command twice by removing the command from the camera widget.
+		cw->resetCurrentMode();
 
 		this->RefreshCommandList();
 	}
@@ -653,9 +693,11 @@ namespace PicknPlaceGui
 
 		for (int i = 0; i < this->m_commands.size(); i++)
 		{
-			QString str = QString(this->m_commands.at(i)->toString());
+			QString str = QString("%1 - %2").arg(i + 1).arg(this->m_commands.at(i)->toString());
 			clw->addItem(str);
 		}
+
+		this->m_ui.m_pRunCommandsButton->setEnabled(this->m_commands.size() > 0);
 	}
 
 	///
@@ -663,13 +705,22 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::RunCommandsButtonPressed()
 	{
+		this->RunCommands();
 	}
 
 	///
 	/// \brief Slot for when the remove command button has been clicked.
 	///
-	void MainWindow::RemoveCommandButtonPressedPressed()
+	void MainWindow::RemoveCommandButtonPressed()
 	{
+		QListWidget *clw = this->m_ui.m_pCommandsListWidget;
+
+		QModelIndex index = clw->currentIndex();
+		int i = index.row();
+
+		this->m_commands.removeAt(i);
+
+		this->RefreshCommandList();
 	}
 
 	///
@@ -677,7 +728,10 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetNewMachineCoordinates(int newMachineX, int newMachineY)
 	{
-		// TODO: Move the machine!
+		// Move the machine!
+		int z = this->m_pMC->GetCurrentState().GetState().z;
+		MachineMoveAllCommand move = MachineMoveAllCommand(newMachineX, newMachineY, z);
+		this->m_pMC->RunCommand(move);
 	}
 
 	///
@@ -685,17 +739,6 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, PicknPlaceGui::DispencePolygonCommand *polygon)
 	{
-		/*
-		if (this->m_pCurrentNewCommand)
-		{
-			delete this->m_pCurrentNewCommand;
-		}
-
-		this->m_pCurrentNewCommand = new DispencePolygonCommand(*polygon);
-		*/
-
-		// TODO: Set speeds and such from the GUI.
-
 		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
 	}
 
@@ -704,13 +747,6 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint *pickPoints, QPoint *placePoints)
 	{
-		/*
-		if (this->m_pCurrentNewCommand)
-		{
-			delete this->m_pCurrentNewCommand;
-		}
-		*/
-
 		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
 	}
 
@@ -719,18 +755,7 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandReady(CameraWidget::InteractionMode mode, QPoint dot)
 	{
-		/*
-		if (this->m_pCurrentNewCommand)
-		{
-			delete this->m_pCurrentNewCommand;
-		}
-
-		//(int x, int y, DispenceStateStruct settings)
-
-		DispenceStateStruct dss = DispenceStateStruct(); // TODO: Get the values for this.
-		this->m_pCurrentNewCommand = new DispenceDotCommand(dot.x(), dot.y(), dss);
-		*/
-
+		this->m_ui.m_pRemoveDotButton->setEnabled(true);
 		this->m_ui.m_pEnqueueCommandButton->setEnabled(true);
 	}
 
@@ -739,7 +764,44 @@ namespace PicknPlaceGui
 	///
 	void MainWindow::CameraWidgetCommandInvalid()
 	{
+		this->m_ui.m_pRemoveDotButton->setEnabled(false);
 		this->m_ui.m_pEnqueueCommandButton->setEnabled(false);
+	}
+
+	///
+	/// \brief Slot for when the selected command in the command list widget has changed.
+	///
+	void MainWindow::CommandSelectionChanged()
+	{
+		QListWidget *clw = this->m_ui.m_pCommandsListWidget;		
+		this->m_ui.m_pRemoveCommandButton->setEnabled(clw->selectedItems().count() > 0);
+
+		// Set the highlight index for the camera widget.
+		QModelIndex index = clw->currentIndex();
+		int i = index.row();
+		this->m_ui.m_pMainCameraWidget->setHighlightedCommandIndex(i);
+	}
+
+	///
+	/// \brief Slot for when the remove last point button has been clicked.
+	///
+	void MainWindow::RemoveLastPointButtonPressed()
+	{
+		CameraWidget *cw = this->m_ui.m_pMainCameraWidget;
+		DispencePolygonCommand *dpc = cw->getDispensePolygon();
+
+		if (dpc && (dpc->Size() > 0))
+		{
+			dpc->DelPoint(dpc->Size() - 1);
+			
+			// Make sure we remove the polygon if there are no points left.
+			if (dpc->Size() == 0)
+			{
+				cw->resetCurrentMode();
+			}
+
+			cw->update();
+		}	
 	}
 }
 

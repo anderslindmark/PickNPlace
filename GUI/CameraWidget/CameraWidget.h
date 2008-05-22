@@ -19,6 +19,8 @@
 // PickNPlaceGui.
 #include "GuiMachineCommand.h"
 #include "DispencePolygonCommand.h"
+#include "DispenceDotCommand.h"
+#include "PickAndPlaceCommand.h"
 
 #ifdef USE_OPENGL_WIDGET
 class QDESIGNER_WIDGET_EXPORT CameraWidget : public QGLWidget, public camera::CameraListener
@@ -49,7 +51,8 @@ public:
 	void setDrawEdges(bool enabled);
 	camera::Image *getImage();
 	QImage *getQImage();
-	void setMachineCommandList(QList<PicknPlaceGui::GuiMachineCommand> *commands);
+	void setHighlightedCommandIndex(int index);
+	void setMachineCommandList(const QList<PicknPlaceGui::GuiMachineCommand *> *commands);
 
 	///
 	/// \enum InteractionMode
@@ -73,8 +76,6 @@ public:
 	QPoint *getPickPoints();
 	QPoint *getPlacePoints();
 
-	void setDispenseDotRadius(float radius);
-
 	void resetCurrentMode();
 	void resetMode(CameraWidget::InteractionMode mode);
 	void resetModes();
@@ -83,9 +84,12 @@ public:
 	void widgetToMachineCoordinates(int widgetX, int widgetY, int &machineX, int &machineY);
 	void getMachineCoordinateSize(int &width, int &height);
 
+	void forceRedraw();
+
 public slots:
 	void setDrawCommands(bool enabled);
 	void setMachineCoordinates(int x, int y, int z);
+	void setDispenseDotRadius(int radius);
 
 signals:
 
@@ -122,13 +126,15 @@ private:
 
 	bool isPickPlaceReady();
 
-	camera::Camera 				*m_camera;				///< The camera associated with the camera widget.
-	camera::BarrelCorrection	*m_barrelCorrection;	///< The barrel correction filter for the camera.
+	camera::Camera 				*m_camera;						///< The camera associated with the camera widget.
+	camera::BarrelCorrection	*m_barrelCorrection;			///< The barrel correction filter for the camera.
 	QImage m_image;
 
-	CameraWidget::InteractionMode				m_mode;	///< The current mode the camera widget is in (how the user interacts with it).
+	CameraWidget::InteractionMode				m_mode;			///< The current mode the camera widget is in (how the user interacts with it).
 
-	QList<PicknPlaceGui::GuiMachineCommand>	*commands;	///< A reference to the list of commands that should be drawn on the camera widget.
+	bool										m_drawCommands;		///< If the list of commands should be drawn on the camera widget.
+	int											m_higlightedCommand;///< What should be highlighted.
+	const QList<PicknPlaceGui::GuiMachineCommand *>	*m_commands;	///< A reference to the list of commands that should be drawn on the camera widget.
 	
 	int		m_machineX;			///< The current machine x position.
 	int		m_machineY;			///< The current machine y position.
@@ -153,7 +159,7 @@ private:
 
 	// Dispense dot.
 	QPoint	m_dispenseDotPoint;					///< The location of the dispense dot.
-	float	m_dispenseDotRadius;				///< The radius of the dispense dot.
+	int		m_dispenseDotRadius;				///< The radius of the dispense dot.
 
 	// Dispense polygon.
 	PicknPlaceGui::DispencePolygonCommand *m_pDispensePolygon;	///< The dispense polygon when the user is creating a new one.

@@ -14,9 +14,9 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 {
 #endif // USE_OPENGL_WIDGET
 	
-	m_camera = NULL;
-	m_barrelCorrection = NULL;
-	this->m_pDispensePolygon = NULL;
+	this->m_camera				= NULL;
+	this->m_barrelCorrection	= NULL;
+	this->m_pDispensePolygon	= NULL;
 
 	this->m_image = QImage(500, 500, QImage::Format_RGB32);
 	QPainter painter(&this->m_image);
@@ -28,8 +28,8 @@ CameraWidget::CameraWidget(QWidget *parent) : QWidget(parent)
 	this->m_machineX			= 0;
 	this->m_machineY			= 0;
 	this->m_machineZ			= 0;
-	this->m_dispenseDotRadius	= 1;
-
+	this->m_dispenseDotRadius	= 10;
+	this->m_commands			= NULL;
 	this->m_mode = Pick;
 }
 
@@ -98,8 +98,78 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 	int y = (s.height() - scaledImage.height()) / 2;
 
 	painter.drawImage(x, y, scaledImage);
-		
-	// TODO: Draw the commands in the command queue
+	
+	//
+	// Draw the commands in the command queue.
+	//
+	if (this->m_commands && this->m_drawCommands)
+	{
+		painter.setBrush(QBrush(QColor(155, 185, 120, 150)));
+		QPen hp = QPen(QColor(255, 100, 100, 150));
+		hp.setWidth(4);
+		QPen p = QPen(QColor(100, 255, 100, 150));
+		p.setWidth(2);
+		painter.setPen(p);
+
+		for (int i = 0; i < this->m_commands->size(); i++)
+		{
+			if (i == this->m_higlightedCommand)
+			{
+				painter.setPen(hp);
+			}
+			else
+			{
+				painter.setPen(p);
+			}
+
+			PicknPlaceGui::GuiMachineCommand *c = this->m_commands->at(i);
+			PicknPlaceGui::DispencePolygonCommand *dpc = dynamic_cast<PicknPlaceGui::DispencePolygonCommand *>(c);
+			PicknPlaceGui::DispenceDotCommand *ddc = dynamic_cast<PicknPlaceGui::DispenceDotCommand *>(c);
+			PicknPlaceGui::PickAndPlaceCommand *pnp = dynamic_cast<PicknPlaceGui::PickAndPlaceCommand *>(c);
+
+			if (dpc)
+			{
+				// Dispense polygon.
+				std::vector<MachinePolygonPoint> points = dpc->GetPoints();
+				MachinePolygonPoint pp = points.front();
+				MachinePolygonPoint prev = pp;
+
+				for (unsigned int j = 0; j < points.size(); j++)
+				{
+					pp = points.at(j);
+					this->machineToWidgetCoordinates(pp.x, pp.y, pp.x, pp.y);
+					
+					if (j != 0)
+					{
+						painter.drawLine(prev.x, prev.y, pp.x, pp.y);
+					}
+					
+					prev = pp;
+				}
+			}
+			else if (ddc)
+			{
+				// Dispense dot.
+				PicknPlaceGui::Coordinate2D coord = ddc->GetCoordinate();
+				this->machineToWidgetCoordinates(coord.x, coord.y, coord.x, coord.y);
+				painter.drawEllipse(coord.x - 5, coord.y - 5, 10, 10);
+			}
+			else if (pnp)
+			{
+				PicknPlaceGui::Coordinate2D coord;
+
+				// Pick and place.
+				// TODO: Drawn some icon making it obvious what this is, and also show the angle of the pick/place somehow. And an arrow from the pick to the place point.
+				coord = pnp->GetPickCoordinate();
+				this->machineToWidgetCoordinates(coord.x, coord.y, coord.x, coord.y);
+				painter.drawEllipse(coord.x, coord.y, 5, 5);
+
+				coord = pnp->GetPlaceCoordinate();
+				this->machineToWidgetCoordinates(coord.x, coord.y, coord.x, coord.y);
+				painter.drawEllipse(coord.x, coord.y, 5, 5);
+			}
+		}
+	}
 	
 	//
 	// Draw the current command being created by the user.
@@ -147,7 +217,8 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 				
 				QPen p = painter.pen();
 				QPen fatPen = painter.pen();
-				fatPen.setWidth(2);
+				fatPen.setWidth(4);
+				fatPen.setColor(QColor(0, 255, 0, 200));
 
 				std::vector<MachinePolygonPoint> points = this->m_pDispensePolygon->GetPoints();
 								
@@ -185,7 +256,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 				//
 				// Draw a helper line.
 				//
-				if (this->m_mouseX < this->size().width() && this->m_mouseY < this->size().height())
+				if (this->m_mouseX < this->size().width() && this->m_mouseY < this->size().height() && (points.size() > 0))
 				{
 					painter.setPen(QPen(QBrush(QColor(255, 150, 0, 200)), 2, Qt::DotLine));
 
@@ -488,6 +559,8 @@ void CameraWidget::stop()
 ///
 void CameraWidget::setDrawCommands(bool enabled)
 {
+	this->m_drawCommands = enabled;
+	this->update();
 }
 
 ///
@@ -703,14 +776,32 @@ void CameraWidget::widgetToMachineCoordinates(int widgetX, int widgetY, int &mac
 	int w = size().width();
 	int h = size().height();
 	machineX = machineLeft + (machineRight - machineLeft) * (widgetX / (float)w);
-	machineY = machineTop + (machineBottom - machineTop) * (widgetY / (float)h);
+	machineY = machineTop  + (machineBottom - machineTop) * (widgetY / (float)h);
 }
 
 ///
 /// \brief Sets the radius of the dispense dot.
 ///
-void CameraWidget::setDispenseDotRadius(float radius)
+void CameraWidget::setDispenseDotRadius(int radius)
 {
 	this->m_dispenseDotRadius = radius;
 	this->update();
 }
+
+///
+/// \brief Sets which command to highlight in the camera widget.
+///
+void CameraWidget::setHighlightedCommandIndex(int index)
+{
+	this->m_higlightedCommand = index;
+	this->update();
+}
+
+///
+/// \brief Sets the reference to the command list.
+///
+void CameraWidget::setMachineCommandList(const QList<PicknPlaceGui::GuiMachineCommand *> *commands)
+{
+	this->m_commands = commands;
+}
+

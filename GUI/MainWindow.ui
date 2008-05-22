@@ -521,12 +521,15 @@
             <rect>
              <x>70</x>
              <y>10</y>
-             <width>42</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
+           <property name="maximum" >
+            <number>100</number>
+           </property>
            <property name="value" >
-            <number>1</number>
+            <number>10</number>
            </property>
           </widget>
           <widget class="QLabel" name="m_pDispenseDotRadiusLabel" >
@@ -546,6 +549,9 @@
            </property>
           </widget>
           <widget class="QPushButton" name="m_pRemoveDotButton" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
            <property name="geometry" >
             <rect>
              <x>120</x>
@@ -796,9 +802,6 @@
         <widget class="QListWidget" name="m_pCommandsListWidget" >
          <property name="dragDropMode" >
           <enum>QAbstractItemView::DropOnly</enum>
-         </property>
-         <property name="selectionRectVisible" >
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -1113,6 +1116,38 @@
     <hint type="destinationlabel" >
      <x>707</x>
      <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pDispenseDotSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>m_pMainCameraWidget</receiver>
+   <slot>setDispenseDotRadius(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>147</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>172</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pShowPolygonToolAction</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_pMainCameraWidget</receiver>
+   <slot>setDrawCommands(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>382</x>
+     <y>280</y>
     </hint>
    </hints>
   </connection>

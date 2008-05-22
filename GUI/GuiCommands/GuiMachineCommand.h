@@ -12,6 +12,7 @@ namespace PicknPlaceGui
 	{
 	public:
 		virtual QString toString() = 0;
+		virtual MachineWrapperCommand& GetMachineCommand() = 0;
 	};
 }
 
