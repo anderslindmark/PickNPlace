@@ -178,7 +178,7 @@ bool SerialPort::ReadLine(char *sin, int bufsize)
 	if (!sin)
 		return false;
 
-	while (prev != '\n' && cur != '\r') 
+	while (prev != '\r' && cur != '\n') 
 	{
 		prev = cur;
 

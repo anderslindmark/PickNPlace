@@ -99,6 +99,8 @@ signals:
 	/// \param machineY The new Y coordinate the user wants to move to.
 	///
 	void newMachineCoordinates(int machineX, int machineY);
+	void newMachineY(int machineY);
+	void newMachineX(int machineX);
 
 	///
 	/// \brief Signal for when a command that the user is creating on the camera widget is ready/valid to be created.

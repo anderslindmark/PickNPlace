@@ -291,7 +291,7 @@ void CameraWidget::paintEvent(QPaintEvent *event)
 		}
 		case Pick:
 		{	
-			painter.setBrush(Qt::red);
+			painter.setBrush(Qt::white);
 			painter.setPen(Qt::darkRed);
 
 			for (int i = 0; i < 3; i++)
@@ -344,6 +344,8 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 		{		
 			// Signal that we want to move the head to new machine coordinates.
 			emit newMachineCoordinates(mouseMachineX, mouseMachineY);
+			emit newMachineX(mouseMachineX);
+			emit newMachineY(mouseMachineY);			
 			break;
 		}
 		case Calibration:
@@ -401,8 +403,6 @@ void CameraWidget::mousePressEvent(QMouseEvent * event)
 
 				MachinePolygonPoint pp(adjustedX, adjustedY);
 				this->m_pDispensePolygon->AddPoint(pp);
-
-				emit this->commandReady(this->m_mode, this->m_pickPoints, this->m_placePoints);
 			}
 
 			break;

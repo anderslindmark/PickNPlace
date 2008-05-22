@@ -44,10 +44,6 @@ MachineController::~MachineController(void)
 	if (this->m_sp != NULL)
 	{
 		m_sp->ClosePort();
-	}
-
-	if (this->m_sp)
-	{
 		delete m_sp;
 	}
 
@@ -250,7 +246,7 @@ bool MachineController::ValidateCommand(MachineCommand &cmd, MachineState &ms, M
 		MachineStateStruct mss = state.GetState();
 
 		// DEBUG:
-		// cout << endl << state.ToString() << endl;
+		cout << endl << state.ToString() << endl;
 
 		if (!(mss.x >= m_settings.xMin && mss.x <= m_settings.xMax))
 		{

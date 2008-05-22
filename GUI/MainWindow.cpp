@@ -45,8 +45,14 @@ namespace PicknPlaceGui
 		this->m_pProgressDialog = NULL;
 		this->m_currentCommandIndex = 0;
 		this->m_runningCommandList = false;
-	}
 
+		this->m_ui.m_pModeToolBar->setVisible(false); // This is just unecessary, but I'll leave it in the ui-file :S
+		this->UpdateCameraWidgetMachineCoordinates();
+
+		MachineState ms = this->m_pMC->GetCurrentState();
+		MachineStateStruct mss = ms.GetState();
+		this->m_ui.m_pBrightnessVerticalSlider->setValue(mss.lampCameraBrightness);
+	}
 	
 	///
 	/// \brief Destructor.
@@ -305,6 +311,7 @@ namespace PicknPlaceGui
 		// Other controls.
 		//
 		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(valueChanged(int)), this, SLOT(BrightnessSliderChanged(int)));
+		QMainWindow::connect(this->m_ui.m_pBrightnessVerticalSlider, SIGNAL(sliderReleased()), this, SLOT(BrightnessSliderSliderReleased()));
 		QMainWindow::connect(this->m_ui.m_pLockZPushButton, SIGNAL(toggled(bool)), this, SLOT(ZLockButtonToggled(bool)));
 		QMainWindow::connect(this->m_ui.m_pXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(XValueChanged(int)));
 		QMainWindow::connect(this->m_ui.m_pYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(YValueChanged(int)));
@@ -488,9 +495,20 @@ namespace PicknPlaceGui
 	void MainWindow::BrightnessSliderChanged(int value)
 	{
 		// Set the brightness for the machine.
-		MachineLightBrightnessCommand brightness = MachineLightBrightnessCommand(Lamp::LAMP_CAMERA, value);
-		this->m_pMC->RunCommand(brightness);
+		//MachineLightBrightnessCommand brightness = MachineLightBrightnessCommand(Lamp::LAMP_CAMERA, value);
+		//this->m_pMC->RunCommand(brightness);
 	}
+
+	///
+	/// \brief Slot for when the brightness slider is released.
+	///
+	void MainWindow::BrightnessSliderSliderReleased()
+	{
+		// Set the brightness for the machine.
+		MachineLightBrightnessCommand brightness = MachineLightBrightnessCommand(Lamp::LAMP_CAMERA, this->m_ui.m_pBrightnessVerticalSlider->value());
+		this->m_pMC->RunCommand(brightness);
+		this->m_pMC->Wait();
+	}	
 
 	///
 	/// \brief Updates the machine coordinates for the camera widget.
@@ -501,6 +519,9 @@ namespace PicknPlaceGui
 		int y = this->m_pMC->GetCurrentState().GetState().y;
 		int z = this->m_pMC->GetCurrentState().GetState().z;
 		this->m_ui.m_pMainCameraWidget->setMachineCoordinates(x, y, z);
+		this->m_ui.m_pXSpinBox->setValue(x);
+		this->m_ui.m_pYSpinBox->setValue(y);
+		this->m_ui.m_pZSpinBox->setValue(z);
 	}
 
 	///
@@ -657,6 +678,9 @@ namespace PicknPlaceGui
 		if (cmode == CameraWidget::InteractionMode::DispensePolygon)
 		{
 			DispencePolygonCommand *dpc = new DispencePolygonCommand(*cw->getDispensePolygon());
+			DispenceStateStruct dss = dpc->GetSettings();
+			dss.offsetX = 100000;
+			dpc->SetSettings(dss);
 			if (dpc)
 			{
 				this->m_commands.append(dpc);
@@ -827,6 +851,7 @@ namespace PicknPlaceGui
 			{
 				cw->resetCurrentMode();
 			}
+			// TODO: Delete the command also
 
 			cw->update();
 		}	

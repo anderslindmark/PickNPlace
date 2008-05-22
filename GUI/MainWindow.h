@@ -41,6 +41,7 @@ namespace PicknPlaceGui
 		void ZoomActionTriggered();
 
 		void BrightnessSliderChanged(int value);
+		void BrightnessSliderSliderReleased();
 		void ZLockButtonToggled(bool toggled);
 
 		void XValueChanged(int value);

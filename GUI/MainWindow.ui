@@ -243,8 +243,14 @@
                <height>0</height>
               </size>
              </property>
+             <property name="maximum" >
+              <number>15</number>
+             </property>
+             <property name="pageStep" >
+              <number>5</number>
+             </property>
              <property name="value" >
-              <number>99</number>
+              <number>15</number>
              </property>
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
@@ -253,7 +259,7 @@
               <enum>QSlider::TicksBothSides</enum>
              </property>
              <property name="tickInterval" >
-              <number>49</number>
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -854,7 +860,7 @@
      <x>0</x>
      <y>0</y>
      <width>729</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_pMenuFile" >
@@ -1000,7 +1006,7 @@
     <bool>true</bool>
    </property>
    <property name="checked" >
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon" >
     <iconset resource="pnp.qrc" >:/Images/move_icon.png</iconset>
@@ -1020,7 +1026,7 @@
     <string>Dispense dot</string>
    </property>
    <property name="visible" >
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="m_pDispensePolygonToolAction" >
@@ -1034,7 +1040,7 @@
     <string>Dispense polygon</string>
    </property>
    <property name="visible" >
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="m_pPickToolAction" >

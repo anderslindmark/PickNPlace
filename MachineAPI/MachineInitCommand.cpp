@@ -151,6 +151,6 @@ bool MachineInitCommand::DoCommand(SerialPort &sp)
 	// Set the dispence offsets to 0 for safety reasons
 	MachineSetDispenceOffsetCommand(OFFSET_Z, m_state.dispenceState.offsetZ).DoCommand(sp);
 	MachineSetDispenceOffsetCommand(OFFSET_ZS, m_state.dispenceState.offsetZs).DoCommand(sp);
-
+	//MachineMoveAllCommand(0, 0, 0).DoCommand(sp);
 	return true;
 }
