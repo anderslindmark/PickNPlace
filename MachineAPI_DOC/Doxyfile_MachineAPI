@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "Pick And Place, Machine API"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = MachineAPI_DOC/MachineAPI
+OUTPUT_DIRECTORY       = ../MachineAPI_DOC/MachineAPI
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -90,7 +90,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = /home/anders/src/pnp/trunk/MachineAPI/
+INPUT                  = ../MachineAPI/
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
